@@ -185,3 +185,16 @@
 - 每个分类控制在 3-5 条最有价值的新闻
 - **X 内容搜索**：由于没有 API，通过 web search 间接搜索，可能无法覆盖所有推文，优先搜索有广泛传播的内容
 - **设计工具优先级**：Kling、即梦、Veo、Nano Banana、Midjourney 的更新应优先报道
+
+### Step 4: 发布到 GitHub Pages
+
+新闻文件生成后，执行以下命令将更新推送到 GitHub Pages：
+
+```bash
+cd /Users/nate9527/Desktop/WorkBuddy/ai-news-collector
+git add news/
+git commit -m "news: YYYY-MM-DD daily briefing"
+git push origin main
+```
+
+这会自动更新 https://nathanliu100.github.io/ai-news-collector/ 上的内容。
