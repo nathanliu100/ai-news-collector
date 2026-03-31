@@ -4,7 +4,7 @@
 
 ## 🔗 在线查看
 
-**GitHub Pages**: [点击查看](https://YOUR_USERNAME.github.io/ai-news-collector/)
+**GitHub Pages**: [点击查看](https://nathanliu100.github.io/ai-news-collector/)
 
 ## 功能
 
