@@ -1,0 +1,215 @@
+{
+  "categories": [
+    {
+      "id": "model_release",
+      "name": "模型发布 & 更新",
+      "emoji": "🧪",
+      "keywords_en": [
+        "AI model release today",
+        "new LLM release",
+        "GPT Claude Gemini update",
+        "open source LLM release",
+        "new AI model benchmark"
+      ],
+      "keywords_cn": [
+        "AI大模型发布",
+        "大模型更新",
+        "开源模型发布"
+      ],
+      "x_accounts": ["@OpenAI", "@AnthropicAI", "@GoogleAI", "@sama"]
+    },
+    {
+      "id": "ai_design",
+      "name": "AI + 设计",
+      "emoji": "🎨",
+      "keywords_en": [
+        "AI design tools news today",
+        "AI image video generation news",
+        "Midjourney update news",
+        "Kling AI update",
+        "Google Veo update",
+        "Google Nano Banana",
+        "Runway AI update",
+        "Adobe Firefly news",
+        "Suno AI music update",
+        "Higgsfield AI video"
+      ],
+      "keywords_cn": [
+        "AI设计工具最新",
+        "AI视频生成最新",
+        "AIGC工具更新",
+        "即梦AI更新",
+        "可灵AI更新",
+        "海螺AI更新",
+        "LiblibAI更新",
+        "Lovart AI",
+        "通义万相",
+        "文心一格"
+      ],
+      "x_accounts": ["@Kling_ai", "@suno", "@higgsfield_creo", "@EHuanglu", "@PJaccetturo", "@minchoi"],
+      "focus_products": {
+        "overseas": ["Kling AI", "Google Veo", "Google Nano Banana", "Midjourney", "Runway", "Adobe Firefly", "Suno", "Higgsfield"],
+        "domestic": ["即梦/Jimeng/Dreamina", "LiblibAI", "Lovart", "海螺AI/MiniMax", "可灵", "通义万相", "文心一格"]
+      }
+    },
+    {
+      "id": "ai_gaming",
+      "name": "AI + 游戏",
+      "emoji": "🎮",
+      "keywords_en": [
+        "AI gaming news today",
+        "AI NPC game development",
+        "procedural content generation AI",
+        "AI game assets generation"
+      ],
+      "keywords_cn": [
+        "AI游戏技术",
+        "AI游戏开发",
+        "AI NPC",
+        "游戏AI"
+      ],
+      "x_accounts": []
+    },
+    {
+      "id": "ai_market",
+      "name": "AI 市场动态",
+      "emoji": "📈",
+      "keywords_en": [
+        "AI startup funding news today",
+        "AI company acquisition",
+        "AI industry report",
+        "AI market news"
+      ],
+      "keywords_cn": [
+        "AI融资动态",
+        "AI公司最新消息",
+        "AI行业报告"
+      ],
+      "x_accounts": ["@op7418", "@hq4ai"]
+    },
+    {
+      "id": "ai_tools",
+      "name": "AI 工具 & 产品",
+      "emoji": "🛠️",
+      "keywords_en": [
+        "new AI tools launched today",
+        "AI productivity tools news",
+        "AI coding tools update"
+      ],
+      "keywords_cn": [
+        "AI工具推荐",
+        "AI效率工具",
+        "AI产品发布"
+      ],
+      "x_accounts": ["@PJaccetturo", "@minchoi"]
+    },
+    {
+      "id": "future_trends",
+      "name": "未来趋势",
+      "emoji": "🔮",
+      "keywords_en": [
+        "AGI progress news",
+        "AI research breakthrough today",
+        "AI regulation policy",
+        "future of AI"
+      ],
+      "keywords_cn": [
+        "AGI进展",
+        "AI前沿研究",
+        "AI政策法规",
+        "AI发展趋势"
+      ],
+      "x_accounts": ["@sama", "@GoogleAI"]
+    },
+    {
+      "id": "china_ai",
+      "name": "国内 AI 动态",
+      "emoji": "🇨🇳",
+      "keywords_en": [
+        "China AI news",
+        "Chinese AI model"
+      ],
+      "keywords_cn": [
+        "国产大模型最新消息",
+        "国内AI应用动态",
+        "中国AI最新",
+        "即梦AI",
+        "LiblibAI",
+        "Lovart",
+        "海螺AI",
+        "可灵"
+      ],
+      "x_accounts": ["@op7418"]
+    },
+    {
+      "id": "ai_tips",
+      "name": "AI 效率技巧",
+      "emoji": "💡",
+      "keywords_en": [
+        "AI prompt engineering tips",
+        "AI workflow best practices",
+        "AI creative workflow"
+      ],
+      "keywords_cn": [
+        "AI使用技巧",
+        "AI工作流分享",
+        "AI提示词技巧"
+      ],
+      "x_accounts": ["@PJaccetturo", "@minchoi", "@EHuanglu"]
+    }
+  ],
+  "x_kol_list": [
+    { "handle": "@OpenAI", "name": "OpenAI", "type": "official", "focus": "GPT models, products" },
+    { "handle": "@AnthropicAI", "name": "Anthropic", "type": "official", "focus": "Claude models, safety" },
+    { "handle": "@GoogleAI", "name": "Google AI", "type": "official", "focus": "Gemini, Veo, research" },
+    { "handle": "@Kling_ai", "name": "Kling AI", "type": "official", "focus": "Video generation" },
+    { "handle": "@suno", "name": "Suno", "type": "official", "focus": "AI music" },
+    { "handle": "@higgsfield_creo", "name": "Higgsfield", "type": "official", "focus": "AI video creation" },
+    { "handle": "@sama", "name": "Sam Altman", "type": "kol", "focus": "OpenAI CEO, industry vision" },
+    { "handle": "@EHuanglu", "name": "EHuanglu", "type": "creator", "focus": "AI creative content" },
+    { "handle": "@PJaccetturo", "name": "PJ Accetturo", "type": "creator", "focus": "AI tools, workflows" },
+    { "handle": "@minchoi", "name": "Min Choi", "type": "creator", "focus": "AI design, creative tech" },
+    { "handle": "@op7418", "name": "op7418", "type": "kol", "focus": "AI news aggregator (Chinese)" },
+    { "handle": "@hq4ai", "name": "hq4ai", "type": "kol", "focus": "AI industry news" }
+  ],
+  "focus_design_tools": {
+    "overseas": [
+      "Kling AI",
+      "Google Veo",
+      "Google Nano Banana",
+      "Midjourney",
+      "Runway",
+      "Adobe Firefly",
+      "Suno",
+      "Higgsfield"
+    ],
+    "domestic": [
+      "即梦 (Jimeng/Dreamina)",
+      "LiblibAI (libiTV)",
+      "Lovart",
+      "海螺 AI (MiniMax)",
+      "可灵 (Kling CN)",
+      "通义万相",
+      "文心一格"
+    ]
+  },
+  "settings": {
+    "output_dir": "news",
+    "max_results_per_keyword": 3,
+    "importance_levels": {
+      "high": "🔴 重大",
+      "medium": "🟡 值得关注",
+      "low": "🟢 一般了解"
+    },
+    "source_tags": {
+      "media": "📰 媒体",
+      "x_kol": "🐦 X/KOL",
+      "official": "🏢 官方"
+    },
+    "special_tags": {
+      "department_related": "💎 部门相关",
+      "focus_tool": "🎯 重点工具"
+    },
+    "languages": ["en", "cn"]
+  }
+}

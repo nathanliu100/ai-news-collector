@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 新闻速递</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FAFAF8;
+            --surface: #FFFFFF;
+            --surface-alt: #F5F4F0;
+            --border: #E8E6E1;
+            --border-strong: #D4D1C9;
+            --text: #1A1A18;
+            --text-secondary: #6B6960;
+            --text-tertiary: #9E9B91;
+            --accent: #C8402A;
+            --accent-soft: rgba(200, 64, 42, 0.08);
+            --ink: #2C2C2A;
+            --tag-red: #C8402A;
+            --tag-yellow: #B8860B;
+            --tag-green: #4A7C59;
+            --tag-blue: #3D5A80;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --radius: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #141413;
+                --surface: #1C1C1A;
+                --surface-alt: #222220;
+                --border: #2E2E2A;
+                --border-strong: #3A3A35;
+                --text: #EDECEA;
+                --text-secondary: #9E9B91;
+                --text-tertiary: #6B6960;
+                --accent: #E05A3E;
+                --accent-soft: rgba(224, 90, 62, 0.1);
+                --ink: #D4D1C9;
+                --tag-red: #E05A3E;
+                --tag-yellow: #D4A017;
+                --tag-green: #6BAF7B;
+                --tag-blue: #6B9BC3;
+                --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+                --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+            }
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ MASTHEAD ============ */
+        .masthead {
+            border-bottom: 3px double var(--border-strong);
+            padding: 28px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .masthead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .masthead-title {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+        }
+
+        .masthead-sub {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ============ NAV BAR ============ */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+
+        .nav-bar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .nav-btn:hover {
+            color: var(--text);
+            border-color: var(--border);
+            background: var(--surface-alt);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            padding: 0 12px;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .nav-date .weekday {
+            color: var(--text-tertiary);
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            padding: 5px 12px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .pill:hover {
+            border-color: var(--border-strong);
+            color: var(--text-secondary);
+        }
+
+        .pill.active {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg);
+        }
+
+        .pill-icon {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.15s;
+        }
+
+        .pill-icon:hover {
+            border-color: var(--border-strong);
+            color: var(--text-secondary);
+        }
+
+        /* ============ STATS RIBBON ============ */
+        .stats-ribbon {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .stat-indicator.red { background: var(--tag-red); }
+        .stat-indicator.yellow { background: var(--tag-yellow); }
+        .stat-indicator.green { background: var(--tag-green); }
+
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .stat-sep {
+            width: 1px;
+            height: 12px;
+            background: var(--border);
+        }
+
+        /* ============ MAIN ============ */
+        .main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 32px 24px 100px;
+        }
+
+        /* ============ LOADING / EMPTY ============ */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 0;
+            color: var(--text-tertiary);
+            gap: 16px;
+        }
+
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading p {
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* ============ NEWS CONTENT ============ */
+        .news-content {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* H1 - 大标题 */
+        .news-content h1 {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1.3;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        /* 顶部引用 - 统计摘要 */
+        .news-content > blockquote:first-of-type,
+        .news-content > blockquote:nth-of-type(2) {
+            background: none;
+            border-left: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin: 16px 0 28px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* H2 - 分类标题 */
+        .news-content h2 {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text);
+            margin: 40px 0 18px;
+            padding: 10px 0;
+            border-top: 2px solid var(--text);
+            border-bottom: 1px solid var(--border);
+            text-transform: none;
+            position: relative;
+        }
+
+        .news-content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        /* H3 - 新闻条目标题 */
+        .news-content h3 {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 24px 0 6px;
+            color: var(--ink);
+            padding-left: 14px;
+            border-left: 3px solid var(--border-strong);
+            transition: border-color 0.2s;
+        }
+
+        .news-content h3:hover {
+            border-left-color: var(--accent);
+        }
+
+        .news-content h3 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .news-content h3 a:hover {
+            color: var(--accent);
+        }
+
+        /* 正文段落 */
+        .news-content p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin: 4px 0 20px;
+            padding-left: 17px;
+        }
+
+        .news-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 分割线 */
+        .news-content hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .news-content hr::after {
+            content: '◆';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            padding: 0 12px;
+            color: var(--border-strong);
+            font-size: 8px;
+        }
+
+        /* 列表 */
+        .news-content ul, .news-content ol {
+            padding-left: 36px;
+            margin: 8px 0 20px;
+        }
+
+        .news-content li {
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .news-content li strong {
+            color: var(--text);
+        }
+
+        .news-content li::marker {
+            color: var(--text-tertiary);
+        }
+
+        /* Blockquote（非首个） */
+        .news-content blockquote {
+            border-left: 2px solid var(--accent);
+            padding: 10px 16px;
+            margin: 12px 0 20px;
+            background: var(--accent-soft);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .news-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--surface-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        /* ============ HISTORY PANEL ============ */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px);
+            z-index: 200;
+            animation: overlayIn 0.2s ease;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .overlay.show { display: block; }
+
+        .panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 201;
+            padding: 28px 20px;
+            overflow-y: auto;
+            box-shadow: -8px 0 24px rgba(0,0,0,0.06);
+            display: none;
+            animation: panelIn 0.25s ease;
+        }
+
+        @keyframes panelIn {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .panel h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ink);
+        }
+
+        .panel-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+            margin-bottom: 2px;
+        }
+
+        .panel-item::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--border-strong);
+            flex-shrink: 0;
+        }
+
+        .panel-item:hover {
+            background: var(--surface-alt);
+            color: var(--text);
+        }
+
+        .panel-item.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .panel-item.active::before {
+            background: var(--accent);
+        }
+
+        /* ============ FILTER VISIBILITY ============ */
+        .news-block {
+            transition: opacity 0.25s ease, max-height 0.3s ease;
+            overflow: hidden;
+        }
+
+        .news-block.hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none;
+        }
+
+        .news-content h2.section-hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        /* Active filter count badge */
+        .pill .filter-count {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            margin-left: 4px;
+            opacity: 0.7;
+        }
+
+        /* ============ SCROLLBAR ============ */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 640px) {
+            .masthead { padding: 20px 16px 16px; }
+            .masthead-title { font-size: 24px; }
+            .nav-inner { padding: 0 16px; }
+            .nav-right .pill { display: none; }
+            .stats-ribbon { padding: 12px 16px; gap: 14px; flex-wrap: wrap; }
+            .main { padding: 20px 16px 80px; }
+            .news-content h1 { font-size: 22px; }
+            .news-content h2 { font-size: 14px; }
+            .news-content h3 { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="masthead">
+    <h1 class="masthead-title">AI Daily Briefing</h1>
+    <p class="masthead-sub">Intelligence · Design · Trends</p>
+</header>
+
+<nav class="nav-bar" id="navBar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <button class="nav-btn" onclick="changeDate(-1)" aria-label="前一天">‹</button>
+            <div class="nav-date" id="currentDate"></div>
+            <button class="nav-btn" onclick="changeDate(1)" aria-label="后一天">›</button>
+        </div>
+        <div class="nav-right">
+            <button class="pill active" data-level="all" onclick="setFilter('all')">All</button>
+            <button class="pill" data-level="high" onclick="setFilter('high')">Critical</button>
+            <button class="pill" data-level="medium" onclick="setFilter('medium')">Notable</button>
+            <button class="pill" data-level="low" onclick="setFilter('low')">FYI</button>
+            <button class="pill-icon" onclick="togglePanel()" aria-label="历史记录">☰</button>
+        </div>
+    </div>
+</nav>
+
+<div class="stats-ribbon" id="statsRibbon">
+    <div class="stat">
+        <span>共</span>
+        <span class="stat-num" id="totalCount">—</span>
+        <span>条</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+        <span class="stat-indicator red"></span>
+        <span class="stat-num" id="highCount">—</span>
+        <span>重大</span>
+    </div>
+    <div class="stat">
+        <span class="stat-indicator yellow"></span>
+        <span class="stat-num" id="mediumCount">—</span>
+        <span>关注</span>
+    </div>
+    <div class="stat">
+        <span class="stat-indicator green"></span>
+        <span class="stat-num" id="lowCount">—</span>
+        <span>了解</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+        <span>📰</span>
+        <span class="stat-num" id="mediaCount">—</span>
+    </div>
+    <div class="stat">
+        <span>𝕏</span>
+        <span class="stat-num" id="xCount">—</span>
+    </div>
+    <div class="stat">
+        <span>🏢</span>
+        <span class="stat-num" id="officialCount">—</span>
+    </div>
+</div>
+
+<main class="main">
+    <div id="content">
+        <div class="loading">
+            <div class="loader"></div>
+            <p>LOADING</p>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    Curated by AI News Collector · Powered by WorkBuddy Automation
+</footer>
+
+<!-- History Panel -->
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<div class="panel" id="panel">
+    <h3>Archive</h3>
+    <div id="fileList"></div>
+</div>
+
+<script>
+    // ---------- STATE ----------
+    let currentDate = new Date();
+    let currentFilter = 'all';
+    let currentMarkdown = '';
+
+    // ---------- FORMAT ----------
+    function fmtDate(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function displayDate(d) {
+        const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `<span>${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}</span><span class="weekday">${wd[d.getDay()]}</span>`;
+    }
+
+    // ---------- NAV ----------
+    function changeDate(delta) {
+        currentDate.setDate(currentDate.getDate() + delta);
+        document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+        loadNews(fmtDate(currentDate));
+    }
+
+    // ---------- SCROLL SHADOW ----------
+    window.addEventListener('scroll', () => {
+        document.getElementById('navBar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ---------- LOAD ----------
+    async function loadNews(dateStr) {
+        const el = document.getElementById('content');
+        el.innerHTML = '<div class="loading"><div class="loader"></div><p>LOADING</p></div>';
+        currentFilter = 'all';
+        document.querySelectorAll('.pill[data-level]').forEach(b => {
+            b.classList.toggle('active', b.dataset.level === 'all');
+        });
+
+        try {
+            const res = await fetch(`news/${dateStr}.md`);
+            if (!res.ok) throw new Error('not found');
+            currentMarkdown = await res.text();
+            el.innerHTML = `<div class="news-content">${marked.parse(currentMarkdown)}</div>`;
+            structureNewsBlocks();
+            updateStats(currentMarkdown);
+        } catch (e) {
+            currentMarkdown = '';
+            el.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">∅</div>
+                    <h3>No briefing for ${dateStr}</h3>
+                    <p>The automation hasn't run for this date yet.</p>
+                </div>`;
+            resetStats();
+        }
+    }
+
+    // ---------- STRUCTURE NEWS BLOCKS ----------
+    // After rendering, wrap each h3 + its following content into a .news-block div
+    // and tag it with data-level based on 🔴/🟡/🟢
+    function structureNewsBlocks() {
+        const container = document.querySelector('.news-content');
+        if (!container) return;
+
+        const children = Array.from(container.children);
+        let i = 0;
+
+        while (i < children.length) {
+            const el = children[i];
+
+            if (el.tagName === 'H3') {
+                // Determine level from text content
+                const text = el.textContent;
+                let level = 'unknown';
+                if (text.includes('\uD83D\uDD34')) level = 'high';       // 🔴
+                else if (text.includes('\uD83D\uDFE1')) level = 'medium'; // 🟡
+                else if (text.includes('\uD83D\uDFE2')) level = 'low';    // 🟢
+
+                // Create wrapper
+                const block = document.createElement('div');
+                block.className = 'news-block';
+                block.dataset.level = level;
+
+                // Insert wrapper before h3
+                el.parentNode.insertBefore(block, el);
+                block.appendChild(el);
+
+                // Move subsequent siblings into the block until next h3, h2, or hr
+                let next = block.nextSibling;
+                while (next) {
+                    const tag = next.tagName;
+                    if (tag === 'H3' || tag === 'H2' || tag === 'HR') break;
+                    const toMove = next;
+                    next = next.nextSibling;
+                    block.appendChild(toMove);
+                }
+
+                // Refresh children array since DOM changed
+                i = Array.from(container.children).indexOf(block) + 1;
+                children.length = 0;
+                children.push(...Array.from(container.children));
+            } else {
+                i++;
+            }
+        }
+    }
+
+    // ---------- STATS ----------
+    function updateStats(md) {
+        const h3s = (md.match(/^### /gm) || []).length;
+        const highs = (md.match(/^### 🔴/gm) || []).length;
+        const meds = (md.match(/^### 🟡/gm) || []).length;
+        const lows = (md.match(/^### 🟢/gm) || []).length;
+        const media = (md.match(/📰 媒体/g) || []).length;
+        const xkol = (md.match(/🐦 X\/KOL/g) || []).length;
+        const official = (md.match(/🏢 官方/g) || []).length;
+
+        document.getElementById('totalCount').textContent = h3s || 0;
+        document.getElementById('highCount').textContent = highs;
+        document.getElementById('mediumCount').textContent = meds;
+        document.getElementById('lowCount').textContent = lows;
+        document.getElementById('mediaCount').textContent = media;
+        document.getElementById('xCount').textContent = xkol;
+        document.getElementById('officialCount').textContent = official;
+    }
+
+    function resetStats() {
+        ['totalCount','highCount','mediumCount','lowCount','mediaCount','xCount','officialCount']
+            .forEach(id => document.getElementById(id).textContent = '\u2014');
+    }
+
+    // ---------- FILTER ----------
+    function setFilter(level) {
+        currentFilter = level;
+        document.querySelectorAll('.pill[data-level]').forEach(b => {
+            b.classList.toggle('active', b.dataset.level === level);
+        });
+        applyFilter();
+    }
+
+    function applyFilter() {
+        const blocks = document.querySelectorAll('.news-block');
+        const sections = document.querySelectorAll('.news-content h2');
+
+        // Show/hide news blocks
+        blocks.forEach(block => {
+            if (currentFilter === 'all') {
+                block.classList.remove('hidden');
+            } else {
+                block.classList.toggle('hidden', block.dataset.level !== currentFilter);
+            }
+        });
+
+        // Hide section headers (h2) that have no visible blocks after them
+        sections.forEach(h2 => {
+            if (currentFilter === 'all') {
+                h2.classList.remove('section-hidden');
+                return;
+            }
+            // Check if any visible .news-block exists between this h2 and the next h2/hr
+            let hasVisible = false;
+            let sibling = h2.nextElementSibling;
+            while (sibling) {
+                if (sibling.tagName === 'H2' || sibling.tagName === 'HR') break;
+                if (sibling.classList.contains('news-block') && !sibling.classList.contains('hidden')) {
+                    hasVisible = true;
+                    break;
+                }
+                sibling = sibling.nextElementSibling;
+            }
+            h2.classList.toggle('section-hidden', !hasVisible);
+        });
+
+        // Also hide <hr> that are between two hidden sections
+        const hrs = document.querySelectorAll('.news-content hr');
+        hrs.forEach(hr => {
+            if (currentFilter === 'all') {
+                hr.style.display = '';
+                return;
+            }
+            // Check if next visible content exists
+            let next = hr.nextElementSibling;
+            let prevVisible = false;
+            let nextVisible = false;
+
+            // Check previous
+            let prev = hr.previousElementSibling;
+            while (prev) {
+                if (prev.tagName === 'HR') break;
+                if ((prev.classList.contains('news-block') && !prev.classList.contains('hidden')) ||
+                    (prev.tagName === 'H2' && !prev.classList.contains('section-hidden'))) {
+                    prevVisible = true;
+                    break;
+                }
+                prev = prev.previousElementSibling;
+            }
+
+            while (next) {
+                if (next.tagName === 'HR') break;
+                if ((next.classList.contains('news-block') && !next.classList.contains('hidden')) ||
+                    (next.tagName === 'H2' && !next.classList.contains('section-hidden'))) {
+                    nextVisible = true;
+                    break;
+                }
+                next = next.nextElementSibling;
+            }
+
+            hr.style.display = (prevVisible && nextVisible) ? '' : 'none';
+        });
+    }
+
+    // ---------- PANEL ----------
+    function togglePanel() {
+        const o = document.getElementById('overlay');
+        const p = document.getElementById('panel');
+        const open = o.classList.contains('show');
+        if (open) {
+            o.classList.remove('show');
+            p.style.display = 'none';
+        } else {
+            o.classList.add('show');
+            p.style.display = 'block';
+            scanFiles();
+        }
+    }
+
+    async function scanFiles() {
+        const el = document.getElementById('fileList');
+        el.innerHTML = '<p style="color:var(--text-tertiary);font-size:12px;">Scanning\u2026</p>';
+        const files = [];
+        const today = new Date();
+        for (let i = 0; i < 30; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            const ds = fmtDate(d);
+            try {
+                const r = await fetch(`news/${ds}.md`, { method: 'HEAD' });
+                if (r.ok) files.push(ds);
+            } catch(e){}
+        }
+        if (!files.length) {
+            el.innerHTML = '<p style="color:var(--text-tertiary);font-size:12px;">No archives found.</p>';
+            return;
+        }
+        el.innerHTML = files.map(f =>
+            `<div class="panel-item ${f===fmtDate(currentDate)?'active':''}" onclick="jumpTo('${f}')">${f}</div>`
+        ).join('');
+    }
+
+    function jumpTo(ds) {
+        currentDate = new Date(ds + 'T00:00:00');
+        document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+        loadNews(ds);
+        togglePanel();
+    }
+
+    // ---------- INIT ----------
+    document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+    loadNews(fmtDate(currentDate));
+</script>
+
+</body>
+</html>
