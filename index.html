@@ -664,6 +664,32 @@
             border-top: 1px solid var(--border);
         }
 
+        .footer .credit {
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .footer .credit a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.15s;
+        }
+
+        .footer .credit a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .footer .powered {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
+        }
+
         /* ============ RESPONSIVE ============ */
         @media (max-width: 640px) {
             .masthead { padding: 20px 16px 16px; }
@@ -749,8 +775,9 @@
     </div>
 </main>
 
-<footer class="footer" data-i18n="footer">
-    Curated by AI News Collector · Powered by WorkBuddy Automation
+<footer class="footer">
+    <div class="credit" data-i18n="footer_credit">Curated by <a href="https://github.com/nathanliu100" target="_blank">Nate</a></div>
+    <div class="powered" data-i18n="footer_powered">AI News Collector · Powered by WorkBuddy Automation</div>
 </footer>
 
 <!-- History Panel -->
@@ -773,7 +800,8 @@
             stat_notable: '关注',
             stat_fyi: '了解',
             archive_title: '历史存档',
-            footer: '由 AI News Collector 自动策展 · WorkBuddy Automation 驱动',
+            footer_credit: '由 Nate 策展',
+            footer_powered: 'AI News Collector · WorkBuddy Automation 驱动',
             loading: '加载中',
             no_briefing: '暂无简报',
             no_briefing_desc: '该日期的自动收集尚未执行。',
@@ -791,7 +819,8 @@
             stat_notable: 'Notable',
             stat_fyi: 'FYI',
             archive_title: 'Archive',
-            footer: 'Curated by AI News Collector · Powered by WorkBuddy Automation',
+            footer_credit: 'Curated by Nate',
+            footer_powered: 'AI News Collector · Powered by WorkBuddy Automation',
             loading: 'LOADING',
             no_briefing: 'No briefing for this date',
             no_briefing_desc: 'The automation hasn\'t run for this date yet.',
@@ -818,7 +847,16 @@
     function applyI18n() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            el.textContent = t(key);
+            if (key === 'footer_credit') {
+                // Preserve the link in credit line
+                if (currentLang === 'zh') {
+                    el.innerHTML = '由 <a href="https://github.com/nathanliu100" target="_blank">Nate</a> 策展';
+                } else {
+                    el.innerHTML = 'Curated by <a href="https://github.com/nathanliu100" target="_blank">Nate</a>';
+                }
+            } else {
+                el.textContent = t(key);
+            }
         });
         document.getElementById('langToggle').textContent = t('lang_label');
         document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
