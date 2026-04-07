@@ -664,6 +664,223 @@
             border-top: 1px solid var(--border);
         }
 
+        /* ============ MODE TABS (Daily / Weekly) ============ */
+        .mode-tabs {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mode-tab {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-tertiary);
+            padding: 12px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+            bottom: -1px;
+        }
+
+        .mode-tab:hover {
+            color: var(--text-secondary);
+        }
+
+        .mode-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ============ WEEKLY / EDITORIAL LONGFORM ============ */
+        /*
+         * Design concept: "Midnight essay" — khazix-writer's rhythm is
+         * short sentences that breathe, one-line paragraphs that land like
+         * punches. The typography must honor this: generous vertical space,
+         * text that floats in quiet negative space, and a reading rhythm
+         * that feels like listening to someone think out loud.
+         */
+        .weekly-content {
+            animation: fadeIn 0.5s ease;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* Weekly H1: the magazine cover moment */
+        .weekly-content h1 {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1.2;
+            margin: 32px 0 12px;
+            letter-spacing: -0.8px;
+            text-align: left;
+        }
+
+        /* Subtitle / date — the quiet whisper under the title */
+        .weekly-content h1 + p {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-tertiary);
+            margin: 0 0 40px;
+            padding-left: 0;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        /* Core: body text */
+        .weekly-content p {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--text-secondary);
+            margin: 0 0 18px;
+            padding-left: 0;
+        }
+
+        /* Short standalone paragraphs (khazix signature) get extra spacing */
+        .weekly-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* HR: visible breathing space between sections */
+        .weekly-content hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .weekly-content hr::after {
+            content: '\25C6';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            padding: 0 12px;
+            color: var(--border-strong);
+            font-size: 8px;
+        }
+
+        /* Blockquote: the aside voice */
+        .weekly-content blockquote {
+            border-left: 2px solid var(--accent);
+            padding: 16px 24px;
+            margin: 32px 0;
+            background: var(--accent-soft);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        /* Lists: tight and punchy */
+        .weekly-content ul, .weekly-content ol {
+            padding-left: 24px;
+            margin: 16px 0 28px;
+        }
+
+        .weekly-content li {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .weekly-content li strong {
+            color: var(--text);
+        }
+
+        .weekly-content li::marker {
+            color: var(--text-tertiary);
+        }
+
+        /* H2: section headers with emoji icons */
+        .weekly-content h2 {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 8px 0 20px;
+            padding: 0;
+            border: none;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        /* Table: data snapshot at the end */
+        .weekly-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0 32px;
+            font-size: 13px;
+        }
+
+        .weekly-content table th {
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text);
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-strong);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .weekly-content table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .weekly-content table tr:hover td {
+            background: var(--accent-soft);
+        }
+
+        /* Code (if any) */
+        .weekly-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--surface-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+            color: var(--accent);
+        }
+
+        /* Weekly mobile */
+        @media (max-width: 640px) {
+            .weekly-content { max-width: 100%; }
+            .weekly-content h1 { font-size: 28px; margin: 20px 0 8px; }
+            .weekly-content h1 + p { margin-bottom: 28px; font-size: 12px; }
+            .weekly-content p { font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+            .weekly-content li { font-size: 14px; line-height: 1.9; }
+            .weekly-content hr { margin: 36px 0; }
+            .weekly-content blockquote { padding: 12px 16px; font-size: 14px; }
+            .weekly-content table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .weekly-content h1 { font-size: 24px; }
+            .weekly-content p { font-size: 14px; line-height: 1.9; }
+        }
+
         /* ============ RESPONSIVE — MOBILE ============ */
 
         /* --- Tablet breakpoint --- */
@@ -728,6 +945,10 @@
             .mobile-filter-bar {
                 display: flex !important;
             }
+
+            /* Mode tabs */
+            .mode-tabs { padding: 0 16px; }
+            .mode-tab { padding: 10px 14px; font-size: 11px; }
 
             /* News content typography — optimized for mobile reading */
             .news-content h1 {
@@ -917,6 +1138,12 @@
     </div>
 </nav>
 
+<!-- Mode Tabs -->
+<div class="mode-tabs" id="modeTabs">
+    <button class="mode-tab active" data-mode="daily" onclick="setMode('daily')" data-i18n-daily>Daily</button>
+    <button class="mode-tab" data-mode="weekly" onclick="setMode('weekly')" data-i18n-weekly>Weekly</button>
+</div>
+
 <div class="stats-ribbon" id="statsRibbon">
     <div class="stat">
         <span data-i18n="stat_total">Total</span>
@@ -997,9 +1224,13 @@
             loading: '加载中',
             no_briefing: '暂无简报',
             no_briefing_desc: '该日期的自动收集尚未执行。',
+            no_weekly: '暂无周报',
+            no_weekly_desc: '该周的周报尚未发布。',
             no_archive: '暂无存档。',
             scanning: '扫描中…',
             lang_label: 'EN',
+            mode_daily: '日报',
+            mode_weekly: '周报',
         },
         en: {
             filter_all: 'All',
@@ -1014,13 +1245,16 @@
             loading: 'LOADING',
             no_briefing: 'No briefing for this date',
             no_briefing_desc: 'The automation hasn\'t run for this date yet.',
+            no_weekly: 'No weekly briefing',
+            no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
             no_archive: 'No archives found.',
             scanning: 'Scanning\u2026',
             lang_label: '中文',
+            mode_daily: 'Daily',
+            mode_weekly: 'Weekly',
         }
     };
 
-    // Detect system language: Chinese variants -> zh, else -> en
     function detectLang() {
         const saved = localStorage.getItem('ai-news-lang');
         if (saved) return saved;
@@ -1036,29 +1270,34 @@
 
     function applyI18n() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            el.textContent = t(key);
+            el.textContent = t(el.getAttribute('data-i18n'));
         });
         document.getElementById('langToggle').textContent = t('lang_label');
         document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
-        // Update mobile filter bar "All" text
         document.querySelectorAll('.m-pill[data-i18n]').forEach(el => {
             el.textContent = t(el.getAttribute('data-i18n'));
         });
+        // Mode tabs
+        document.querySelector('.mode-tab[data-mode="daily"]').textContent = t('mode_daily');
+        document.querySelector('.mode-tab[data-mode="weekly"]').textContent = t('mode_weekly');
     }
 
     function toggleLang() {
         currentLang = currentLang === 'zh' ? 'en' : 'zh';
         localStorage.setItem('ai-news-lang', currentLang);
         applyI18n();
-        // Reload news to show the correct language version
-        loadNews(fmtDate(currentDate));
+        if (currentMode === 'daily') {
+            loadNews(fmtDate(currentDate));
+        } else {
+            loadWeekly();
+        }
     }
 
     // ========== STATE ==========
     let currentDate = new Date();
     let currentFilter = 'all';
     let currentMarkdown = '';
+    let currentMode = 'daily'; // 'daily' or 'weekly'
 
     // ========== FORMAT ==========
     function fmtDate(d) {
@@ -1076,11 +1315,71 @@
         return '<span>' + monthsEn[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '</span><span class="weekday">' + wd[d.getDay()] + '</span>';
     }
 
+    // ========== ISO WEEK NUMBER ==========
+    function getISOWeek(d) {
+        var date = new Date(d.getTime());
+        date.setHours(0, 0, 0, 0);
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        var week1 = new Date(date.getFullYear(), 0, 4);
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    }
+
+    function getISOWeekYear(d) {
+        var date = new Date(d.getTime());
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        return date.getFullYear();
+    }
+
+    function displayWeek(d) {
+        var wn = getISOWeek(d);
+        var yr = getISOWeekYear(d);
+        if (currentLang === 'zh') {
+            return '<span>' + yr + ' 第 ' + wn + ' 周</span>';
+        }
+        return '<span>' + yr + ' W' + String(wn).padStart(2, '0') + '</span>';
+    }
+
+    function weeklyPath(d) {
+        var wn = getISOWeek(d);
+        var yr = getISOWeekYear(d);
+        return 'news/weekly-' + yr + '-W' + String(wn).padStart(2, '0') + '.md';
+    }
+
+    // ========== MODE SWITCH ==========
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-tab').forEach(function(tab) {
+            tab.classList.toggle('active', tab.dataset.mode === mode);
+        });
+
+        if (mode === 'daily') {
+            document.getElementById('statsRibbon').style.display = '';
+            document.querySelectorAll('.pill[data-level]').forEach(function(p) { p.style.display = ''; });
+            document.getElementById('mobileFilterBar').style.removeProperty('display');
+            document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+            loadNews(fmtDate(currentDate));
+        } else {
+            document.getElementById('statsRibbon').style.display = 'none';
+            document.querySelectorAll('.pill[data-level]').forEach(function(p) { p.style.display = 'none'; });
+            document.getElementById('mobileFilterBar').style.display = 'none';
+            // Find and show latest weekly
+            findLatestWeekly().then(function() {
+                loadWeekly();
+            });
+        }
+    }
+
     // ========== NAV ==========
     function changeDate(delta) {
-        currentDate.setDate(currentDate.getDate() + delta);
-        document.getElementById('currentDate').innerHTML = displayDate(currentDate);
-        loadNews(fmtDate(currentDate));
+        if (currentMode === 'daily') {
+            currentDate.setDate(currentDate.getDate() + delta);
+            document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+            loadNews(fmtDate(currentDate));
+        } else {
+            weeklyDate.setDate(weeklyDate.getDate() + delta * 7);
+            document.getElementById('currentDate').innerHTML = displayWeek(weeklyDate);
+            loadWeekly();
+        }
     }
 
     // ========== SCROLL SHADOW ==========
@@ -1089,7 +1388,6 @@
     });
 
     // ========== NEWS FILE PATH ==========
-    // Bilingual: zh version -> news/YYYY-MM-DD.md, en version -> news/YYYY-MM-DD.en.md
     function newsPath(dateStr) {
         if (currentLang === 'en') {
             return 'news/' + dateStr + '.en.md';
@@ -1097,7 +1395,7 @@
         return 'news/' + dateStr + '.md';
     }
 
-    // ========== LOAD ==========
+    // ========== LOAD DAILY ==========
     async function loadNews(dateStr) {
         var el = document.getElementById('content');
         el.innerHTML = '<div class="loading"><div class="loader"></div><p>' + t('loading') + '</p></div>';
@@ -1112,7 +1410,6 @@
         try {
             var res = await fetch(newsPath(dateStr));
             if (!res.ok) {
-                // Fallback: if en version not found, try zh version (or vice versa)
                 var fallback = currentLang === 'en' ? ('news/' + dateStr + '.md') : ('news/' + dateStr + '.en.md');
                 res = await fetch(fallback);
                 if (!res.ok) throw new Error('not found');
@@ -1126,6 +1423,43 @@
             el.innerHTML = '<div class="empty-state"><div class="empty-icon">&empty;</div><h3>' + t('no_briefing') + '</h3><p>' + t('no_briefing_desc') + '</p></div>';
             resetStats();
         }
+    }
+
+    // ========== LOAD WEEKLY ==========
+    let weeklyDate = new Date(); // independent date tracker for weekly mode
+
+    async function loadWeekly() {
+        var el = document.getElementById('content');
+        el.innerHTML = '<div class="loading"><div class="loader"></div><p>' + t('loading') + '</p></div>';
+        document.getElementById('currentDate').innerHTML = displayWeek(weeklyDate);
+
+        var path = weeklyPath(weeklyDate);
+        try {
+            var res = await fetch(path);
+            if (!res.ok) throw new Error('not found');
+            var md = await res.text();
+            el.innerHTML = '<div class="weekly-content">' + marked.parse(md) + '</div>';
+        } catch (e) {
+            el.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128221;</div><h3>' + t('no_weekly') + '</h3><p>' + t('no_weekly_desc') + '</p></div>';
+        }
+    }
+
+    // Find the latest available weekly by scanning recent weeks
+    async function findLatestWeekly() {
+        var d = new Date();
+        for (var i = 0; i < 12; i++) {
+            var path = weeklyPath(d);
+            try {
+                var res = await fetch(path, { method: 'HEAD' });
+                if (res.ok) {
+                    weeklyDate = new Date(d);
+                    return;
+                }
+            } catch(e){}
+            d.setDate(d.getDate() - 7);
+        }
+        // No weekly found, keep current date
+        weeklyDate = new Date();
     }
 
     // ========== STRUCTURE NEWS BLOCKS ==========
@@ -1197,11 +1531,9 @@
     // ========== FILTER ==========
     function setFilter(level) {
         currentFilter = level;
-        // Sync desktop pills
         document.querySelectorAll('.pill[data-level]').forEach(function(b) {
             b.classList.toggle('active', b.dataset.level === level);
         });
-        // Sync mobile pills
         document.querySelectorAll('.m-pill[data-level]').forEach(function(b) {
             b.classList.toggle('active', b.dataset.level === level);
         });
@@ -1313,6 +1645,9 @@
 
     function jumpTo(ds) {
         currentDate = new Date(ds + 'T00:00:00');
+        if (currentMode === 'weekly') {
+            setMode('daily');
+        }
         document.getElementById('currentDate').innerHTML = displayDate(currentDate);
         loadNews(ds);
         togglePanel();
