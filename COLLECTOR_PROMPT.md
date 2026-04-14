@@ -198,3 +198,22 @@ git push origin main
 ```
 
 这会自动更新 https://nathanliu100.github.io/ai-news-collector/ 上的内容。
+
+### Step 5: 推送到企业微信群
+
+Git push 完成后，执行推送脚本将「今日必看」摘要发送到企业微信群：
+
+```bash
+cd /Users/nate9527/Desktop/WorkBuddy/ai-news-collector
+./notify-wecom.sh
+```
+
+脚本会自动：
+1. 从当天的 `news/YYYY-MM-DD.md` 中提取「⚡ 今日必看」板块
+2. 提取「📊 数据快照」和「🔭 编辑观察」
+3. 格式化为企业微信 Markdown 消息
+4. 通过 Webhook 推送到企微群
+
+**前置条件**：确保 `.env` 文件中已配置 `WECOM_WEBHOOK` 地址。
+
+**也可以指定日期推送**：`./notify-wecom.sh 2026-04-02`

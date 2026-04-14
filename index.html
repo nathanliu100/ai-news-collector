@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 新闻速递 | AI Daily Briefing</title>
+
+    <!-- OG Meta: P1 品牌展示 -->
+    <meta property="og:title" content="AI Daily Briefing · AI 新闻速递">
+    <meta property="og:description" content="每日 AI 前沿新闻精选 — 模型发布、行业动态、设计工具、趋势洞察。Curated by Nate.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nathanliu100.github.io/ai-news-collector/">
+    <meta property="og:image" content="https://nathanliu100.github.io/ai-news-collector/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="AI Daily Briefing">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Daily Briefing · AI 新闻速递">
+    <meta name="twitter:description" content="每日 AI 前沿新闻精选 — 模型发布、行业动态、设计工具、趋势洞察。">
+    <meta name="twitter:image" content="https://nathanliu100.github.io/ai-news-collector/og-image.png">
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +45,7 @@
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
             --radius: 4px;
+            --mono: 'JetBrains Mono', monospace;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -64,12 +80,23 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ============ MASTHEAD ============ */
+        /* ============ MASTHEAD (P1: 滚动折叠) ============ */
         .masthead {
             border-bottom: 3px double var(--border-strong);
             padding: 28px 0 20px;
             text-align: center;
             position: relative;
+            transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.35s ease;
+            max-height: 120px;
+            overflow: hidden;
+        }
+
+        .masthead.collapsed {
+            max-height: 0;
+            padding: 0;
+            opacity: 0;
+            border-bottom-width: 0;
+            pointer-events: none;
         }
 
         .masthead::before {
@@ -114,6 +141,27 @@
             box-shadow: var(--shadow-md);
         }
 
+        /* Compact brand mark in navbar when masthead collapses */
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--ink);
+            letter-spacing: -0.3px;
+            opacity: 0;
+            max-width: 0;
+            overflow: hidden;
+            transition: opacity 0.3s, max-width 0.3s;
+            white-space: nowrap;
+            margin-right: 0;
+        }
+
+        .nav-brand.show {
+            opacity: 1;
+            max-width: 120px;
+            margin-right: 12px;
+        }
+
         .nav-inner {
             max-width: 780px;
             margin: 0 auto;
@@ -152,12 +200,10 @@
             background: var(--surface-alt);
         }
 
-        .nav-btn:active {
-            transform: scale(0.95);
-        }
+        .nav-btn:active { transform: scale(0.95); }
 
         .nav-date {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             font-size: 13px;
             font-weight: 500;
             color: var(--text);
@@ -233,7 +279,7 @@
             font-size: 12px;
             font-weight: 600;
             transition: all 0.15s;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             letter-spacing: 0.5px;
         }
 
@@ -274,7 +320,7 @@
         .stat-indicator.green { background: var(--tag-green); }
 
         .stat-num {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             font-weight: 500;
             color: var(--text);
             font-size: 13px;
@@ -397,17 +443,55 @@
             margin-top: 0;
         }
 
-        /* H3 - 新闻条目标题 */
+        /* ============ NEWS BLOCK (P0: 锚点系统 + P1: 排版) ============ */
+        .news-block {
+            transition: opacity 0.25s ease, max-height 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            scroll-margin-top: 72px;
+        }
+
+        .news-block.hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none;
+        }
+
+        /* Anchor highlight animation */
+        .news-block.anchor-highlight {
+            animation: anchorGlow 2s ease-out;
+        }
+
+        @keyframes anchorGlow {
+            0% {
+                background: var(--accent-soft);
+                border-left-color: var(--accent);
+            }
+            100% {
+                background: transparent;
+            }
+        }
+
+        /* H3 - 新闻条目标题 (P1: 格式塔间距优化) */
         .news-content h3 {
             font-family: 'Noto Sans SC', 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 600;
             line-height: 1.5;
-            margin: 24px 0 6px;
+            margin: 28px 0 6px;
             color: var(--ink);
             padding-left: 14px;
             border-left: 3px solid var(--border-strong);
             transition: border-color 0.2s;
+            position: relative;
+        }
+
+        /* Reduce top margin when H3 is first child in block */
+        .news-block:first-child h3,
+        h2 + .news-block h3 {
+            margin-top: 16px;
         }
 
         .news-content h3:hover {
@@ -422,6 +506,49 @@
 
         .news-content h3 a:hover {
             color: var(--accent);
+        }
+
+        /* P0: 锚点链接按钮 */
+        .anchor-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            opacity: 0;
+            transition: opacity 0.15s, color 0.15s;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 6px;
+            border-radius: 3px;
+            text-decoration: none;
+            position: relative;
+            top: -1px;
+        }
+
+        .news-block:hover .anchor-link,
+        .anchor-link:focus {
+            opacity: 1;
+        }
+
+        .anchor-link:hover {
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        /* P1: 来源行降权 */
+        .news-meta {
+            font-size: 11.5px !important;
+            color: var(--text-tertiary) !important;
+            font-family: var(--mono);
+            letter-spacing: 0.2px;
+            line-height: 1.6 !important;
+            margin-top: 2px !important;
+            margin-bottom: 12px !important;
+            opacity: 0.75;
+            padding-left: 17px;
         }
 
         /* 正文段落 */
@@ -472,15 +599,17 @@
             margin-bottom: 2px;
         }
 
-        .news-content li strong {
-            color: var(--text);
+        .news-content li strong { color: var(--text); }
+        .news-content li::marker { color: var(--text-tertiary); }
+
+        /* P1: 必看红色圆形编号 */
+        .news-content > blockquote:first-of-type ~ .must-read-section ol {
+            counter-reset: must-read;
+            list-style: none;
+            padding-left: 0;
         }
 
-        .news-content li::marker {
-            color: var(--text-tertiary);
-        }
-
-        /* Blockquote（非首个） */
+        /* Blockquote */
         .news-content blockquote {
             border-left: 2px solid var(--accent);
             padding: 10px 16px;
@@ -492,7 +621,7 @@
         }
 
         .news-content code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             background: var(--surface-alt);
             padding: 2px 6px;
             border-radius: 3px;
@@ -500,7 +629,7 @@
             color: var(--accent);
         }
 
-        /* Table styling */
+        /* Table (P1: 移动端卡片化见下方响应式) */
         .news-content table {
             width: 100%;
             border-collapse: collapse;
@@ -527,6 +656,49 @@
 
         .news-content table tr:hover td {
             background: var(--accent-soft);
+        }
+
+        .news-content h2.section-hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .pill .filter-count {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 10px;
+            margin-left: 4px;
+            opacity: 0.7;
+        }
+
+        /* ============ TOAST (P0: 复制链接反馈) ============ */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--ink);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-family: var(--mono);
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s;
+            z-index: 300;
+            box-shadow: var(--shadow-md);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         /* ============ HISTORY PANEL ============ */
@@ -583,7 +755,7 @@
             padding: 10px 12px;
             border-radius: var(--radius);
             cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             font-size: 13px;
             color: var(--text-secondary);
             transition: all 0.15s;
@@ -613,58 +785,7 @@
             background: var(--accent);
         }
 
-        /* ============ FILTER VISIBILITY ============ */
-        .news-block {
-            transition: opacity 0.25s ease, max-height 0.3s ease;
-            overflow: hidden;
-        }
-
-        .news-block.hidden {
-            opacity: 0;
-            max-height: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            pointer-events: none;
-        }
-
-        .news-content h2.section-hidden {
-            opacity: 0;
-            max-height: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: none !important;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-
-        /* Active filter count badge */
-        .pill .filter-count {
-            display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            margin-left: 4px;
-            opacity: 0.7;
-        }
-
-        /* ============ SCROLLBAR ============ */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
-
-        /* ============ FOOTER ============ */
-        .footer {
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 20px 24px 40px;
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-tertiary);
-            letter-spacing: 1px;
-            border-top: 1px solid var(--border);
-        }
-
-        /* ============ MODE TABS (Daily / Weekly) ============ */
+        /* ============ MODE TABS ============ */
         .mode-tabs {
             max-width: 780px;
             margin: 0 auto;
@@ -681,7 +802,7 @@
             padding: 12px 20px;
             font-size: 12px;
             font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             letter-spacing: 1.5px;
             text-transform: uppercase;
             cursor: pointer;
@@ -690,30 +811,20 @@
             bottom: -1px;
         }
 
-        .mode-tab:hover {
-            color: var(--text-secondary);
-        }
+        .mode-tab:hover { color: var(--text-secondary); }
 
         .mode-tab.active {
             color: var(--text);
             border-bottom-color: var(--accent);
         }
 
-        /* ============ WEEKLY / EDITORIAL LONGFORM ============ */
-        /*
-         * Design concept: "Midnight essay" — khazix-writer's rhythm is
-         * short sentences that breathe, one-line paragraphs that land like
-         * punches. The typography must honor this: generous vertical space,
-         * text that floats in quiet negative space, and a reading rhythm
-         * that feels like listening to someone think out loud.
-         */
+        /* ============ WEEKLY LONGFORM ============ */
         .weekly-content {
             animation: fadeIn 0.5s ease;
             max-width: 640px;
             margin: 0 auto;
         }
 
-        /* Weekly H1: the magazine cover moment */
         .weekly-content h1 {
             font-family: 'Playfair Display', 'Noto Sans SC', serif;
             font-size: 38px;
@@ -722,10 +833,8 @@
             line-height: 1.2;
             margin: 32px 0 12px;
             letter-spacing: -0.8px;
-            text-align: left;
         }
 
-        /* Subtitle / date — the quiet whisper under the title */
         .weekly-content h1 + p {
             font-size: 13px;
             font-style: italic;
@@ -736,7 +845,6 @@
             line-height: 1.6;
         }
 
-        /* Core: body text */
         .weekly-content p {
             font-size: 15px;
             line-height: 2;
@@ -745,13 +853,8 @@
             padding-left: 0;
         }
 
-        /* Short standalone paragraphs (khazix signature) get extra spacing */
-        .weekly-content strong {
-            color: var(--text);
-            font-weight: 600;
-        }
+        .weekly-content strong { color: var(--text); font-weight: 600; }
 
-        /* HR: visible breathing space between sections */
         .weekly-content hr {
             border: none;
             height: 1px;
@@ -772,7 +875,6 @@
             font-size: 8px;
         }
 
-        /* Blockquote: the aside voice */
         .weekly-content blockquote {
             border-left: 2px solid var(--accent);
             padding: 16px 24px;
@@ -784,7 +886,6 @@
             line-height: 1.9;
         }
 
-        /* Lists: tight and punchy */
         .weekly-content ul, .weekly-content ol {
             padding-left: 24px;
             margin: 16px 0 28px;
@@ -797,15 +898,9 @@
             margin-bottom: 4px;
         }
 
-        .weekly-content li strong {
-            color: var(--text);
-        }
+        .weekly-content li strong { color: var(--text); }
+        .weekly-content li::marker { color: var(--text-tertiary); }
 
-        .weekly-content li::marker {
-            color: var(--text-tertiary);
-        }
-
-        /* H2: section headers with emoji icons */
         .weekly-content h2 {
             font-family: 'Noto Sans SC', 'Inter', sans-serif;
             font-size: 18px;
@@ -815,10 +910,8 @@
             padding: 0;
             border: none;
             letter-spacing: 0;
-            text-transform: none;
         }
 
-        /* Table: data snapshot at the end */
         .weekly-content table {
             width: 100%;
             border-collapse: collapse;
@@ -834,8 +927,7 @@
             text-align: left;
             border-bottom: 2px solid var(--border-strong);
             font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.5px;
+            font-family: var(--mono);
         }
 
         .weekly-content table td {
@@ -848,9 +940,8 @@
             background: var(--accent-soft);
         }
 
-        /* Code (if any) */
         .weekly-content code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--mono);
             background: var(--surface-alt);
             padding: 2px 6px;
             border-radius: 3px;
@@ -858,73 +949,152 @@
             color: var(--accent);
         }
 
-        /* Weekly mobile */
-        @media (max-width: 640px) {
-            .weekly-content { max-width: 100%; }
-            .weekly-content h1 { font-size: 28px; margin: 20px 0 8px; }
-            .weekly-content h1 + p { margin-bottom: 28px; font-size: 12px; }
-            .weekly-content p { font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
-            .weekly-content li { font-size: 14px; line-height: 1.9; }
-            .weekly-content hr { margin: 36px 0; }
-            .weekly-content blockquote { padding: 12px 16px; font-size: 14px; }
-            .weekly-content table {
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                white-space: nowrap;
-                font-size: 12px;
-            }
+        /* ============ SCROLLBAR ============ */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border);
         }
 
-        @media (max-width: 375px) {
-            .weekly-content h1 { font-size: 24px; }
-            .weekly-content p { font-size: 14px; line-height: 1.9; }
+        .footer .dev-trigger {
+            color: var(--text-tertiary);
+            cursor: default;
+            text-decoration: none;
+            border-bottom: 1px dashed transparent;
+            transition: border-color 0.2s, color 0.2s;
         }
 
-        /* ============ RESPONSIVE — MOBILE ============ */
+        .footer .dev-trigger:hover {
+            color: var(--text-secondary);
+            border-bottom-color: var(--text-dim);
+        }
 
-        /* --- Tablet breakpoint --- */
+        /* Dev password modal */
+        .dev-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dev-modal-overlay.show {
+            display: flex;
+        }
+
+        .dev-modal {
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            width: 320px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .dev-modal h4 {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+        }
+
+        .dev-modal .pin-input {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dev-modal .pin-digit {
+            width: 44px;
+            height: 52px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.15s;
+            -moz-appearance: textfield;
+        }
+
+        .dev-modal .pin-digit::-webkit-outer-spin-button,
+        .dev-modal .pin-digit::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .dev-modal .pin-digit:focus {
+            border-color: var(--accent);
+        }
+
+        .dev-modal .pin-digit.error {
+            border-color: var(--accent);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .dev-modal .dev-hint {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-family: var(--mono);
+        }
+
+        /* ============ RESPONSIVE ============ */
         @media (max-width: 840px) {
             .main { padding: 28px 20px 90px; }
             .stats-ribbon { padding: 12px 20px; gap: 16px; }
         }
 
-        /* --- Mobile breakpoint --- */
         @media (max-width: 640px) {
-            /* Masthead: compact but still editorial */
-            .masthead {
-                padding: 18px 16px 14px;
-                border-bottom-width: 2px;
-            }
+            .masthead { padding: 18px 16px 14px; border-bottom-width: 2px; }
             .masthead::before { width: 28px; height: 2px; }
             .masthead-title { font-size: 22px; letter-spacing: -0.3px; }
             .masthead-sub { font-size: 9px; letter-spacing: 2.5px; margin-top: 3px; }
 
-            /* Nav bar: tighter, touch-friendly */
             .nav-bar { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
             .nav-inner { padding: 0 12px; height: 48px; }
-            .nav-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                -webkit-tap-highlight-color: transparent;
-            }
-            .nav-date {
-                font-size: 12px;
-                padding: 0 6px;
-                min-width: auto;
-            }
+            .nav-btn { width: 40px; height: 40px; font-size: 18px; -webkit-tap-highlight-color: transparent; }
+            .nav-date { font-size: 12px; padding: 0 6px; min-width: auto; }
             .nav-date .weekday { margin-left: 4px; }
-
-            /* Hide desktop filter pills in nav, show in mobile filter bar */
             .nav-right .pill[data-level] { display: none; }
-
-            /* Keep lang toggle and archive button */
             .nav-right { gap: 4px; }
             .lang-toggle { padding: 4px 8px; font-size: 11px; }
             .pill-icon { width: 36px; height: 36px; font-size: 14px; }
 
-            /* Stats ribbon: horizontal scroll, single line */
             .stats-ribbon {
                 padding: 10px 16px;
                 gap: 12px;
@@ -932,30 +1102,17 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-                -ms-overflow-style: none;
             }
             .stats-ribbon::-webkit-scrollbar { display: none; }
             .stat { white-space: nowrap; flex-shrink: 0; }
             .stat-num { font-size: 12px; }
 
-            /* Main content area */
             .main { padding: 20px 16px 100px; }
-
-            /* Mobile floating filter bar at bottom */
-            .mobile-filter-bar {
-                display: flex !important;
-            }
-
-            /* Mode tabs */
+            .mobile-filter-bar { display: flex !important; }
             .mode-tabs { padding: 0 16px; }
             .mode-tab { padding: 10px 14px; font-size: 11px; }
 
-            /* News content typography — optimized for mobile reading */
-            .news-content h1 {
-                font-size: 20px;
-                line-height: 1.35;
-                margin-bottom: 4px;
-            }
+            .news-content h1 { font-size: 20px; line-height: 1.35; margin-bottom: 4px; }
 
             .news-content > blockquote:first-of-type,
             .news-content > blockquote:nth-of-type(2) {
@@ -987,77 +1144,76 @@
                 margin: 3px 0 16px;
             }
 
+            .news-meta { padding-left: 14px !important; font-size: 10.5px !important; }
+
             .news-content ul, .news-content ol {
                 padding-left: 28px;
                 margin: 6px 0 16px;
             }
 
-            .news-content li {
-                font-size: 13px;
-                line-height: 1.8;
-            }
-
-            .news-content blockquote {
-                padding: 8px 12px;
-                margin: 10px 0 16px;
-                font-size: 12px;
-            }
-
+            .news-content li { font-size: 13px; line-height: 1.8; }
+            .news-content blockquote { padding: 8px 12px; margin: 10px 0 16px; font-size: 12px; }
             .news-content hr { margin: 24px 0; }
 
-            /* Table: horizontal scroll wrapper */
+            /* P1: Table → 移动端卡片化 */
             .news-content table {
                 display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                white-space: nowrap;
-                font-size: 12px;
-                margin: 12px -16px 20px;
-                padding: 0 16px;
-                width: calc(100% + 32px);
+                border: none;
             }
-
-            .news-content table th {
-                padding: 8px 10px;
-                font-size: 11px;
-            }
-
-            .news-content table td {
-                padding: 7px 10px;
-                font-size: 12px;
-            }
-
-            /* History panel: full screen on mobile */
-            .panel {
-                width: 100%;
-                border-left: none;
-                padding: 20px 16px;
-                border-radius: 0;
-            }
-
-            .panel h3 { font-size: 16px; margin-bottom: 16px; }
-
-            .panel-item {
+            .news-content table thead { display: none; }
+            .news-content table tbody { display: flex; flex-direction: column; gap: 8px; }
+            .news-content table tr {
+                display: flex;
+                flex-direction: column;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
                 padding: 12px;
+            }
+            .news-content table tr:hover td { background: transparent; }
+            .news-content table td {
+                display: block;
+                padding: 2px 0;
+                border: none;
+                font-size: 13px;
+            }
+            .news-content table td:first-child {
+                font-weight: 600;
+                color: var(--text);
                 font-size: 14px;
-                min-height: 44px;
             }
 
-            /* Footer */
-            .footer {
-                padding: 16px 16px 32px;
-                font-size: 10px;
-            }
+            /* Anchor link always visible on mobile */
+            .anchor-link { opacity: 0.5; }
 
-            /* Loading / Empty states */
+            .panel { width: 100%; border-left: none; padding: 20px 16px; }
+            .panel h3 { font-size: 16px; margin-bottom: 16px; }
+            .panel-item { padding: 12px; font-size: 14px; min-height: 44px; }
+            .footer { padding: 16px 16px 32px; font-size: 10px; }
             .loading { padding: 60px 0; }
             .empty-state { padding: 60px 0; }
             .empty-state .empty-icon { font-size: 28px; }
             .empty-state h3 { font-size: 17px; }
             .empty-state p { font-size: 12px; }
+
+            .weekly-content { max-width: 100%; }
+            .weekly-content h1 { font-size: 28px; margin: 20px 0 8px; }
+            .weekly-content h1 + p { margin-bottom: 28px; font-size: 12px; }
+            .weekly-content p { font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+            .weekly-content li { font-size: 14px; line-height: 1.9; }
+            .weekly-content hr { margin: 36px 0; }
+            .weekly-content blockquote { padding: 12px 16px; font-size: 14px; }
+            .weekly-content table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            .nav-brand { display: none; }
         }
 
-        /* --- Small phone (iPhone SE etc.) --- */
         @media (max-width: 375px) {
             .masthead-title { font-size: 19px; }
             .nav-date { font-size: 11px; }
@@ -1065,6 +1221,8 @@
             .news-content h2 { font-size: 12px; }
             .news-content h3 { font-size: 13px; }
             .news-content p { font-size: 12.5px; }
+            .weekly-content h1 { font-size: 24px; }
+            .weekly-content p { font-size: 14px; line-height: 1.9; }
         }
 
         /* ============ MOBILE FILTER BAR ============ */
@@ -1102,9 +1260,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .mobile-filter-bar .m-pill:active {
-            transform: scale(0.95);
-        }
+        .mobile-filter-bar .m-pill:active { transform: scale(0.95); }
 
         .mobile-filter-bar .m-pill.active {
             background: var(--text);
@@ -1115,7 +1271,7 @@
 </head>
 <body>
 
-<header class="masthead">
+<header class="masthead" id="masthead">
     <h1 class="masthead-title">AI Daily Briefing</h1>
     <p class="masthead-sub">Intelligence · Design · Trends</p>
 </header>
@@ -1123,6 +1279,7 @@
 <nav class="nav-bar" id="navBar">
     <div class="nav-inner">
         <div class="nav-left">
+            <span class="nav-brand" id="navBrand">AI Briefing</span>
             <button class="nav-btn" onclick="changeDate(-1)" aria-label="Previous day">&#8249;</button>
             <div class="nav-date" id="currentDate"></div>
             <button class="nav-btn" onclick="changeDate(1)" aria-label="Next day">&#8250;</button>
@@ -1190,16 +1347,33 @@
 </main>
 
 <footer class="footer">
-    Curated by Nate · Powered by WorkBuddy
+    Curated by <span class="dev-trigger" id="devTrigger">Nate</span> · Powered by WorkBuddy
 </footer>
 
-<!-- Mobile floating filter bar -->
+<!-- Dev password modal -->
+<div class="dev-modal-overlay" id="devModal">
+    <div class="dev-modal">
+        <h4>🔐 Dev Access</h4>
+        <div class="pin-input">
+            <input type="number" class="pin-digit" maxlength="1" min="0" max="9" data-idx="0" autofocus>
+            <input type="number" class="pin-digit" maxlength="1" min="0" max="9" data-idx="1">
+            <input type="number" class="pin-digit" maxlength="1" min="0" max="9" data-idx="2">
+            <input type="number" class="pin-digit" maxlength="1" min="0" max="9" data-idx="3">
+        </div>
+        <div class="dev-hint" id="devHint">Enter PIN to continue</div>
+    </div>
+</div>
+
+<!-- Mobile filter bar -->
 <div class="mobile-filter-bar" id="mobileFilterBar">
     <button class="m-pill active" data-level="all" onclick="setFilter('all')" data-i18n="filter_all">All</button>
     <button class="m-pill" data-level="high" onclick="setFilter('high')">🔴</button>
     <button class="m-pill" data-level="medium" onclick="setFilter('medium')">🟡</button>
     <button class="m-pill" data-level="low" onclick="setFilter('low')">🟢</button>
 </div>
+
+<!-- Toast -->
+<div class="toast" id="toast">🔗 Link copied!</div>
 
 <!-- History Panel -->
 <div class="overlay" id="overlay" onclick="togglePanel()"></div>
@@ -1212,46 +1386,24 @@
     // ========== I18N ==========
     const i18n = {
         zh: {
-            filter_all: '全部',
-            filter_critical: '重大',
-            filter_notable: '关注',
-            filter_fyi: '了解',
-            stat_total: '共',
-            stat_critical: '重大',
-            stat_notable: '关注',
-            stat_fyi: '了解',
-            archive_title: '历史存档',
-            loading: '加载中',
-            no_briefing: '暂无简报',
-            no_briefing_desc: '该日期的自动收集尚未执行。',
-            no_weekly: '暂无周报',
-            no_weekly_desc: '该周的周报尚未发布。',
-            no_archive: '暂无存档。',
-            scanning: '扫描中…',
-            lang_label: 'EN',
-            mode_daily: '日报',
-            mode_weekly: '周报',
+            filter_all: '全部', filter_critical: '重大', filter_notable: '关注', filter_fyi: '了解',
+            stat_total: '共', stat_critical: '重大', stat_notable: '关注', stat_fyi: '了解',
+            archive_title: '历史存档', loading: '加载中',
+            no_briefing: '暂无简报', no_briefing_desc: '该日期的自动收集尚未执行。',
+            no_weekly: '暂无周报', no_weekly_desc: '该周的周报尚未发布。',
+            no_archive: '暂无存档。', scanning: '扫描中…',
+            lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报',
+            toast_copied: '🔗 链接已复制',
         },
         en: {
-            filter_all: 'All',
-            filter_critical: 'Critical',
-            filter_notable: 'Notable',
-            filter_fyi: 'FYI',
-            stat_total: 'Total',
-            stat_critical: 'Critical',
-            stat_notable: 'Notable',
-            stat_fyi: 'FYI',
-            archive_title: 'Archive',
-            loading: 'LOADING',
-            no_briefing: 'No briefing for this date',
-            no_briefing_desc: 'The automation hasn\'t run for this date yet.',
-            no_weekly: 'No weekly briefing',
-            no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
-            no_archive: 'No archives found.',
-            scanning: 'Scanning\u2026',
-            lang_label: '中文',
-            mode_daily: 'Daily',
-            mode_weekly: 'Weekly',
+            filter_all: 'All', filter_critical: 'Critical', filter_notable: 'Notable', filter_fyi: 'FYI',
+            stat_total: 'Total', stat_critical: 'Critical', stat_notable: 'Notable', stat_fyi: 'FYI',
+            archive_title: 'Archive', loading: 'LOADING',
+            no_briefing: 'No briefing for this date', no_briefing_desc: 'The automation hasn\'t run for this date yet.',
+            no_weekly: 'No weekly briefing', no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
+            no_archive: 'No archives found.', scanning: 'Scanning\u2026',
+            lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly',
+            toast_copied: '🔗 Link copied',
         }
     };
 
@@ -1277,7 +1429,6 @@
         document.querySelectorAll('.m-pill[data-i18n]').forEach(el => {
             el.textContent = t(el.getAttribute('data-i18n'));
         });
-        // Mode tabs
         document.querySelector('.mode-tab[data-mode="daily"]').textContent = t('mode_daily');
         document.querySelector('.mode-tab[data-mode="weekly"]').textContent = t('mode_weekly');
     }
@@ -1297,7 +1448,7 @@
     let currentDate = new Date();
     let currentFilter = 'all';
     let currentMarkdown = '';
-    let currentMode = 'daily'; // 'daily' or 'weekly'
+    let currentMode = 'daily';
 
     // ========== FORMAT ==========
     function fmtDate(d) {
@@ -1315,7 +1466,7 @@
         return '<span>' + monthsEn[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '</span><span class="weekday">' + wd[d.getDay()] + '</span>';
     }
 
-    // ========== ISO WEEK NUMBER ==========
+    // ========== ISO WEEK ==========
     function getISOWeek(d) {
         var date = new Date(d.getTime());
         date.setHours(0, 0, 0, 0);
@@ -1333,9 +1484,7 @@
     function displayWeek(d) {
         var wn = getISOWeek(d);
         var yr = getISOWeekYear(d);
-        if (currentLang === 'zh') {
-            return '<span>' + yr + ' 第 ' + wn + ' 周</span>';
-        }
+        if (currentLang === 'zh') return '<span>' + yr + ' 第 ' + wn + ' 周</span>';
         return '<span>' + yr + ' W' + String(wn).padStart(2, '0') + '</span>';
     }
 
@@ -1351,7 +1500,6 @@
         document.querySelectorAll('.mode-tab').forEach(function(tab) {
             tab.classList.toggle('active', tab.dataset.mode === mode);
         });
-
         if (mode === 'daily') {
             document.getElementById('statsRibbon').style.display = '';
             document.querySelectorAll('.pill[data-level]').forEach(function(p) { p.style.display = ''; });
@@ -1362,10 +1510,7 @@
             document.getElementById('statsRibbon').style.display = 'none';
             document.querySelectorAll('.pill[data-level]').forEach(function(p) { p.style.display = 'none'; });
             document.getElementById('mobileFilterBar').style.display = 'none';
-            // Find and show latest weekly
-            findLatestWeekly().then(function() {
-                loadWeekly();
-            });
+            findLatestWeekly().then(function() { loadWeekly(); });
         }
     }
 
@@ -1382,6 +1527,18 @@
         }
     }
 
+    // ========== P1: MASTHEAD COLLAPSE (IntersectionObserver) ==========
+    const mastheadEl = document.getElementById('masthead');
+    const navBrandEl = document.getElementById('navBrand');
+
+    const mastheadObserver = new IntersectionObserver(function(entries) {
+        const isVisible = entries[0].isIntersecting;
+        mastheadEl.classList.toggle('collapsed', !isVisible);
+        navBrandEl.classList.toggle('show', !isVisible);
+    }, { threshold: 0.1 });
+
+    mastheadObserver.observe(mastheadEl);
+
     // ========== SCROLL SHADOW ==========
     window.addEventListener('scroll', function() {
         document.getElementById('navBar').classList.toggle('scrolled', window.scrollY > 60);
@@ -1389,9 +1546,7 @@
 
     // ========== NEWS FILE PATH ==========
     function newsPath(dateStr) {
-        if (currentLang === 'en') {
-            return 'news/' + dateStr + '.en.md';
-        }
+        if (currentLang === 'en') return 'news/' + dateStr + '.en.md';
         return 'news/' + dateStr + '.md';
     }
 
@@ -1417,7 +1572,10 @@
             currentMarkdown = await res.text();
             el.innerHTML = '<div class="news-content">' + marked.parse(currentMarkdown) + '</div>';
             structureNewsBlocks();
+            styleSourceLines();
+            addAnchorLinks();
             updateStats(currentMarkdown);
+            handleHashNavigation();
         } catch (e) {
             currentMarkdown = '';
             el.innerHTML = '<div class="empty-state"><div class="empty-icon">&empty;</div><h3>' + t('no_briefing') + '</h3><p>' + t('no_briefing_desc') + '</p></div>';
@@ -1426,13 +1584,12 @@
     }
 
     // ========== LOAD WEEKLY ==========
-    let weeklyDate = new Date(); // independent date tracker for weekly mode
+    let weeklyDate = new Date();
 
     async function loadWeekly() {
         var el = document.getElementById('content');
         el.innerHTML = '<div class="loading"><div class="loader"></div><p>' + t('loading') + '</p></div>';
         document.getElementById('currentDate').innerHTML = displayWeek(weeklyDate);
-
         var path = weeklyPath(weeklyDate);
         try {
             var res = await fetch(path);
@@ -1444,21 +1601,16 @@
         }
     }
 
-    // Find the latest available weekly by scanning recent weeks
     async function findLatestWeekly() {
         var d = new Date();
         for (var i = 0; i < 12; i++) {
             var path = weeklyPath(d);
             try {
                 var res = await fetch(path, { method: 'HEAD' });
-                if (res.ok) {
-                    weeklyDate = new Date(d);
-                    return;
-                }
+                if (res.ok) { weeklyDate = new Date(d); return; }
             } catch(e){}
             d.setDate(d.getDate() - 7);
         }
-        // No weekly found, keep current date
         weeklyDate = new Date();
     }
 
@@ -1466,13 +1618,11 @@
     function structureNewsBlocks() {
         var container = document.querySelector('.news-content');
         if (!container) return;
-
         var children = Array.from(container.children);
         var i = 0;
 
         while (i < children.length) {
             var el = children[i];
-
             if (el.tagName === 'H3') {
                 var text = el.textContent;
                 var level = 'unknown';
@@ -1503,6 +1653,112 @@
             }
         }
     }
+
+    // ========== P1: STYLE SOURCE LINES ==========
+    function styleSourceLines() {
+        // Find paragraphs that start with **来源** or **Source** and add .news-meta class
+        var paras = document.querySelectorAll('.news-block p');
+        paras.forEach(function(p) {
+            var text = p.textContent.trim();
+            if (text.startsWith('来源') || text.startsWith('Source') ||
+                (p.querySelector('strong') && (
+                    p.querySelector('strong').textContent.startsWith('来源') ||
+                    p.querySelector('strong').textContent.startsWith('Source')
+                ))) {
+                p.classList.add('news-meta');
+            }
+        });
+    }
+
+    // ========== DISABLE SCROLL RESTORATION ==========
+    // 防止刷新后浏览器恢复到上次滚动位置
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // ========== P0: ANCHOR LINKS ==========
+    var newsCounter = 0;
+
+    function addAnchorLinks() {
+        newsCounter = 0;
+        var blocks = document.querySelectorAll('.news-block');
+        blocks.forEach(function(block) {
+            newsCounter++;
+            var anchorId = 'news-' + newsCounter;
+            block.id = anchorId;
+
+            var h3 = block.querySelector('h3');
+            if (h3) {
+                var btn = document.createElement('a');
+                btn.className = 'anchor-link';
+                btn.href = '#' + anchorId;
+                btn.innerHTML = '🔗';
+                btn.title = currentLang === 'zh' ? '复制链接' : 'Copy link';
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    var url = window.location.origin + window.location.pathname + '#' + anchorId;
+                    // 方案B：标题 + URL，粘贴到 IM 时对方一眼知道是啥
+                    var titleText = h3.textContent.replace(/\s*🔗\s*$/, '').trim();
+                    var copyText = titleText + '\n' + url;
+                    navigator.clipboard.writeText(copyText).then(function() {
+                        var shortTitle = titleText.length > 20 ? titleText.slice(0, 20) + '…' : titleText;
+                        showToast('🔗 ' + (currentLang === 'zh' ? '已复制「' + shortTitle + '」' : 'Copied "' + shortTitle + '"'));
+                    }).catch(function() {
+                        // fallback: just show toast without clipboard
+                        showToast('🔗 ' + (currentLang === 'zh' ? '请手动复制链接' : 'Please copy link manually'));
+                    });
+                    // 不修改 URL hash，避免刷新时自动滚动到中间
+                };
+                h3.appendChild(btn);
+            }
+        });
+    }
+
+    // ========== P0: TOAST ==========
+    var toastTimer = null;
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function() {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    // ========== P0: HASH NAVIGATION (anchor highlight) ==========
+    // 首次从链接进来 → 跳到对应新闻；刷新 → 回顶部
+    var hashHandledKey = 'anchor_handled_' + window.location.hash;
+
+    function handleHashNavigation() {
+        var hash = window.location.hash;
+        if (!hash || !hash.startsWith('#news-')) return;
+
+        // 如果这个 hash 已经处理过（说明是刷新），清掉 hash 回顶部
+        if (sessionStorage.getItem(hashHandledKey)) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+            window.scrollTo(0, 0);
+            return;
+        }
+
+        // 首次导航，标记并跳转
+        sessionStorage.setItem(hashHandledKey, '1');
+        setTimeout(function() {
+            var target = document.querySelector(hash);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                target.classList.add('anchor-highlight');
+                setTimeout(function() {
+                    target.classList.remove('anchor-highlight');
+                }, 2500);
+            }
+        }, 300);
+    }
+
+    // Listen for hash changes (e.g. from shared links)
+    window.addEventListener('hashchange', function() {
+        handleHashNavigation();
+    });
 
     // ========== STATS ==========
     function updateStats(md) {
@@ -1572,35 +1828,27 @@
 
         var hrs = document.querySelectorAll('.news-content hr');
         hrs.forEach(function(hr) {
-            if (currentFilter === 'all') {
-                hr.style.display = '';
-                return;
-            }
+            if (currentFilter === 'all') { hr.style.display = ''; return; }
             var prev = hr.previousElementSibling;
             var prevVisible = false;
             var nextVisible = false;
-
             while (prev) {
                 if (prev.tagName === 'HR') break;
                 if ((prev.classList.contains('news-block') && !prev.classList.contains('hidden')) ||
                     (prev.tagName === 'H2' && !prev.classList.contains('section-hidden'))) {
-                    prevVisible = true;
-                    break;
+                    prevVisible = true; break;
                 }
                 prev = prev.previousElementSibling;
             }
-
             var next = hr.nextElementSibling;
             while (next) {
                 if (next.tagName === 'HR') break;
                 if ((next.classList.contains('news-block') && !next.classList.contains('hidden')) ||
                     (next.tagName === 'H2' && !next.classList.contains('section-hidden'))) {
-                    nextVisible = true;
-                    break;
+                    nextVisible = true; break;
                 }
                 next = next.nextElementSibling;
             }
-
             hr.style.display = (prevVisible && nextVisible) ? '' : 'none';
         });
     }
@@ -1645,9 +1893,7 @@
 
     function jumpTo(ds) {
         currentDate = new Date(ds + 'T00:00:00');
-        if (currentMode === 'weekly') {
-            setMode('daily');
-        }
+        if (currentMode === 'weekly') setMode('daily');
         document.getElementById('currentDate').innerHTML = displayDate(currentDate);
         loadNews(ds);
         togglePanel();
@@ -1657,6 +1903,93 @@
     applyI18n();
     document.getElementById('currentDate').innerHTML = displayDate(currentDate);
     loadNews(fmtDate(currentDate));
+
+    // ========== DEV MODE EASTER EGG ==========
+    (function() {
+        var PIN = '9527';
+        var modal = document.getElementById('devModal');
+        var trigger = document.getElementById('devTrigger');
+        var hint = document.getElementById('devHint');
+        var digits = modal.querySelectorAll('.pin-digit');
+
+        trigger.addEventListener('click', function() {
+            modal.classList.add('show');
+            digits.forEach(function(d) { d.value = ''; d.classList.remove('error'); });
+            hint.textContent = 'Enter PIN to continue';
+            hint.style.color = '';
+            setTimeout(function() { digits[0].focus(); }, 100);
+        });
+
+        // 点击遮罩关闭
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) modal.classList.remove('show');
+        });
+
+        // ESC 关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                modal.classList.remove('show');
+            }
+        });
+
+        // 输入逻辑：输入一个数字自动跳下一格
+        digits.forEach(function(input, idx) {
+            input.addEventListener('input', function() {
+                var val = this.value;
+                // 只保留最后一个字符
+                if (val.length > 1) this.value = val.slice(-1);
+                this.classList.remove('error');
+
+                if (this.value && idx < 3) {
+                    digits[idx + 1].focus();
+                }
+
+                // 检查是否 4 位都填了
+                var code = '';
+                digits.forEach(function(d) { code += d.value; });
+                if (code.length === 4) {
+                    if (code === PIN) {
+                        hint.textContent = '✅ Access granted';
+                        hint.style.color = 'var(--green)';
+                        setTimeout(function() {
+                            modal.classList.remove('show');
+                            window.location.href = 'thinking/index.html';
+                        }, 600);
+                    } else {
+                        hint.textContent = '❌ Wrong PIN';
+                        hint.style.color = 'var(--accent)';
+                        digits.forEach(function(d) { d.classList.add('error'); });
+                        setTimeout(function() {
+                            digits.forEach(function(d) { d.value = ''; d.classList.remove('error'); });
+                            hint.textContent = 'Enter PIN to continue';
+                            hint.style.color = '';
+                            digits[0].focus();
+                        }, 800);
+                    }
+                }
+            });
+
+            // Backspace 跳回上一格
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value && idx > 0) {
+                    digits[idx - 1].focus();
+                    digits[idx - 1].value = '';
+                }
+            });
+
+            // 粘贴支持（直接粘 4 位数）
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var pasted = (e.clipboardData || window.clipboardData).getData('text').trim();
+                if (/^\d{4}$/.test(pasted)) {
+                    digits.forEach(function(d, i) { d.value = pasted[i]; });
+                    digits[3].focus();
+                    // 触发检查
+                    digits[3].dispatchEvent(new Event('input'));
+                }
+            });
+        });
+    })();
 </script>
 
 </body>

@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Lab · AI News Collector 产品思考</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0D0D0C;
+            --bg-elevated: #141413;
+            --surface: #1A1A18;
+            --surface-alt: #212120;
+            --surface-hover: #2A2A28;
+            --border: #2A2A26;
+            --border-strong: #3A3A35;
+            --border-accent: #4A3A2A;
+            --text: #E8E6E0;
+            --text-secondary: #A09D93;
+            --text-tertiary: #6B6960;
+            --text-dim: #4A4840;
+            --accent: #E05A3E;
+            --accent-soft: rgba(224, 90, 62, 0.1);
+            --accent-glow: rgba(224, 90, 62, 0.06);
+            --amber: #D4A017;
+            --amber-soft: rgba(212, 160, 23, 0.1);
+            --green: #6BAF7B;
+            --green-soft: rgba(107, 175, 123, 0.08);
+            --blue: #6B9BC3;
+            --blue-soft: rgba(107, 155, 195, 0.08);
+            --purple: #9B8EC4;
+            --purple-soft: rgba(155, 142, 196, 0.08);
+            --ink: #D4D1C9;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+            --radius: 6px;
+            --radius-lg: 10px;
+            --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+            --sans: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --serif: 'Playfair Display', 'Noto Sans SC', serif;
+        }
+
+        /* Light mode override */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #F7F6F3;
+                --bg-elevated: #FFFFFF;
+                --surface: #FFFFFF;
+                --surface-alt: #F0EFEB;
+                --surface-hover: #E8E6E1;
+                --border: #E0DDD6;
+                --border-strong: #D0CCC3;
+                --border-accent: #D4C4A8;
+                --text: #1A1A18;
+                --text-secondary: #5A5850;
+                --text-tertiary: #9E9B91;
+                --text-dim: #C0BDB5;
+                --accent: #C8402A;
+                --accent-soft: rgba(200, 64, 42, 0.06);
+                --accent-glow: rgba(200, 64, 42, 0.04);
+                --amber: #B8860B;
+                --amber-soft: rgba(184, 134, 11, 0.06);
+                --green: #4A7C59;
+                --green-soft: rgba(74, 124, 89, 0.06);
+                --blue: #3D5A80;
+                --blue-soft: rgba(61, 90, 128, 0.06);
+                --purple: #6A5B8A;
+                --purple-soft: rgba(106, 91, 138, 0.06);
+                --ink: #2C2C2A;
+                --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+                --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+                --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+            }
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============ NOISE TEXTURE ============ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            padding: 40px 0 32px;
+            text-align: center;
+            z-index: 1;
+            background: linear-gradient(180deg, var(--accent-glow) 0%, transparent 100%);
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border: 1px solid rgba(224, 90, 62, 0.15);
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+        }
+
+        .header-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .header-title {
+            font-family: var(--serif);
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.8px;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .header-sub {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .header-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-meta .num {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* ============ LAYOUT ============ */
+        .layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ SIDEBAR ============ */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-strong) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+        }
+
+        .sidebar-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            padding-left: 12px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+            border: 1px solid transparent;
+            margin-bottom: 2px;
+            text-decoration: none;
+        }
+
+        .sidebar-item:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+        }
+
+        .sidebar-item.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: rgba(224, 90, 62, 0.12);
+        }
+
+        .sidebar-item .day-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item .day-label {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .sidebar-item .day-focus {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-left: auto;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sidebar-item.active .day-focus {
+            color: var(--accent);
+            opacity: 0.7;
+        }
+
+        /* Priority colors */
+        .priority-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 11px;
+        }
+
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .priority-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .priority-dot.p0 { background: var(--accent); }
+        .priority-dot.p1 { background: var(--amber); }
+        .priority-dot.p2 { background: var(--green); }
+        .priority-dot.p3 { background: var(--blue); }
+
+        /* Stats in sidebar */
+        .sidebar-stats {
+            padding: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .sidebar-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-stat:last-child { border-bottom: none; }
+
+        .sidebar-stat .stat-val {
+            font-family: var(--mono);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 0 0 100px;
+        }
+
+        /* ============ ENTRY ============ */
+        .entry {
+            border-bottom: 1px solid var(--border);
+            padding: 36px 40px;
+            position: relative;
+            scroll-margin-top: 20px;
+        }
+
+        .entry:target {
+            animation: entry-highlight 2s ease-out;
+        }
+
+        @keyframes entry-highlight {
+            0% { background: var(--accent-soft); }
+            100% { background: transparent; }
+        }
+
+        .entry-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .entry-day-num {
+            font-family: var(--serif);
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--border-strong);
+            line-height: 1;
+            letter-spacing: -2px;
+            flex-shrink: 0;
+            width: 64px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .entry-meta-block {
+            flex: 1;
+        }
+
+        .entry-date {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .entry-date .weekday {
+            font-weight: 400;
+            color: var(--text-tertiary);
+        }
+
+        .entry-focus-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .focus-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            border: 1px solid;
+        }
+
+        .focus-tag.ui { color: var(--accent); border-color: rgba(224,90,62,0.2); background: var(--accent-soft); }
+        .focus-tag.strategy { color: var(--amber); border-color: rgba(212,160,23,0.2); background: var(--amber-soft); }
+        .focus-tag.compete { color: var(--green); border-color: rgba(107,175,123,0.2); background: var(--green-soft); }
+        .focus-tag.tech { color: var(--blue); border-color: rgba(107,155,195,0.2); background: var(--blue-soft); }
+        .focus-tag.review { color: var(--purple); border-color: rgba(155,142,196,0.2); background: var(--purple-soft); }
+
+        /* ============ MARKDOWN CONTENT ============ */
+        .entry-content {
+            max-width: 700px;
+        }
+
+        .entry-content h1 {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.3;
+            margin: 8px 0;
+            display: none; /* Hide the main title, we show it in header */
+        }
+
+        .entry-content > blockquote:first-of-type {
+            border-left: 2px solid var(--accent);
+            padding: 10px 16px;
+            margin: 0 0 28px;
+            background: var(--accent-soft);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .entry-content h2 {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text);
+            margin: 36px 0 16px;
+            padding: 8px 0;
+            border-top: 1px solid var(--border-strong);
+            position: relative;
+        }
+
+        .entry-content h2::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .entry-content h3 {
+            font-family: var(--sans);
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 24px 0 8px;
+            color: var(--ink);
+            padding-left: 14px;
+            border-left: 2px solid var(--border-strong);
+            transition: border-color 0.2s;
+        }
+
+        .entry-content h3:hover {
+            border-left-color: var(--accent);
+        }
+
+        .entry-content h4 {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 20px 0 6px;
+        }
+
+        .entry-content p {
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin: 4px 0 16px;
+        }
+
+        .entry-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .entry-content hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .entry-content hr::after {
+            content: '\25C6';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            padding: 0 12px;
+            color: var(--border-strong);
+            font-size: 8px;
+        }
+
+        @media (prefers-color-scheme: light) {
+            .entry-content hr::after { background: var(--bg); }
+        }
+
+        .entry-content ul, .entry-content ol {
+            padding-left: 24px;
+            margin: 8px 0 16px;
+        }
+
+        .entry-content li {
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .entry-content li strong { color: var(--text); }
+        .entry-content li::marker { color: var(--text-dim); }
+
+        .entry-content blockquote {
+            border-left: 2px solid var(--amber);
+            padding: 10px 16px;
+            margin: 12px 0 16px;
+            background: var(--amber-soft);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .entry-content code {
+            font-family: var(--mono);
+            background: var(--surface-alt);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        .entry-content pre {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0 16px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .entry-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .entry-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 12px;
+        }
+
+        .entry-content table th {
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text);
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-strong);
+            font-size: 11px;
+            font-family: var(--mono);
+            letter-spacing: 0.3px;
+        }
+
+        .entry-content table td {
+            padding: 7px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .entry-content table tr:hover td {
+            background: var(--surface-hover);
+        }
+
+        /* ============ ENTRY FOOTER ============ */
+        .entry-footer {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .entry-footer .author {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .entry-footer .author::before {
+            content: '🛠️';
+            font-size: 12px;
+        }
+
+        /* ============ PROGRESS TRACKER ============ */
+        .progress-section {
+            padding: 36px 40px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .progress-title {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-title::before {
+            content: '📋';
+        }
+
+        .exec-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .exec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all 0.15s;
+        }
+
+        .exec-item:hover {
+            border-color: var(--border-strong);
+            background: var(--surface-hover);
+        }
+
+        .exec-priority {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .exec-priority.p0 { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(224,90,62,0.2); }
+        .exec-priority.p1 { background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(212,160,23,0.2); }
+        .exec-priority.p2 { background: var(--green-soft); color: var(--green); border: 1px solid rgba(107,175,123,0.2); }
+
+        .exec-details {
+            flex: 1;
+        }
+
+        .exec-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .exec-desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .exec-time {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ============ BACKLOG / ICE BOX ============ */
+        .icebox-section {
+            padding: 36px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .icebox-title {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icebox-title::before {
+            content: '🧊';
+        }
+
+        .icebox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+        }
+
+        .icebox-card {
+            padding: 14px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 13px;
+        }
+
+        .icebox-card .card-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .icebox-card .card-origin {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        /* ============ FOOTER ============ */
+        .page-footer {
+            padding: 32px 40px;
+            text-align: center;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        .page-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .page-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============ SCROLLBAR ============ */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+        /* ============ MOBILE RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .layout {
+                flex-direction: column;
+            }
+
+            /* Mobile nav */
+            .mobile-nav {
+                display: block !important;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                padding: 12px 16px;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+
+            .mobile-nav::-webkit-scrollbar { display: none; }
+
+            .mobile-nav-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                border-radius: 100px;
+                font-family: var(--mono);
+                font-size: 12px;
+                color: var(--text-tertiary);
+                text-decoration: none;
+                border: 1px solid var(--border);
+                margin-right: 8px;
+                transition: all 0.15s;
+            }
+
+            .mobile-nav-item.active {
+                background: var(--accent-soft);
+                color: var(--accent);
+                border-color: rgba(224,90,62,0.2);
+            }
+
+            .entry { padding: 24px 16px; }
+            .entry-day-num { font-size: 36px; width: 48px; }
+            .entry-content { max-width: 100%; }
+            .progress-section { padding: 24px 16px; }
+            .icebox-section { padding: 24px 16px; }
+            .icebox-grid { grid-template-columns: 1fr; }
+            .page-footer { padding: 24px 16px; }
+
+            .header { padding: 28px 16px 24px; }
+            .header-title { font-size: 26px; }
+            .header-meta { flex-wrap: wrap; gap: 12px; }
+        }
+
+        @media (min-width: 901px) {
+            .mobile-nav { display: none !important; }
+        }
+
+        /* ============ ANIMATIONS ============ */
+        .entry {
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-badge">Dev Lab</div>
+    <h1 class="header-title">Product Thinking</h1>
+    <p class="header-sub">AI News Collector · 产品思考日志</p>
+    <div class="header-meta">
+        <span>📅 <span class="num">6</span> entries</span>
+        <span>📝 <span class="num">40+</span> insights</span>
+        <span>🗓️ Apr 8 – 13, 2026</span>
+        <span>✍️ 外特</span>
+    </div>
+</header>
+
+<!-- Mobile navigation -->
+<nav class="mobile-nav" id="mobileNav">
+    <a href="#progress" class="mobile-nav-item active">📋 清单</a>
+    <a href="#day-6" class="mobile-nav-item">D6 · 04-13</a>
+    <a href="#day-5" class="mobile-nav-item">D5 · 04-12</a>
+    <a href="#day-4" class="mobile-nav-item">D4 · 04-11</a>
+    <a href="#day-3" class="mobile-nav-item">D3 · 04-10</a>
+    <a href="#day-2" class="mobile-nav-item">D2 · 04-09</a>
+    <a href="#day-1" class="mobile-nav-item">D1 · 04-08</a>
+    <a href="#icebox" class="mobile-nav-item">🧊 冰箱</a>
+</nav>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-label">日志导航</div>
+            <a href="#progress" class="sidebar-item active" data-nav="progress">
+                <span class="day-dot" style="background: var(--accent);"></span>
+                <span class="day-label">执行清单</span>
+                <span class="day-focus">v6</span>
+            </a>
+            <a href="#day-6" class="sidebar-item" data-nav="day-6">
+                <span class="day-dot" style="background: var(--accent);"></span>
+                <span class="day-label">04-13 Mon</span>
+                <span class="day-focus">压力测试</span>
+            </a>
+            <a href="#day-5" class="sidebar-item" data-nav="day-5">
+                <span class="day-dot" style="background: var(--purple);"></span>
+                <span class="day-label">04-12 Sun</span>
+                <span class="day-focus">收官审计</span>
+            </a>
+            <a href="#day-4" class="sidebar-item" data-nav="day-4">
+                <span class="day-dot" style="background: var(--blue);"></span>
+                <span class="day-label">04-11 Sat</span>
+                <span class="day-focus">方案细化</span>
+            </a>
+            <a href="#day-3" class="sidebar-item" data-nav="day-3">
+                <span class="day-dot" style="background: var(--green);"></span>
+                <span class="day-label">04-10 Fri</span>
+                <span class="day-focus">竞品拆解</span>
+            </a>
+            <a href="#day-2" class="sidebar-item" data-nav="day-2">
+                <span class="day-dot" style="background: var(--amber);"></span>
+                <span class="day-label">04-09 Thu</span>
+                <span class="day-focus">用户旅程</span>
+            </a>
+            <a href="#day-1" class="sidebar-item" data-nav="day-1">
+                <span class="day-dot" style="background: var(--text-tertiary);"></span>
+                <span class="day-label">04-08 Wed</span>
+                <span class="day-focus">首篇</span>
+            </a>
+            <a href="#icebox" class="sidebar-item" data-nav="icebox">
+                <span class="day-dot" style="background: var(--blue);"></span>
+                <span class="day-label">🧊 冰箱</span>
+                <span class="day-focus">8 ideas</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-label">优先级图例</div>
+            <div class="priority-legend">
+                <div class="priority-item"><span class="priority-dot p0"></span> P0 · 必须做</div>
+                <div class="priority-item"><span class="priority-dot p1"></span> P1 · 应该做</div>
+                <div class="priority-item"><span class="priority-dot p2"></span> P2 · 可以做</div>
+                <div class="priority-item"><span class="priority-dot p3"></span> P3 · 观察中</div>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-label">产品数据</div>
+            <div class="sidebar-stats">
+                <div class="sidebar-stat">
+                    <span>运行天数</span>
+                    <span class="stat-val">15</span>
+                </div>
+                <div class="sidebar-stat">
+                    <span>日报数</span>
+                    <span class="stat-val">15 + 11 EN</span>
+                </div>
+                <div class="sidebar-stat">
+                    <span>日均新闻</span>
+                    <span class="stat-val">~22</span>
+                </div>
+                <div class="sidebar-stat">
+                    <span>代码行数</span>
+                    <span class="stat-val">1,663</span>
+                </div>
+                <div class="sidebar-stat">
+                    <span>已执行</span>
+                    <span class="stat-val" style="color: var(--accent);">0 行 😅</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <!-- ============ EXECUTION TRACKER ============ -->
+        <section class="progress-section" id="progress">
+            <h2 class="progress-title">执行清单 v6 · Final</h2>
+            <p style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px; font-family: var(--mono);">
+                6 天思考 → 40+ 条建议 → 精简为 7 项 · 预估总工时 ~5.5h
+            </p>
+            <div class="exec-list">
+                <div class="exec-item">
+                    <span class="exec-priority p0">P0</span>
+                    <div class="exec-details">
+                        <div class="exec-name">采集 prompt 优化</div>
+                        <div class="exec-desc">弹性条数 + 超级新闻日模式 + 💎收紧至15-20% + X来源增加至5-8条</div>
+                    </div>
+                    <span class="exec-time">30min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p0">P0</span>
+                    <div class="exec-details">
+                        <div class="exec-name">企微推送格式升级</div>
+                        <div class="exec-desc">每条加 So What 一句话 + 今日一句话编辑推荐 + 锚点链接</div>
+                    </div>
+                    <span class="exec-time">30min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p0">P0</span>
+                    <div class="exec-details">
+                        <div class="exec-name">新闻锚点系统</div>
+                        <div class="exec-desc">#news-N 序号方案 + 🔗按钮 + toast + 高亮动画 + 企微联动</div>
+                    </div>
+                    <span class="exec-time">1.5h</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">OG Meta + 品牌 OG 图</div>
+                        <div class="exec-desc">Level 1 静态版：固定标题/描述/品牌图。Level 2 动态版视情况</div>
+                    </div>
+                    <span class="exec-time">30min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">排版四件套</div>
+                        <div class="exec-desc">H3间距格式塔优化 / 来源行降权(.news-meta) / 必看红色圆形编号 / 表格移动端卡片化</div>
+                    </div>
+                    <span class="exec-time">1h</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">Masthead 滚动折叠</div>
+                        <div class="exec-desc">IntersectionObserver 检测 → 折叠 masthead → 首屏回收 60px</div>
+                    </div>
+                    <span class="exec-time">20min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p2">P2</span>
+                    <div class="exec-details">
+                        <div class="exec-name">CSS/JS 分离</div>
+                        <div class="exec-desc">style.css + app.js + 本地备份 marked.min.js · 拐点在 2000 行前完成</div>
+                    </div>
+                    <span class="exec-time">1h</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ DAY 6 ============ -->
+        <article class="entry" id="day-6" style="animation-delay: 0.05s;">
+            <div class="entry-header">
+                <div class="entry-day-num">06</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-13 <span class="weekday">Monday · 终章</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag ui">压力测试</span>
+                        <span class="focus-tag strategy">消费心理</span>
+                        <span class="focus-tag review">价值校准</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-6"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>纯思考季收官</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 5 ============ -->
+        <article class="entry" id="day-5" style="animation-delay: 0.1s;">
+            <div class="entry-header">
+                <div class="entry-day-num">05</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-12 <span class="weekday">Sunday · 收官审计</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag review">度量审计</span>
+                        <span class="focus-tag tech">可访问性</span>
+                        <span class="focus-tag strategy">编辑策略</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-5"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>5 天思考季收官</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 4 ============ -->
+        <article class="entry" id="day-4" style="animation-delay: 0.15s;">
+            <div class="entry-header">
+                <div class="entry-day-num">04</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-11 <span class="weekday">Saturday · 方案细化</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag tech">锚点方案</span>
+                        <span class="focus-tag tech">OG Meta</span>
+                        <span class="focus-tag ui">排版显微镜</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-4"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>方案精确到代码级</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 3 ============ -->
+        <article class="entry" id="day-3" style="animation-delay: 0.2s;">
+            <div class="entry-header">
+                <div class="entry-day-num">03</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-10 <span class="weekday">Friday · 竞品拆解</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag compete">Morning Brew</span>
+                        <span class="focus-tag compete">Hacker News</span>
+                        <span class="focus-tag compete">The Verge</span>
+                        <span class="focus-tag compete">即刻</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-3"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>四大竞品各偷一招</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 2 ============ -->
+        <article class="entry" id="day-2" style="animation-delay: 0.25s;">
+            <div class="entry-header">
+                <div class="entry-day-num">02</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-09 <span class="weekday">Thursday · 用户旅程</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag strategy">用户路径</span>
+                        <span class="focus-tag strategy">社交传播</span>
+                        <span class="focus-tag tech">数据叙事</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-2"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>发现社交传播断裂</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 1 ============ -->
+        <article class="entry" id="day-1" style="animation-delay: 0.3s;">
+            <div class="entry-header">
+                <div class="entry-day-num">01</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-08 <span class="weekday">Wednesday · 首篇</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag ui">UI/UX</span>
+                        <span class="focus-tag tech">技术债</span>
+                        <span class="focus-tag strategy">信息架构</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-1"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 上午版 + 18:00 晚间深度版</span>
+                <span>产品思考的起点</span>
+            </div>
+        </article>
+
+        <!-- ============ ICE BOX ============ -->
+        <section class="icebox-section" id="icebox">
+            <h2 class="icebox-title">冰箱里的好想法 · V2 阶段</h2>
+            <p style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px;">
+                这些想法都已经记录在案，等产品跑到一定用户规模后再启动。
+            </p>
+            <div class="icebox-grid">
+                <div class="icebox-card">
+                    <div class="card-title">📖 新闻故事线 / 话题标签聚合</div>
+                    <div class="card-origin">Day 1 & 3 · 跨天事件聚合视图</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">🎯 My Briefing 个性化</div>
+                    <div class="card-origin">Day 2 · localStorage 偏好 + 前端筛选</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">☕ 周末慢读推送</div>
+                    <div class="card-origin">Day 4 · 周六编辑精选，5 条值得深思的新闻</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">📲 PWA + Web Push</div>
+                    <div class="card-origin">Day 2 · 浏览器原生推送通知</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">📊 固定指标仪表盘</div>
+                    <div class="card-origin">Day 2 · 替代纯文本数据快照</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">👥 社交信号 badge</div>
+                    <div class="card-origin">Day 3 · 匿名 view count + 热度排行</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">🤖 SSG Pre-rendering</div>
+                    <div class="card-origin">Day 3 · SEO + AI Agent 可读性</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">📡 RSS Feed</div>
+                    <div class="card-origin">Day 2 · 技术用户的订阅渠道</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            Dev Lab · AI News Collector · Not Linked from Main Site<br>
+            <a href="../index.html">← Back to Main Site</a> · Only for developers
+        </footer>
+    </main>
+</div>
+
+<script>
+    // ========== LOAD MARKDOWN FILES ==========
+    const entries = [
+        { id: 'content-day-1', file: '2026-04-08.md' },
+        { id: 'content-day-2', file: '2026-04-09.md' },
+        { id: 'content-day-3', file: '2026-04-10.md' },
+        { id: 'content-day-4', file: '2026-04-11.md' },
+        { id: 'content-day-5', file: '2026-04-12.md' },
+        { id: 'content-day-6', file: '2026-04-13.md' },
+    ];
+
+    async function loadEntries() {
+        for (const entry of entries) {
+            const el = document.getElementById(entry.id);
+            if (!el) continue;
+            try {
+                const res = await fetch(entry.file);
+                if (!res.ok) throw new Error('not found');
+                let md = await res.text();
+                // Remove the H1 title line (we show it in the header)
+                md = md.replace(/^# .+\n/, '');
+                el.innerHTML = marked.parse(md);
+            } catch (e) {
+                el.innerHTML = '<p style="color:var(--text-dim);font-style:italic;">日志加载失败</p>';
+            }
+        }
+    }
+
+    loadEntries();
+
+    // ========== SIDEBAR ACTIVE STATE ==========
+    const sidebarItems = document.querySelectorAll('.sidebar-item[data-nav]');
+    const sections = [];
+
+    sidebarItems.forEach(item => {
+        const target = item.getAttribute('href');
+        if (target) {
+            const section = document.querySelector(target);
+            if (section) sections.push({ el: section, nav: item });
+        }
+    });
+
+    function updateActiveNav() {
+        const scrollY = window.scrollY + 200;
+        let current = sections[0];
+
+        for (const s of sections) {
+            if (s.el.offsetTop <= scrollY) {
+                current = s;
+            }
+        }
+
+        sidebarItems.forEach(item => item.classList.remove('active'));
+        if (current) current.nav.classList.add('active');
+
+        // Also update mobile nav
+        const mobileItems = document.querySelectorAll('.mobile-nav-item');
+        mobileItems.forEach(item => {
+            const href = item.getAttribute('href');
+            item.classList.toggle('active', current && current.nav.getAttribute('href') === href);
+        });
+    }
+
+    window.addEventListener('scroll', updateActiveNav);
+    updateActiveNav();
+
+    // ========== SMOOTH SCROLL FOR SIDEBAR CLICKS ==========
+    document.querySelectorAll('.sidebar-item, .mobile-nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', this.getAttribute('href'));
+            }
+        });
+    });
+
+    // ========== HANDLE DIRECT HASH NAVIGATION ==========
+    if (window.location.hash) {
+        setTimeout(() => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 500);
+    }
+</script>
+
+</body>
+</html>
