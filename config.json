@@ -199,17 +199,118 @@
     "importance_levels": {
       "high": "🔴 重大",
       "medium": "🟡 值得关注",
-      "low": "🟢 一般了解"
+      "low": "🟢 一般了解",
+      "leak": "🔔 Leak/传闻"
     },
     "source_tags": {
       "media": "📰 媒体",
       "x_kol": "🐦 X/KOL",
       "official": "🏢 官方"
     },
+    "credibility_tags": {
+      "tier1": "🟩 T1",
+      "tier2": "🟨 T2",
+      "tier3": "🟥 T3",
+      "rumor": "📡 传闻",
+      "unverified": "⚠️ 未验证"
+    },
     "special_tags": {
       "department_related": "💎 部门相关",
-      "focus_tool": "🎯 重点工具"
+      "focus_tool": "🎯 重点工具",
+      "verified": "✅ 已验证",
+      "unverified": "⚠️ 未找到官方确认"
     },
     "languages": ["en", "cn"]
+  },
+  "source_credibility": {
+    "tier1_authoritative": {
+      "description": "权威来源 — 可直接引用，可作为交叉验证基准",
+      "official_blogs": [
+        "openai.com/blog",
+        "anthropic.com/news",
+        "blog.google/technology/ai",
+        "ai.meta.com/blog",
+        "nvidia.com/blog",
+        "deepmind.google/discover/blog",
+        "huggingface.co/blog",
+        "stability.ai/news"
+      ],
+      "official_x_accounts": [
+        "@OpenAI", "@AnthropicAI", "@GoogleAI", "@nvidia", "@Meta",
+        "@GoogleDeepMind", "@huggingface", "@MistralAI", "@xaboross"
+      ],
+      "ceo_executive_accounts": [
+        "@sama", "@daboross", "@sataboross", "@elaboross"
+      ],
+      "media_en": [
+        "theverge.com", "techcrunch.com", "arstechnica.com", "wired.com",
+        "technologyreview.com", "reuters.com", "bloomberg.com", "ft.com",
+        "wsj.com", "nytimes.com", "siliconangle.com", "venturebeat.com",
+        "theinformation.com"
+      ],
+      "media_cn": [
+        "36kr.com", "qbitai.com", "jiqizhixin.com", "pingwest.com",
+        "xinhuanet.com", "cctv.com", "caixin.com", "thepaper.cn"
+      ],
+      "academic": [
+        "arxiv.org", "hai.stanford.edu", "csail.mit.edu"
+      ]
+    },
+    "tier2_reference": {
+      "description": "可参考来源 — 需谨慎，重大新闻需交叉验证",
+      "media": [
+        "9to5mac.com", "9to5google.com", "theregister.com", "tomshardware.com",
+        "chinaz.com", "ithome.com", "itbear.com", "zol.com.cn", "ifanr.com",
+        "21jingji.com", "yicai.com"
+      ],
+      "data_platforms": [
+        "crunchbase.com", "pitchbook.com", "polymarket.com"
+      ]
+    },
+    "tier3_low_credibility": {
+      "description": "低可信来源 — 仅作为线索，绝不能作为唯一来源",
+      "domains": [
+        "blog.csdn.net", "zhuanlan.zhihu.com", "zhihu.com/question",
+        "jianshu.com", "juejin.cn",
+        "sohu.com", "baijiahao.baidu.com", "h5.ifeng.com",
+        "k.sina.cn", "news.qq.com/rain",
+        "53ai.com", "elser.ai", "chatgpt-chinese.com",
+        "chatgpt-chinese.chat", "idlen.io"
+      ],
+      "red_flags": [
+        "无明确作者/编辑署名",
+        "标题含'重磅/突发/刚刚/炸了'等夸张词汇",
+        "多个不同域名文章内容高度相似",
+        "包含大量精确数字但无官方来源链接",
+        "GPT-X/Claude-X 使用指南/教程类 SEO 站点"
+      ]
+    }
+  },
+  "cross_verification_rules": {
+    "for_red_importance": {
+      "product_launch": {
+        "required": ["公司官方博客/新闻室有公告", "至少 1 家 Tier 1 英文媒体报道"],
+        "verify_method": "web_fetch 公司官方博客 + 搜索 site:theverge.com OR site:techcrunch.com"
+      },
+      "funding_acquisition": {
+        "required": ["Crunchbase/PitchBook 有记录 OR 公司官方公告", "至少 1 家 Tier 1 媒体报道"],
+        "verify_method": "搜索 Crunchbase + Tier 1 媒体"
+      },
+      "research_report": {
+        "required": ["原始论文/报告链接可访问"],
+        "verify_method": "web_fetch 原始报告链接"
+      }
+    },
+    "for_leaks": {
+      "max_importance": "🟡",
+      "required_source_tier": "tier1 或 tier2",
+      "must_label": "📡 传闻"
+    },
+    "anti_poison_rules": [
+      "中文自媒体独有 + 英文圈静默 → 不收录",
+      "多站洗稿（内容相似度 >80%）→ 不收录",
+      "无官方博客确认的产品发布 → 不收录或降级",
+      "宁可漏报，不可误报"
+    ]
   }
 }

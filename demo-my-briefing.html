@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Briefing Demo | AI Daily Briefing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FAFAF8;
+            --surface: #FFFFFF;
+            --surface-alt: #F5F4F0;
+            --border: #E8E6E1;
+            --border-strong: #D4D1C9;
+            --text: #1A1A18;
+            --text-secondary: #6B6960;
+            --text-tertiary: #9E9B91;
+            --accent: #C8402A;
+            --accent-soft: rgba(200, 64, 42, 0.08);
+            --ink: #2C2C2A;
+            --tag-red: #C8402A;
+            --tag-yellow: #B8860B;
+            --tag-green: #4A7C59;
+            --tag-blue: #3D5A80;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+            --radius: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #141413;
+                --surface: #1C1C1A;
+                --surface-alt: #222220;
+                --border: #2E2E2A;
+                --border-strong: #3A3A35;
+                --text: #EDECEA;
+                --text-secondary: #9E9B91;
+                --text-tertiary: #6B6960;
+                --accent: #E05A3E;
+                --accent-soft: rgba(224, 90, 62, 0.1);
+                --ink: #D4D1C9;
+                --tag-red: #E05A3E;
+                --tag-yellow: #D4A017;
+                --tag-green: #6BAF7B;
+                --tag-blue: #6B9BC3;
+                --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+                --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+                --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+            }
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ MASTHEAD ============ */
+        .masthead {
+            border-bottom: 3px double var(--border-strong);
+            padding: 28px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+        .masthead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+        .masthead-title {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+        }
+        .masthead-sub {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ============ NAV BAR ============ */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+        .nav-bar.scrolled { box-shadow: var(--shadow-md); }
+        .nav-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .nav-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            padding: 0 12px;
+        }
+        .nav-date .weekday {
+            color: var(--text-tertiary);
+            font-weight: 400;
+            margin-left: 6px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Shared button styles */
+        .pill {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            padding: 5px 12px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .pill:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+        .pill.active { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+        .pill-icon {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.15s;
+        }
+        .pill-icon:hover { border-color: var(--border-strong); color: var(--text-secondary); }
+
+        /* ============ MY BRIEFING BUTTON — the star of the show ============ */
+        .my-briefing-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .my-briefing-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .my-briefing-btn.has-prefs {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .my-briefing-btn.has-prefs::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        /* ============ PERSONAL BANNER ============ */
+        .personal-banner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+        }
+        .personal-banner.show {
+            max-height: 100px;
+            opacity: 1;
+            padding: 14px 24px;
+        }
+        .personal-banner-inner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(200, 64, 42, 0.12);
+            border-radius: 6px;
+        }
+        .personal-banner .pb-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .personal-banner .pb-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .personal-banner .pb-text strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .personal-banner .pb-dismiss {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            flex-shrink: 0;
+            transition: color 0.15s;
+        }
+        .personal-banner .pb-dismiss:hover { color: var(--text); }
+
+        /* ============ STATS RIBBON ============ */
+        .stats-ribbon {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        .stat { display: flex; align-items: center; gap: 6px; }
+        .stat-indicator { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .stat-indicator.red { background: var(--tag-red); }
+        .stat-indicator.yellow { background: var(--tag-yellow); }
+        .stat-indicator.green { background: var(--tag-green); }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 13px;
+        }
+        .stat-sep { width: 1px; height: 12px; background: var(--border); }
+
+        .stat-personal {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 12px;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateX(-8px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ============ MAIN ============ */
+        .main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 32px 24px 100px;
+        }
+
+        /* ============ NEWS CONTENT ============ */
+        .news-content { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .news-content h1 {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1.3;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        .news-content > blockquote:first-of-type {
+            background: none;
+            border-left: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin: 16px 0 28px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .news-content h2 {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text);
+            margin: 40px 0 18px;
+            padding: 10px 0;
+            border-top: 2px solid var(--text);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            transition: opacity 0.3s, margin 0.3s, padding 0.3s, max-height 0.3s, border-color 0.3s;
+        }
+        .news-content h2:first-of-type { margin-top: 0; }
+
+        /* Focused section highlight */
+        .news-content h2.focused-section {
+            border-top-color: var(--accent);
+            color: var(--accent);
+        }
+        .news-content h2.focused-section::after {
+            content: '★';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+        .news-content h2.section-hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden;
+        }
+
+        .news-content h3 {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 24px 0 6px;
+            color: var(--ink);
+            padding-left: 14px;
+            border-left: 3px solid var(--border-strong);
+            transition: border-color 0.2s;
+        }
+        .news-content h3:hover { border-left-color: var(--accent); }
+        .news-content h3 a { color: inherit; text-decoration: none; }
+        .news-content h3 a:hover { color: var(--accent); }
+
+        .news-content p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin: 4px 0 20px;
+            padding-left: 17px;
+        }
+        .news-content strong { color: var(--text); font-weight: 600; }
+
+        .news-content hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+            position: relative;
+        }
+        .news-content hr::after {
+            content: '\25C6';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            padding: 0 12px;
+            color: var(--border-strong);
+            font-size: 8px;
+        }
+
+        .news-content ul, .news-content ol {
+            padding-left: 36px;
+            margin: 8px 0 20px;
+        }
+        .news-content li {
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        .news-content li strong { color: var(--text); }
+
+        .news-content blockquote {
+            border-left: 2px solid var(--accent);
+            padding: 10px 16px;
+            margin: 12px 0 20px;
+            background: var(--accent-soft);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .news-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 13px;
+        }
+        .news-content table th {
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text);
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-strong);
+            font-size: 12px;
+        }
+        .news-content table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .news-content table tr:hover td { background: var(--accent-soft); }
+
+        /* ============ NEWS BLOCK + FILTER ============ */
+        .news-block {
+            transition: opacity 0.25s ease, max-height 0.3s ease;
+            overflow: hidden;
+        }
+        .news-block.hidden {
+            opacity: 0;
+            max-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none;
+        }
+
+        /* Dept-relevant highlight in focused mode */
+        .news-block.dept-highlight h3 {
+            border-left-color: var(--accent);
+        }
+        .news-block.dept-highlight::before {
+            content: '💎';
+            display: block;
+            font-size: 10px;
+            margin-left: 14px;
+            margin-bottom: -4px;
+            opacity: 0.7;
+        }
+
+        /* ============ PREFS PANEL ============ */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px);
+            z-index: 200;
+            animation: overlayIn 0.2s ease;
+        }
+        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+        .overlay.show { display: block; }
+
+        .prefs-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 320px;
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 201;
+            padding: 0;
+            overflow-y: auto;
+            box-shadow: -8px 0 24px rgba(0,0,0,0.06);
+            display: none;
+            animation: panelIn 0.25s ease;
+        }
+        @keyframes panelIn {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .prefs-panel.show { display: block; }
+
+        .prefs-header {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .prefs-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+        .prefs-header p {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+
+        .prefs-section {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .prefs-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Category checkboxes */
+        .pref-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background 0.12s;
+            margin-bottom: 2px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .pref-item:hover { background: var(--surface-alt); }
+        .pref-item:active { transform: scale(0.99); }
+
+        .pref-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+            font-size: 10px;
+            color: transparent;
+        }
+        .pref-item.checked .pref-check {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        .pref-emoji { font-size: 15px; flex-shrink: 0; }
+        .pref-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            flex: 1;
+        }
+        .pref-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            background: var(--surface-alt);
+            padding: 2px 7px;
+            border-radius: 100px;
+        }
+
+        /* Mode toggle */
+        .mode-toggle {
+            display: flex;
+            background: var(--surface-alt);
+            border-radius: 6px;
+            padding: 3px;
+            gap: 2px;
+        }
+        .mode-opt {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            text-align: center;
+        }
+        .mode-opt:hover { color: var(--text-secondary); }
+        .mode-opt.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Reset / Apply */
+        .prefs-footer {
+            padding: 16px 20px;
+            display: flex;
+            gap: 8px;
+        }
+        .prefs-footer button {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .btn-reset {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-reset:hover { border-color: var(--border-strong); color: var(--text); }
+        .btn-apply {
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            color: white;
+        }
+        .btn-apply:hover { opacity: 0.9; }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ============ TOAST NOTIFICATION ============ */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--text);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============ SCROLLBAR ============ */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        /* ============ MOBILE ============ */
+        @media (max-width: 640px) {
+            .masthead { padding: 18px 16px 14px; border-bottom-width: 2px; }
+            .masthead::before { width: 28px; height: 2px; }
+            .masthead-title { font-size: 22px; }
+            .masthead-sub { font-size: 9px; letter-spacing: 2.5px; }
+            .nav-inner { padding: 0 12px; height: 48px; }
+            .nav-date { font-size: 12px; padding: 0 6px; }
+            .stats-ribbon { padding: 10px 16px; gap: 12px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+            .stats-ribbon::-webkit-scrollbar { display: none; }
+            .stat { white-space: nowrap; flex-shrink: 0; }
+            .main { padding: 20px 16px 100px; }
+            .news-content h1 { font-size: 20px; }
+            .news-content h2 { font-size: 13px; margin: 28px 0 14px; padding: 8px 0; }
+            .news-content h3 { font-size: 14px; margin: 18px 0 5px; padding-left: 12px; border-left-width: 2px; }
+            .news-content p { font-size: 13px; padding-left: 14px; margin: 3px 0 16px; }
+            .prefs-panel { width: 100%; border-left: none; }
+            .personal-banner.show { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="masthead">
+    <h1 class="masthead-title">AI Daily Briefing</h1>
+    <p class="masthead-sub">Intelligence &middot; Design &middot; Trends</p>
+</header>
+
+<nav class="nav-bar" id="navBar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <div class="nav-date">
+                <span>2026-04-09</span><span class="weekday">周三</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="pill active" data-level="all" onclick="setFilter('all')">全部</button>
+            <button class="pill" data-level="high" onclick="setFilter('high')">重大</button>
+            <button class="pill" data-level="medium" onclick="setFilter('medium')">关注</button>
+            <button class="pill" data-level="low" onclick="setFilter('low')">了解</button>
+            <button class="my-briefing-btn" id="myBriefingBtn" onclick="togglePrefs()" title="My Briefing 偏好设置">&#9881;</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Personal Banner (shown when prefs are active) -->
+<div class="personal-banner" id="personalBanner">
+    <div class="personal-banner-inner">
+        <span class="pb-icon">✨</span>
+        <span class="pb-text" id="bannerText">已为你聚焦 <strong>3</strong> 个关注领域，共 <strong>8</strong> 条相关新闻</span>
+        <button class="pb-dismiss" onclick="dismissBanner()">&#10005;</button>
+    </div>
+</div>
+
+<div class="stats-ribbon" id="statsRibbon">
+    <div class="stat">
+        <span>共</span>
+        <span class="stat-num" id="totalCount">21</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+        <span class="stat-indicator red"></span>
+        <span class="stat-num" id="highCount">5</span>
+        <span>重大</span>
+    </div>
+    <div class="stat">
+        <span class="stat-indicator yellow"></span>
+        <span class="stat-num" id="mediumCount">10</span>
+        <span>关注</span>
+    </div>
+    <div class="stat">
+        <span class="stat-indicator green"></span>
+        <span class="stat-num" id="lowCount">6</span>
+        <span>了解</span>
+    </div>
+    <div id="personalStat"></div>
+</div>
+
+<main class="main">
+    <div id="content" class="news-content">
+        <!-- Content will be injected by JS -->
+    </div>
+</main>
+
+<footer class="footer">
+    Curated by Nate &middot; Powered by WorkBuddy &middot; My Briefing Demo
+</footer>
+
+<!-- Overlay + Prefs Panel -->
+<div class="overlay" id="overlay" onclick="togglePrefs()"></div>
+<div class="prefs-panel" id="prefsPanel">
+    <div class="prefs-header">
+        <h3>My Briefing</h3>
+        <p>选择你关注的领域，获得个性化新闻体验</p>
+    </div>
+
+    <div class="prefs-section">
+        <div class="prefs-section-title">关注领域</div>
+        <div id="categoryList"></div>
+    </div>
+
+    <div class="prefs-section">
+        <div class="prefs-section-title">显示模式</div>
+        <div class="mode-toggle">
+            <button class="mode-opt active" data-mode="focused" onclick="setPrefMode('focused')">聚焦模式</button>
+            <button class="mode-opt" data-mode="all" onclick="setPrefMode('highlight')">全部 + 高亮</button>
+        </div>
+        <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px;line-height:1.5;">
+            聚焦模式：只展示关注领域 · 全部+高亮：全部显示，关注领域标记 ★
+        </p>
+    </div>
+
+    <div class="prefs-footer">
+        <button class="btn-reset" onclick="resetPrefs()">重置</button>
+        <button class="btn-apply" onclick="applyPrefs()">应用偏好</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // ============================================================
+    //  DEMO DATA — real news from 2026-04-09, pre-structured
+    // ============================================================
+    const NEWS_DATA = {
+        categories: [
+            {
+                id: 'models',
+                emoji: '🧪',
+                name: '模型发布 & 更新',
+                items: [
+                    { level: 'high', dept: true, title: 'DeepSeek 上线「专家模式」：V4 大模型发布前奏', desc: 'DeepSeek 网页端低调更新，输入框上方新增「快速模式」和「专家模式」。专家模式擅长深度推理、代码编写、数学逻辑。业内普遍认为专家模式已接入 V4 正式版雏形。' },
+                    { level: 'medium', dept: true, title: 'Qwen3.6-Plus 编程能力持续领跑', desc: 'Terminal-Bench 2.0 上 Qwen3.6-Plus 以 61.6 分超越 Claude Opus 4.5。亮点功能：截图转代码——将 UI 截图、手绘草图直接转为前端代码。' },
+                    { level: 'medium', dept: false, title: 'AI 模型市场进入「小数点时代」', desc: '三月最后一周出现 12 个重大模型发布。头部模型在 benchmark 上差距已缩小到小数点级别，选型更多取决于生态、许可和价格。' },
+                ]
+            },
+            {
+                id: 'design',
+                emoji: '🎨',
+                name: 'AI + 设计',
+                items: [
+                    { level: 'medium', dept: true, title: 'AI 视频赛道价格战白热化：四强格局确立', desc: '可灵 3.0（$0.084/秒）、Seedance 2.0（$0.022/秒）、Runway Gen-4.5（$0.14/秒）、Veo 3.1 Lite。可灵以全能性价比称王，Seedance 以超低价称霸批量生产。' },
+                    { level: 'low', dept: true, title: 'Seedance 2.0 vs 可灵 3.0 实战对比更新', desc: 'Seedance 2.0 输出立体声音频，可灵 3.0 在镜头控制和风格一致性上领先。两者已将 Sora 时代的差距彻底拉开。' },
+                ]
+            },
+            {
+                id: 'market',
+                emoji: '📈',
+                name: 'AI 市场动态',
+                items: [
+                    { level: 'high', dept: true, title: 'OpenAI/Anthropic/Google 三巨头联手反击中国 AI「对抗性蒸馏」', desc: '三大竞争对手首次共享威胁情报。指控 DeepSeek、Moonshot AI、MiniMax 创建约 2.4 万个虚假账号，进行 1600 万次未授权数据抽取。' },
+                    { level: 'high', dept: false, title: 'Musk 修改诉讼：要求罢免 Altman 和 Brockman', desc: 'Musk 修改其 $1340 亿诉讼，新增要求将 Altman 和 Brockman 从 OpenAI 非营利董事会除名。审判定于 4 月 27 日。' },
+                    { level: 'high', dept: false, title: 'Altman「超级智能新政」遭批：13 页政策论文引发争议', desc: 'OpenAI 发布 13 页政策论文，提出缩短工作周、建立公共财富基金。批评者称这是「监管虚无主义的遮羞布」。' },
+                    { level: 'medium', dept: false, title: 'OpenAI 内部信任危机：《纽约客》万字调查', desc: '18 个月调查，采访 100+ 知情人士。Anthropic 创始人 Dario Amodei：「OpenAI 的问题在于 Sam 本人」。' },
+                ]
+            },
+            {
+                id: 'tools',
+                emoji: '🛠️',
+                name: 'AI 工具 & 产品',
+                items: [
+                    { level: 'medium', dept: false, title: 'Generative AI 周报：Gemma 4 + OpenClaw + MCP 协议', desc: 'Google Gemma 4 开源（Apache 2.0）、Anthropic OpenClaw 打击非法使用、MCP 协议获 $97M 融资。' },
+                    { level: 'medium', dept: false, title: '企业平均运行 12 个 AI Agent，但一半独立工作', desc: '2026 年企业级 AI Agent 趋势报告：企业平均部署 12 个 AI Agent，多 Agent 编排成为下一阶段核心挑战。' },
+                    { level: 'low', dept: false, title: 'AI Agent 从「执行工具」升级为「数字员工」', desc: 'AI Agent 已从单纯的对话助手演变为具备深度环境感知与复杂决策能力的「数字员工」。' },
+                ]
+            },
+            {
+                id: 'trends',
+                emoji: '🔮',
+                name: '未来趋势',
+                items: [
+                    { level: 'medium', dept: false, title: '36氪：2026 年 AI 五大趋势', desc: '规模化部署、代理式 AI、数据重塑、治理框架、人才转型。' },
+                    { level: 'low', dept: false, title: 'AI Agent 落地战：应用层爆发前夜', desc: '深度解析 AI Agent 从概念走向落地的关键趋势。' },
+                ]
+            },
+            {
+                id: 'china',
+                emoji: '🇨🇳',
+                name: '国内 AI 动态',
+                items: [
+                    { level: 'high', dept: true, title: '国产 AI 芯片全球市占率首破 40%，英伟达份额降至 55%', desc: '2025 年中国 AI 加速卡销量达 400 万块（同比增长 48%），国产份额提升至 41%。DeepSeek V4 已完成华为/寒武纪芯片适配。' },
+                    { level: 'medium', dept: false, title: 'DeepSeek 免费模式承压：今年已 7 次大规模宕机', desc: '大模型运营成本极高，免费模式让平台算力扩容始终滞后于用户增长。' },
+                    { level: 'medium', dept: false, title: 'AI 搜索重塑 BAT 竞争边界', desc: 'AI 搜索正重塑 2.4 亿中国用户的信息获取方式。' },
+                ]
+            },
+            {
+                id: 'tips',
+                emoji: '💡',
+                name: 'AI 效率技巧',
+                items: [
+                    { level: 'low', dept: false, title: 'AI Agent 自动化实操指南（2026 年 4 月更新）', desc: 'AI Agent 在工作流自动化中的最新实践。' },
+                    { level: 'low', dept: false, title: '18 条 AI Agent 趋势预测：专家共识', desc: '自主 Agent、多 Agent 编排、Agentic RAG、企业级安全。' },
+                ]
+            },
+        ]
+    };
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let currentFilter = 'all';
+    let prefs = loadPrefs();
+    let prefMode = prefs.mode || 'focused';  // 'focused' or 'highlight'
+
+    function loadPrefs() {
+        try {
+            var p = JSON.parse(localStorage.getItem('ai-news-prefs'));
+            return p && p.categories ? p : { categories: [], mode: 'focused' };
+        } catch(e) { return { categories: [], mode: 'focused' }; }
+    }
+
+    function savePrefs() {
+        localStorage.setItem('ai-news-prefs', JSON.stringify(prefs));
+    }
+
+    function hasPrefs() { return prefs.categories.length > 0; }
+
+    // ============================================================
+    //  RENDER NEWS
+    // ============================================================
+    function renderNews() {
+        var el = document.getElementById('content');
+        var html = '';
+
+        html += '<h1>\uD83D\uDCF0 AI \u6BCF\u65E5\u65B0\u95FB\u901F\u9012 - 2026-04-09</h1>';
+        html += '<blockquote>\u4ECA\u65E5\u5171\u6536\u96C6 <strong>21</strong> \u6761\u65B0\u95FB\uFF0C\u5176\u4E2D \uD83D\uDD34 \u91CD\u5927 <strong>5</strong> \u6761\uFF0C\uD83D\uDFE1 \u503C\u5F97\u5173\u6CE8 <strong>10</strong> \u6761\uFF0C\uD83D\uDFE2 \u4E00\u822C\u4E86\u89E3 <strong>6</strong> \u6761</blockquote>';
+
+        NEWS_DATA.categories.forEach(function(cat) {
+            var isFocused = prefs.categories.includes(cat.id);
+            var shouldHide = hasPrefs() && prefMode === 'focused' && !isFocused;
+            var focusClass = hasPrefs() && isFocused ? ' focused-section' : '';
+            var hideClass = shouldHide ? ' section-hidden' : '';
+
+            html += '<h2 class="cat-section' + focusClass + hideClass + '" data-cat="' + cat.id + '">' + cat.emoji + ' ' + cat.name + '</h2>';
+
+            cat.items.forEach(function(item) {
+                var levelEmoji = item.level === 'high' ? '\uD83D\uDD34' : (item.level === 'medium' ? '\uD83D\uDFE1' : '\uD83D\uDFE2');
+                var deptTag = item.dept ? ' [\uD83D\uDC8E \u90E8\u95E8\u76F8\u5173]' : '';
+                var blockClasses = 'news-block';
+                if (shouldHide) blockClasses += ' hidden';
+                if (hasPrefs() && isFocused && item.dept) blockClasses += ' dept-highlight';
+
+                html += '<div class="' + blockClasses + '" data-level="' + item.level + '" data-cat="' + cat.id + '">';
+                html += '<h3>' + levelEmoji + ' ' + item.title + '</h3>';
+                html += '<p>' + item.desc + deptTag + '</p>';
+                html += '</div>';
+            });
+
+            // Add HR separator between categories (not after last)
+            if (!shouldHide) {
+                html += '<hr>';
+            }
+        });
+
+        el.innerHTML = html;
+        updatePersonalStats();
+        updateBanner();
+        updateMyBriefingBtn();
+    }
+
+    // ============================================================
+    //  PERSONAL STATS
+    // ============================================================
+    function updatePersonalStats() {
+        var statEl = document.getElementById('personalStat');
+        if (!hasPrefs()) {
+            statEl.innerHTML = '';
+            return;
+        }
+
+        var count = 0;
+        NEWS_DATA.categories.forEach(function(cat) {
+            if (prefs.categories.includes(cat.id)) {
+                count += cat.items.length;
+            }
+        });
+
+        statEl.innerHTML = '<div class="stat-sep"></div><div class="stat-personal">\u2605 \u5173\u6CE8 <span class="stat-num">' + count + '</span></div>';
+    }
+
+    function updateBanner() {
+        var banner = document.getElementById('personalBanner');
+        if (!hasPrefs()) {
+            banner.classList.remove('show');
+            return;
+        }
+
+        var catCount = prefs.categories.length;
+        var newsCount = 0;
+        NEWS_DATA.categories.forEach(function(cat) {
+            if (prefs.categories.includes(cat.id)) {
+                newsCount += cat.items.length;
+            }
+        });
+
+        var modeText = prefMode === 'focused' ? '\u805A\u7126\u6A21\u5F0F' : '\u5168\u90E8+\u9AD8\u4EAE';
+        document.getElementById('bannerText').innerHTML =
+            modeText + ' \u00B7 \u5DF2\u4E3A\u4F60\u805A\u7126 <strong>' + catCount + '</strong> \u4E2A\u5173\u6CE8\u9886\u57DF\uFF0C\u5171 <strong>' + newsCount + '</strong> \u6761\u76F8\u5173\u65B0\u95FB';
+        banner.classList.add('show');
+    }
+
+    function updateMyBriefingBtn() {
+        var btn = document.getElementById('myBriefingBtn');
+        btn.classList.toggle('has-prefs', hasPrefs());
+    }
+
+    function dismissBanner() {
+        document.getElementById('personalBanner').classList.remove('show');
+    }
+
+    // ============================================================
+    //  FILTER (level filter — works on top of prefs)
+    // ============================================================
+    function setFilter(level) {
+        currentFilter = level;
+        document.querySelectorAll('.pill[data-level]').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.level === level);
+        });
+
+        var blocks = document.querySelectorAll('.news-block');
+        blocks.forEach(function(block) {
+            var catId = block.dataset.cat;
+            var isFocusedCat = !hasPrefs() || prefs.categories.includes(catId) || prefMode === 'highlight';
+            var levelMatch = level === 'all' || block.dataset.level === level;
+            block.classList.toggle('hidden', !(isFocusedCat && levelMatch));
+        });
+
+        // Update section visibility
+        document.querySelectorAll('.cat-section').forEach(function(h2) {
+            var catId = h2.dataset.cat;
+            var isFocusedCat = !hasPrefs() || prefs.categories.includes(catId) || prefMode === 'highlight';
+            if (!isFocusedCat) {
+                h2.classList.add('section-hidden');
+                return;
+            }
+            var hasVisible = false;
+            var sibling = h2.nextElementSibling;
+            while (sibling) {
+                if (sibling.classList.contains('cat-section') || sibling.tagName === 'HR') break;
+                if (sibling.classList.contains('news-block') && !sibling.classList.contains('hidden')) {
+                    hasVisible = true;
+                    break;
+                }
+                sibling = sibling.nextElementSibling;
+            }
+            h2.classList.toggle('section-hidden', !hasVisible);
+        });
+    }
+
+    // ============================================================
+    //  PREFS PANEL
+    // ============================================================
+    function togglePrefs() {
+        var o = document.getElementById('overlay');
+        var p = document.getElementById('prefsPanel');
+        var isOpen = o.classList.contains('show');
+        if (isOpen) {
+            o.classList.remove('show');
+            p.classList.remove('show');
+        } else {
+            o.classList.add('show');
+            p.classList.add('show');
+            renderPrefsPanel();
+        }
+    }
+
+    function renderPrefsPanel() {
+        var el = document.getElementById('categoryList');
+        var html = '';
+
+        NEWS_DATA.categories.forEach(function(cat) {
+            var isChecked = prefs.categories.includes(cat.id);
+            html += '<div class="pref-item' + (isChecked ? ' checked' : '') + '" data-cat="' + cat.id + '" onclick="toggleCat(\'' + cat.id + '\')">';
+            html += '  <div class="pref-check">\u2713</div>';
+            html += '  <span class="pref-emoji">' + cat.emoji + '</span>';
+            html += '  <span class="pref-label">' + cat.name + '</span>';
+            html += '  <span class="pref-count">' + cat.items.length + '</span>';
+            html += '</div>';
+        });
+
+        el.innerHTML = html;
+
+        // Update mode toggle
+        document.querySelectorAll('.mode-opt').forEach(function(btn) {
+            btn.classList.toggle('active', btn.dataset.mode === prefMode);
+        });
+    }
+
+    function toggleCat(catId) {
+        var idx = prefs.categories.indexOf(catId);
+        if (idx >= 0) {
+            prefs.categories.splice(idx, 1);
+        } else {
+            prefs.categories.push(catId);
+        }
+        renderPrefsPanel();
+    }
+
+    function setPrefMode(mode) {
+        prefMode = mode;
+        prefs.mode = mode;
+        document.querySelectorAll('.mode-opt').forEach(function(btn) {
+            btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+    }
+
+    function applyPrefs() {
+        savePrefs();
+        togglePrefs();
+        renderNews();
+        currentFilter = 'all';
+        document.querySelectorAll('.pill[data-level]').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.level === 'all');
+        });
+        showToast(hasPrefs()
+            ? '\u2728 \u5DF2\u5E94\u7528\u4E2A\u4EBA\u504F\u597D\uFF08' + prefs.categories.length + ' \u4E2A\u9886\u57DF\uFF09'
+            : '\u2705 \u5DF2\u6062\u590D\u9ED8\u8BA4\u89C6\u56FE');
+    }
+
+    function resetPrefs() {
+        prefs = { categories: [], mode: 'focused' };
+        prefMode = 'focused';
+        savePrefs();
+        togglePrefs();
+        renderNews();
+        currentFilter = 'all';
+        document.querySelectorAll('.pill[data-level]').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.level === 'all');
+        });
+        showToast('\u2705 \u5DF2\u6062\u590D\u9ED8\u8BA4\u89C6\u56FE');
+    }
+
+    // ============================================================
+    //  TOAST
+    // ============================================================
+    function showToast(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(function() { t.classList.remove('show'); }, 2200);
+    }
+
+    // ============================================================
+    //  SCROLL SHADOW
+    // ============================================================
+    window.addEventListener('scroll', function() {
+        document.getElementById('navBar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    renderNews();
+</script>
+
+</body>
+</html>
