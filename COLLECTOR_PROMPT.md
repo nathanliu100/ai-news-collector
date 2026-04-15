@@ -154,6 +154,39 @@ AI 领域存在大量"AI 投毒"内容（AI 生成的假新闻），尤其是中
 - **通义万相** - 阿里 AI 创作
 - **文心一格** - 百度 AI 绘画
 
+### 来源 D：GitHub Trending 热门仓库（🟩 Tier 1 信源）
+
+GitHub Trending 是天然的高可信信源——数据来自 GitHub 官方，star 增长数据客观可量化，不存在 AI 投毒问题。重点抓取 AI 相关的热门开源项目。
+
+**抓取方法：**
+1. 使用 `web_fetch` 直接抓取 `https://github.com/trending` 和 `https://github.com/trending/python?since=daily`
+2. 也可以搜索 `"GitHub trending AI repositories today"` 获取第三方聚合信息
+
+**筛选标准：**
+- 今日新增 star ≥ 100
+- 与 AI/ML 相关（关键词：llm, gpt, claude, agent, ai, ml, diffusion, generative, rag, mcp, inference, image-generation, video-generation, tts, coding-agent 等）
+- 优先级：创意/设计相关 > 模型/框架 > Agent > 工具 > 基础设施
+
+**归类规则：**
+- 开源模型发布 → 归入 🧪 模型发布
+- AI 创意/设计工具 → 归入 🎨 AI + 设计
+- AI 游戏相关 → 归入 🎮 AI + 游戏
+- AI Agent 框架/开发工具 → 归入 🛠️ AI 工具
+- 其他热门 AI 仓库 → 收入独立的 `🔥 GitHub 热门` 板块
+
+**输出格式示例：**
+```
+### 🟡 [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) ⭐ 85.5k (+8,301/天)
+**来源**：GitHub Trending [🏢 官方] [🟩 T1] | **语言**：Python
+与你一起成长的 AI Agent 框架，NousResearch 出品。今日 GitHub 全站 Trending #1，单日暴涨 8301 星。[🎯 重点工具]
+```
+
+**注意事项：**
+- 最多收录 5 个最相关的 AI 仓库
+- 必须包含 star 总数和今日增长数据
+- 如果仓库是某个重大新闻的配套（如模型开源），与对应新闻条目合并而非重复收录
+- GitHub Release Notes 也可以作为模型/工具更新的验证来源
+
 ## 工作流程
 
 ### Step 1: 搜集新闻
@@ -203,6 +236,12 @@ AI 领域存在大量"AI 投毒"内容（AI 生成的假新闻），尤其是中
    - 媒体搜索："AI prompt engineering tips", "AI workflow best practices"
    - X KOL 搜索："PJaccetturo tips site:x.com", "minchoi workflow site:x.com", "EHuanglu tutorial site:x.com"
    - 中文："AI使用技巧", "AI工作流分享"
+
+9. 🔥 **GitHub Trending（独立搜集步骤）**
+   - 直接抓取：`web_fetch https://github.com/trending` + `web_fetch https://github.com/trending/python?since=daily`
+   - 辅助搜索："GitHub trending AI repositories today", "GitHub trending machine learning"
+   - 筛选 AI 相关仓库（今日新增 ≥100 star），按分类归入上述各板块或独立 GitHub 热门板块
+   - **此步骤必须执行** — GitHub Trending 是重要的 Tier 1 信源
 
 ### Step 2: AI 处理 + 信源验证
 
@@ -297,6 +336,18 @@ AI 领域存在大量"AI 投毒"内容（AI 生成的假新闻），尤其是中
 - **@op7418**：推文内容概要... [链接]
 - **@EHuanglu**：推文内容概要... [链接]
 （仅收录有实质内容的推文，跳过日常闲聊）
+
+---
+
+## 🔥 GitHub 热门 AI 项目
+
+> 今日 GitHub Trending 中值得关注的 AI 开源项目（未归入上述分类的）
+
+### 🟡 [作者/仓库名](GitHub 链接) ⭐ 总星数 (+今日增长/天)
+**来源**：GitHub Trending [🏢 官方] [🟩 T1] | **语言**：xxx
+项目简介... [相关标签]
+
+（最多 5 个，优先 AI 创意/设计/模型/Agent 方向）
 
 ---
 

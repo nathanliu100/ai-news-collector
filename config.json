@@ -172,6 +172,52 @@
     { "handle": "@op7418", "name": "op7418", "type": "kol", "focus": "AI news aggregator (Chinese)" },
     { "handle": "@hq4ai", "name": "hq4ai", "type": "kol", "focus": "AI industry news" }
   ],
+  "github_trending": {
+    "description": "GitHub Trending 热门仓库追踪 — 天然 Tier 1 信源，数据来自 GitHub 官方",
+    "credibility": "tier1_authoritative",
+    "sources": [
+      {
+        "url": "https://github.com/trending",
+        "label": "GitHub Trending (所有语言)",
+        "frequency": "daily"
+      },
+      {
+        "url": "https://github.com/trending/python?since=daily",
+        "label": "GitHub Trending Python (AI/ML 主力)",
+        "frequency": "daily"
+      }
+    ],
+    "third_party_trackers": [
+      "https://trendshift.io/",
+      "https://ossinsight.io/trending/ai",
+      "https://github-trending.today/"
+    ],
+    "filter_criteria": {
+      "min_daily_stars": 100,
+      "ai_keywords": [
+        "llm", "gpt", "claude", "agent", "ai", "ml", "machine-learning",
+        "deep-learning", "transformer", "diffusion", "generative",
+        "rag", "mcp", "fine-tuning", "inference", "vllm",
+        "stable-diffusion", "comfyui", "midjourney", "image-generation",
+        "video-generation", "text-to-speech", "tts", "asr",
+        "autonomous", "copilot", "coding-agent"
+      ],
+      "relevance_tags": {
+        "ai_model": "模型/框架类 — 新模型开源、推理引擎",
+        "ai_tool": "工具类 — 开发者工具、IDE 插件、工作流",
+        "ai_creative": "创意类 — 图像/视频/音频/3D 生成相关",
+        "ai_agent": "Agent 类 — Agent 框架、MCP、自动化",
+        "ai_data": "数据/基础设施 — 数据处理、训练框架、MLOps"
+      }
+    },
+    "output_rules": {
+      "max_items": 5,
+      "priority_order": ["ai_creative", "ai_model", "ai_agent", "ai_tool", "ai_data"],
+      "include_stars": true,
+      "include_daily_growth": true,
+      "link_to_repo": true
+    }
+  },
   "focus_design_tools": {
     "overseas": [
       "Kling AI",
@@ -254,6 +300,10 @@
       ],
       "academic": [
         "arxiv.org", "hai.stanford.edu", "csail.mit.edu"
+      ],
+      "github": [
+        "github.com/trending",
+        "github.com/*/releases"
       ]
     },
     "tier2_reference": {
