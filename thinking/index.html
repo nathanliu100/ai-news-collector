@@ -882,9 +882,9 @@
     <h1 class="header-title">Product Thinking</h1>
     <p class="header-sub">AI News Collector · 产品思考日志</p>
     <div class="header-meta">
-        <span>📅 <span class="num">6</span> entries</span>
-        <span>📝 <span class="num">40+</span> insights</span>
-        <span>🗓️ Apr 8 – 13, 2026</span>
+        <span>📅 <span class="num">8</span> entries</span>
+        <span>📝 <span class="num">50+</span> insights</span>
+        <span>🗓️ Apr 8 – 15, 2026</span>
         <span>✍️ 外特</span>
     </div>
 </header>
@@ -892,6 +892,8 @@
 <!-- Mobile navigation -->
 <nav class="mobile-nav" id="mobileNav">
     <a href="#progress" class="mobile-nav-item active">📋 清单</a>
+    <a href="#day-8" class="mobile-nav-item">D8 · 04-15</a>
+    <a href="#day-7" class="mobile-nav-item">D7 · 04-14</a>
     <a href="#day-6" class="mobile-nav-item">D6 · 04-13</a>
     <a href="#day-5" class="mobile-nav-item">D5 · 04-12</a>
     <a href="#day-4" class="mobile-nav-item">D4 · 04-11</a>
@@ -910,7 +912,17 @@
             <a href="#progress" class="sidebar-item active" data-nav="progress">
                 <span class="day-dot" style="background: var(--accent);"></span>
                 <span class="day-label">执行清单</span>
-                <span class="day-focus">v6</span>
+                <span class="day-focus">v9</span>
+            </a>
+            <a href="#day-8" class="sidebar-item" data-nav="day-8">
+                <span class="day-dot" style="background: var(--green);"></span>
+                <span class="day-label">04-15 Wed</span>
+                <span class="day-focus">执行验证</span>
+            </a>
+            <a href="#day-7" class="sidebar-item" data-nav="day-7">
+                <span class="day-dot" style="background: var(--accent);"></span>
+                <span class="day-label">04-14 Tue</span>
+                <span class="day-focus">信源可信度</span>
             </a>
             <a href="#day-6" class="sidebar-item" data-nav="day-6">
                 <span class="day-dot" style="background: var(--accent);"></span>
@@ -964,23 +976,23 @@
             <div class="sidebar-stats">
                 <div class="sidebar-stat">
                     <span>运行天数</span>
-                    <span class="stat-val">15</span>
+                    <span class="stat-val">17</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>日报数</span>
-                    <span class="stat-val">15 + 11 EN</span>
+                    <span class="stat-val">17 + 13 EN</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>日均新闻</span>
-                    <span class="stat-val">~22</span>
+                    <span class="stat-val">~21</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>代码行数</span>
-                    <span class="stat-val">1,663</span>
+                    <span class="stat-val">1,997</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>已执行</span>
-                    <span class="stat-val" style="color: var(--accent);">0 行 😅</span>
+                    <span class="stat-val" style="color: var(--green);">5/8 ✅</span>
                 </div>
             </div>
         </div>
@@ -991,72 +1003,129 @@
 
         <!-- ============ EXECUTION TRACKER ============ -->
         <section class="progress-section" id="progress">
-            <h2 class="progress-title">执行清单 v6 · Final</h2>
+            <h2 class="progress-title">执行清单 v9 · Post-Execution Review</h2>
             <p style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px; font-family: var(--mono);">
-                6 天思考 → 40+ 条建议 → 精简为 7 项 · 预估总工时 ~5.5h
+                8 天思考 → 50+ 条建议 → 5/8 已落地 ✅ · 剩余 5 项 ~1h45min
             </p>
             <div class="exec-list">
-                <div class="exec-item">
-                    <span class="exec-priority p0">P0</span>
+                <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
+                    <span class="exec-priority p0" style="background: var(--green-soft); color: var(--green); border-color: rgba(107,175,123,0.2);">DONE</span>
                     <div class="exec-details">
-                        <div class="exec-name">采集 prompt 优化</div>
-                        <div class="exec-desc">弹性条数 + 超级新闻日模式 + 💎收紧至15-20% + X来源增加至5-8条</div>
+                        <div class="exec-name">✅ 采集 prompt 优化 + 信源分级体系</div>
+                        <div class="exec-desc">Tier 1/2/3 标签 + 交叉验证 + 反 AI 投毒 · GPT-6 假新闻成功拦截</div>
                     </div>
-                    <span class="exec-time">30min</span>
+                    <span class="exec-time">已完成</span>
                 </div>
-                <div class="exec-item">
-                    <span class="exec-priority p0">P0</span>
+                <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
+                    <span class="exec-priority p0" style="background: var(--green-soft); color: var(--green); border-color: rgba(107,175,123,0.2);">DONE</span>
                     <div class="exec-details">
-                        <div class="exec-name">企微推送格式升级</div>
-                        <div class="exec-desc">每条加 So What 一句话 + 今日一句话编辑推荐 + 锚点链接</div>
+                        <div class="exec-name">✅ 新闻锚点系统</div>
+                        <div class="exec-desc">#news-N 序号 + 🔗按钮 + toast + 高亮动画 + hash 导航</div>
                     </div>
-                    <span class="exec-time">30min</span>
+                    <span class="exec-time">已完成</span>
                 </div>
-                <div class="exec-item">
-                    <span class="exec-priority p0">P0</span>
+                <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
+                    <span class="exec-priority p1" style="background: var(--green-soft); color: var(--green); border-color: rgba(107,175,123,0.2);">DONE</span>
                     <div class="exec-details">
-                        <div class="exec-name">新闻锚点系统</div>
-                        <div class="exec-desc">#news-N 序号方案 + 🔗按钮 + toast + 高亮动画 + 企微联动</div>
+                        <div class="exec-name">✅ OG Meta + Twitter Card</div>
+                        <div class="exec-desc">完整 og:* 标签 + summary_large_image</div>
                     </div>
-                    <span class="exec-time">1.5h</span>
+                    <span class="exec-time">已完成</span>
                 </div>
+                <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
+                    <span class="exec-priority p1" style="background: var(--green-soft); color: var(--green); border-color: rgba(107,175,123,0.2);">DONE</span>
+                    <div class="exec-details">
+                        <div class="exec-name">✅ 排版优化 + Masthead 折叠</div>
+                        <div class="exec-desc">来源行降权 + 表格卡片化 + H3 间距 + IntersectionObserver 折叠</div>
+                    </div>
+                    <span class="exec-time">已完成</span>
+                </div>
+                <div style="height: 16px; border-bottom: 1px dashed var(--border); margin-bottom: 8px;"></div>
                 <div class="exec-item">
                     <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
-                        <div class="exec-name">OG Meta + 品牌 OG 图</div>
-                        <div class="exec-desc">Level 1 静态版：固定标题/描述/品牌图。Level 2 动态版视情况</div>
-                    </div>
-                    <span class="exec-time">30min</span>
-                </div>
-                <div class="exec-item">
-                    <span class="exec-priority p1">P1</span>
-                    <div class="exec-details">
-                        <div class="exec-name">排版四件套</div>
-                        <div class="exec-desc">H3间距格式塔优化 / 来源行降权(.news-meta) / 必看红色圆形编号 / 表格移动端卡片化</div>
-                    </div>
-                    <span class="exec-time">1h</span>
-                </div>
-                <div class="exec-item">
-                    <span class="exec-priority p1">P1</span>
-                    <div class="exec-details">
-                        <div class="exec-name">Masthead 滚动折叠</div>
-                        <div class="exec-desc">IntersectionObserver 检测 → 折叠 masthead → 首屏回收 60px</div>
+                        <div class="exec-name">🔔 传闻标签 Bug 修复</div>
+                        <div class="exec-desc">stats ribbon 计数 + filter 归属 · 🔔 目前被归为 unknown 级别</div>
                     </div>
                     <span class="exec-time">20min</span>
                 </div>
                 <div class="exec-item">
-                    <span class="exec-priority p2">P2</span>
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">企微推送信源同步</div>
+                        <div class="exec-desc">推送标题加 ✅/📡 标签 + 信源统计概览 + 传闻单独标注</div>
+                    </div>
+                    <span class="exec-time">20min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
                         <div class="exec-name">CSS/JS 分离</div>
-                        <div class="exec-desc">style.css + app.js + 本地备份 marked.min.js · 拐点在 2000 行前完成</div>
+                        <div class="exec-desc">style.css + app.js · 1997 行已过拐点，从 P2 升级</div>
                     </div>
-                    <span class="exec-time">1h</span>
+                    <span class="exec-time">30min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">勘误机制 Level 1</div>
+                        <div class="exec-desc">被纠正日报末尾追加勘误表格</div>
+                    </div>
+                    <span class="exec-time">15min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p2">P2</span>
+                    <div class="exec-details">
+                        <div class="exec-name">A11y 基础修复</div>
+                        <div class="exec-desc">role/tabindex/focus ring/reduced-motion</div>
+                    </div>
+                    <span class="exec-time">20min</span>
                 </div>
             </div>
         </section>
 
+        <!-- ============ DAY 8 ============ -->
+        <article class="entry" id="day-8" style="animation-delay: 0.05s;">
+            <div class="entry-header">
+                <div class="entry-day-num">08</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-15 <span class="weekday">Wednesday · 执行验证</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag review">执行回顾</span>
+                        <span class="focus-tag strategy">信源验证</span>
+                        <span class="focus-tag tech">Bug 发现</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-8"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>暂停后首次回归 · 带着执行成果</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 7 ============ -->
+        <article class="entry" id="day-7" style="animation-delay: 0.1s;">
+            <div class="entry-header">
+                <div class="entry-day-num">07</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-14 <span class="weekday">Tuesday · 信源可信度</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag strategy">Fact-check</span>
+                        <span class="focus-tag tech">勘误机制</span>
+                        <span class="focus-tag review">执行债</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-7"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>GPT-6 勘误事件 → 信源体系诞生</span>
+            </div>
+        </article>
+
         <!-- ============ DAY 6 ============ -->
-        <article class="entry" id="day-6" style="animation-delay: 0.05s;">
+        <article class="entry" id="day-6" style="animation-delay: 0.15s;">
             <div class="entry-header">
                 <div class="entry-day-num">06</div>
                 <div class="entry-meta-block">
@@ -1076,7 +1145,7 @@
         </article>
 
         <!-- ============ DAY 5 ============ -->
-        <article class="entry" id="day-5" style="animation-delay: 0.1s;">
+        <article class="entry" id="day-5" style="animation-delay: 0.2s;">
             <div class="entry-header">
                 <div class="entry-day-num">05</div>
                 <div class="entry-meta-block">
@@ -1096,7 +1165,7 @@
         </article>
 
         <!-- ============ DAY 4 ============ -->
-        <article class="entry" id="day-4" style="animation-delay: 0.15s;">
+        <article class="entry" id="day-4" style="animation-delay: 0.25s;">
             <div class="entry-header">
                 <div class="entry-day-num">04</div>
                 <div class="entry-meta-block">
@@ -1116,7 +1185,7 @@
         </article>
 
         <!-- ============ DAY 3 ============ -->
-        <article class="entry" id="day-3" style="animation-delay: 0.2s;">
+        <article class="entry" id="day-3" style="animation-delay: 0.3s;">
             <div class="entry-header">
                 <div class="entry-day-num">03</div>
                 <div class="entry-meta-block">
@@ -1137,7 +1206,7 @@
         </article>
 
         <!-- ============ DAY 2 ============ -->
-        <article class="entry" id="day-2" style="animation-delay: 0.25s;">
+        <article class="entry" id="day-2" style="animation-delay: 0.35s;">
             <div class="entry-header">
                 <div class="entry-day-num">02</div>
                 <div class="entry-meta-block">
@@ -1157,7 +1226,7 @@
         </article>
 
         <!-- ============ DAY 1 ============ -->
-        <article class="entry" id="day-1" style="animation-delay: 0.3s;">
+        <article class="entry" id="day-1" style="animation-delay: 0.4s;">
             <div class="entry-header">
                 <div class="entry-day-num">01</div>
                 <div class="entry-meta-block">
@@ -1183,6 +1252,14 @@
                 这些想法都已经记录在案，等产品跑到一定用户规模后再启动。
             </p>
             <div class="icebox-grid">
+                <div class="icebox-card">
+                    <div class="card-title">📊 每日信源审计报告</div>
+                    <div class="card-origin">Day 8 · 自动统计 Tier 分布 + 交叉验证覆盖率</div>
+                </div>
+                <div class="icebox-card">
+                    <div class="card-title">🎯 信任分仪表盘</div>
+                    <div class="card-origin">Day 7 · 公开展示采集准确率 + errata.json</div>
+                </div>
                 <div class="icebox-card">
                     <div class="card-title">📖 新闻故事线 / 话题标签聚合</div>
                     <div class="card-origin">Day 1 & 3 · 跨天事件聚合视图</div>
@@ -1234,6 +1311,8 @@
         { id: 'content-day-4', file: '2026-04-11.md' },
         { id: 'content-day-5', file: '2026-04-12.md' },
         { id: 'content-day-6', file: '2026-04-13.md' },
+        { id: 'content-day-7', file: '2026-04-14.md' },
+        { id: 'content-day-8', file: '2026-04-15.md' },
     ];
 
     async function loadEntries() {
