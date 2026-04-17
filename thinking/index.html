@@ -975,6 +975,110 @@
             margin-bottom: 20px;
             padding-left: 0;
         }
+
+        /* ============ DIGITAL CREW COMMENTS ============ */
+        .crew-comments {
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px dashed var(--border-strong);
+        }
+
+        .crew-comments-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .crew-comments-title::before {
+            content: '💬';
+            font-size: 14px;
+        }
+
+        .crew-comment {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            animation: fadeUp 0.3s ease both;
+        }
+
+        .crew-comment:last-child {
+            border-bottom: none;
+        }
+
+        .crew-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .crew-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .crew-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .crew-name {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .crew-role {
+            font-weight: 400;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .crew-text {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .crew-text strong {
+            color: var(--text);
+        }
+
+        /* Individual crew colors */
+        .crew-comment[data-crew="elon"] .crew-name { color: var(--blue); }
+        .crew-comment[data-crew="jobs"] .crew-name { color: var(--text); }
+        .crew-comment[data-crew="wanweigang"] .crew-name { color: var(--green); }
+        .crew-comment[data-crew="trump"] .crew-name { color: var(--amber); }
+        .crew-comment[data-crew="mrbeast"] .crew-name { color: var(--accent); }
+
+        @media (max-width: 900px) {
+            .crew-comment { padding: 10px 0; }
+            .crew-avatar { width: 32px; height: 32px; font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -984,9 +1088,9 @@
     <h1 class="header-title">Product Thinking</h1>
     <p class="header-sub">AI News Collector · 产品思考日志</p>
     <div class="header-meta">
-        <span>📅 <span class="num">8</span> entries</span>
+        <span>📅 <span class="num">9</span> entries</span>
         <span>📝 <span class="num">50+</span> insights</span>
-        <span>🗓️ Apr 8 – 15, 2026</span>
+        <span>🗓️ Apr 8 – 16, 2026</span>
         <span>✍️ 外特</span>
     </div>
 </header>
@@ -995,7 +1099,7 @@
 <div class="mode-tabs">
     <button class="mode-tab active" data-tab="thinking" onclick="switchTab('thinking')">
         <span class="tab-icon">💭</span> Thinking
-        <span class="tab-count">8</span>
+        <span class="tab-count">9</span>
     </button>
     <button class="mode-tab" data-tab="changelog" onclick="switchTab('changelog')">
         <span class="tab-icon">🔧</span> Changelog
@@ -1006,6 +1110,7 @@
 <!-- Mobile navigation -->
 <nav class="mobile-nav" id="mobileNav">
     <a href="#progress" class="mobile-nav-item active">📋 清单</a>
+    <a href="#day-9" class="mobile-nav-item">D9 · 04-16</a>
     <a href="#day-8" class="mobile-nav-item">D8 · 04-15</a>
     <a href="#day-7" class="mobile-nav-item">D7 · 04-14</a>
     <a href="#day-6" class="mobile-nav-item">D6 · 04-13</a>
@@ -1029,6 +1134,11 @@
                 <span class="day-dot" style="background: var(--accent);"></span>
                 <span class="day-label">执行清单</span>
                 <span class="day-focus">v9</span>
+            </a>
+            <a href="#day-9" class="sidebar-item" data-nav="day-9">
+                <span class="day-dot" style="background: var(--purple);"></span>
+                <span class="day-label">04-16 Thu</span>
+                <span class="day-focus">Dev Lab 悖论</span>
             </a>
             <a href="#day-8" class="sidebar-item" data-nav="day-8">
                 <span class="day-dot" style="background: var(--green);"></span>
@@ -1218,6 +1328,26 @@
                 </div>
             </div>
         </section>
+
+        <!-- ============ DAY 9 ============ -->
+        <article class="entry" id="day-9" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">09</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-16 <span class="weekday">Thursday · Dev Lab 悖论</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag review">进化悖论</span>
+                        <span class="focus-tag tech">Agent Routines</span>
+                        <span class="focus-tag strategy">运营生物钟</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-9"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>Dev Lab 飞速进化 vs 主站原地等待</span>
+            </div>
+        </article>
 
         <!-- ============ DAY 8 ============ -->
         <article class="entry" id="day-8" style="animation-delay: 0.05s;">
@@ -1497,6 +1627,7 @@
 
     // Mobile nav templates
     var thinkingMobileNav = '<a href="#progress" class="mobile-nav-item active">📋 清单</a>' +
+        '<a href="#day-9" class="mobile-nav-item">D9 · 04-16</a>' +
         '<a href="#day-8" class="mobile-nav-item">D8 · 04-15</a>' +
         '<a href="#day-7" class="mobile-nav-item">D7 · 04-14</a>' +
         '<a href="#day-6" class="mobile-nav-item">D6 · 04-13</a>' +
@@ -1520,6 +1651,7 @@
         { id: 'content-day-6', file: '2026-04-13.md' },
         { id: 'content-day-7', file: '2026-04-14.md' },
         { id: 'content-day-8', file: '2026-04-15.md' },
+        { id: 'content-day-9', file: '2026-04-16.md' },
     ];
 
     // ========== LOAD CHANGELOG ENTRIES ==========
@@ -1547,6 +1679,62 @@
     }
 
     loadEntries();
+
+    // ========== DIGITAL CREW COMMENT PARSER ==========
+    var CREW_CONFIG = {
+        elon:       { name: 'Elon Musk',  role: '首席激进官',   emoji: '🚀', avatar: 'avatars/elon.png' },
+        jobs:       { name: 'Steve Jobs',  role: '首席品味官',   emoji: '🍎', avatar: 'avatars/jobs.png' },
+        wanweigang: { name: '万维钢',      role: '首席实证官',   emoji: '📐', avatar: 'avatars/wanweigang.png' },
+        trump:      { name: 'Trump',       role: '首席自信官',   emoji: '🏆', avatar: 'avatars/trump.png' },
+        mrbeast:    { name: 'MrBeast',     role: '首席流量官',   emoji: '🎬', avatar: 'avatars/mrbeast.png' }
+    };
+
+    function parseCrewComments() {
+        document.querySelectorAll('.entry-content').forEach(function(el) {
+            var html = el.innerHTML;
+            // Find the crew comments section: look for H2 with 💬
+            var crewMatch = html.match(/<h2[^>]*>.*?💬.*?数字员工圆桌.*?<\/h2>([\s\S]*?)(?=<h2|$)/i);
+            if (!crewMatch) return;
+
+            var section = crewMatch[0];
+            var commentsHtml = crewMatch[1];
+
+            // Parse individual comments: <!-- comment:key --> text <!-- /comment -->
+            var commentPattern = /<!--\s*comment:(\w+)\s*-->([\s\S]*?)<!--\s*\/comment\s*-->/g;
+            var comments = [];
+            var match;
+            while ((match = commentPattern.exec(commentsHtml)) !== null) {
+                comments.push({ key: match[1].trim(), text: match[2].trim() });
+            }
+
+            if (comments.length === 0) return;
+
+            // Build beautiful comment cards
+            var cardsHtml = '<div class="crew-comments">';
+            cardsHtml += '<div class="crew-comments-title">数字员工圆桌</div>';
+
+            comments.forEach(function(c) {
+                var cfg = CREW_CONFIG[c.key] || { name: c.key, role: '', emoji: '💬', avatar: '' };
+                var avatarContent = '<img src="' + cfg.avatar + '" alt="' + cfg.name + '" onerror="this.style.display=\'none\';this.parentElement.textContent=\'' + cfg.emoji + '\'">';
+
+                cardsHtml += '<div class="crew-comment" data-crew="' + c.key + '">';
+                cardsHtml += '  <div class="crew-avatar">' + avatarContent + '</div>';
+                cardsHtml += '  <div class="crew-body">';
+                cardsHtml += '    <div class="crew-name">' + cfg.name + ' <span class="crew-role">' + cfg.role + '</span></div>';
+                cardsHtml += '    <div class="crew-text">' + marked.parse(c.text) + '</div>';
+                cardsHtml += '  </div>';
+                cardsHtml += '</div>';
+            });
+
+            cardsHtml += '</div>';
+
+            // Replace the raw section with beautiful cards
+            el.innerHTML = html.replace(section, cardsHtml);
+        });
+    }
+
+    // Run after entries load (with delay for async fetch)
+    setTimeout(parseCrewComments, 1500);
 
     // ========== SIDEBAR ACTIVE STATE ==========
     const sidebarItems = document.querySelectorAll('.sidebar-item[data-nav]');

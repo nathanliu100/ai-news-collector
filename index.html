@@ -551,6 +551,145 @@
             padding-left: 17px;
         }
 
+        /* ============ CREW COMMENTS (折叠式) ============ */
+        .crew-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 4px 14px 4px 6px;
+            font-size: 11px;
+            font-family: var(--mono);
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 4px 0 8px 17px;
+            letter-spacing: 0.3px;
+        }
+
+        .crew-toggle:hover {
+            border-color: var(--accent);
+            color: var(--text-secondary);
+            background: var(--accent-soft);
+        }
+
+        .crew-toggle .crew-avatars-row {
+            display: inline-flex;
+            margin-right: 2px;
+        }
+
+        .crew-toggle .crew-mini-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1.5px solid var(--bg);
+            overflow: hidden;
+            margin-left: -6px;
+            background: var(--surface-alt);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .crew-toggle .crew-mini-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .crew-toggle .crew-mini-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .crew-toggle .crew-arrow {
+            transition: transform 0.2s;
+            font-size: 9px;
+        }
+
+        .crew-toggle.open .crew-arrow {
+            transform: rotate(180deg);
+        }
+
+        .crew-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            margin: 0 0 8px 17px;
+        }
+
+        .crew-panel.open {
+            max-height: 800px;
+        }
+
+        .crew-panel-inner {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface-alt);
+            padding: 12px 16px;
+        }
+
+        .crew-panel .crew-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .crew-panel .crew-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .crew-panel .crew-item:first-child {
+            padding-top: 0;
+        }
+
+        .crew-panel .crew-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .crew-panel .crew-av img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .crew-panel .crew-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .crew-panel .crew-nm {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .crew-panel .crew-msg {
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .crew-panel .crew-msg strong {
+            color: var(--text);
+        }
+
         /* 正文段落 */
         .news-content p {
             font-size: 14px;
@@ -1574,6 +1713,7 @@
             structureNewsBlocks();
             styleSourceLines();
             addAnchorLinks();
+            injectCrewComments();
             updateStats(currentMarkdown);
             handleHashNavigation();
         } catch (e) {
@@ -1759,6 +1899,91 @@
     window.addEventListener('hashchange', function() {
         handleHashNavigation();
     });
+
+    // ========== CREW COMMENTS (折叠式) ==========
+    var CREW = {
+        elon:       { name: 'Elon Musk',  emoji: '🚀', avatar: 'thinking/avatars/elon.png' },
+        jobs:       { name: 'Steve Jobs',  emoji: '🍎', avatar: 'thinking/avatars/jobs.png' },
+        wanweigang: { name: '万维钢',      emoji: '📐', avatar: 'thinking/avatars/wanweigang.png' },
+        trump:      { name: 'Trump',       emoji: '🏆', avatar: 'thinking/avatars/trump.png' },
+        mrbeast:    { name: 'MrBeast',     emoji: '🎬', avatar: 'thinking/avatars/mrbeast.png' }
+    };
+
+    function injectCrewComments() {
+        var blocks = document.querySelectorAll('.news-block');
+        blocks.forEach(function(block) {
+            // Find HTML comments inside the block
+            var walker = document.createTreeWalker(block, NodeFilter.SHOW_COMMENT, null, false);
+            var comments = [];
+            var currentKey = null;
+            var currentText = '';
+            var commentNodes = [];
+
+            // Collect all comment nodes first
+            var node;
+            while ((node = walker.nextNode())) {
+                commentNodes.push(node);
+            }
+
+            // Parse crew comments from the raw HTML of the block
+            var rawHtml = block.innerHTML;
+            var crewPattern = /<!--\s*crew:(\w+)\s*-->([\s\S]*?)<!--\s*\/crew\s*-->/g;
+            var match;
+            while ((match = crewPattern.exec(rawHtml)) !== null) {
+                comments.push({ key: match[1].trim(), text: match[2].trim() });
+            }
+
+            if (comments.length === 0) return;
+
+            // Build toggle button with avatar row
+            var avatarsHtml = '<span class="crew-avatars-row">';
+            comments.forEach(function(c) {
+                var cfg = CREW[c.key] || { emoji: '💬', avatar: '' };
+                avatarsHtml += '<span class="crew-mini-avatar"><img src="' + cfg.avatar + '" onerror="this.style.display=\'none\';this.parentElement.textContent=\'' + cfg.emoji + '\'"></span>';
+            });
+            avatarsHtml += '</span>';
+
+            var toggleId = 'crew-' + Math.random().toString(36).substr(2, 6);
+
+            var toggleBtn = document.createElement('button');
+            toggleBtn.className = 'crew-toggle';
+            toggleBtn.innerHTML = avatarsHtml + ' ' + comments.length + ' 位数字员工有话说 <span class="crew-arrow">▾</span>';
+            toggleBtn.onclick = function() {
+                var panel = document.getElementById(toggleId);
+                toggleBtn.classList.toggle('open');
+                panel.classList.toggle('open');
+            };
+
+            // Build panel
+            var panelDiv = document.createElement('div');
+            panelDiv.className = 'crew-panel';
+            panelDiv.id = toggleId;
+
+            var innerHtml = '<div class="crew-panel-inner">';
+            comments.forEach(function(c) {
+                var cfg = CREW[c.key] || { name: c.key, emoji: '💬', avatar: '' };
+                var avContent = '<img src="' + cfg.avatar + '" onerror="this.style.display=\'none\';this.parentElement.textContent=\'' + cfg.emoji + '\'">';
+                innerHtml += '<div class="crew-item">';
+                innerHtml += '<div class="crew-av">' + avContent + '</div>';
+                innerHtml += '<div class="crew-info">';
+                innerHtml += '<div class="crew-nm">' + cfg.name + '</div>';
+                innerHtml += '<div class="crew-msg">' + c.text + '</div>';
+                innerHtml += '</div></div>';
+            });
+            innerHtml += '</div>';
+            panelDiv.innerHTML = innerHtml;
+
+            // Clean up raw comment markers from display
+            rawHtml = rawHtml.replace(/<!--\s*crew:\w+\s*-->[\s\S]*?<!--\s*\/crew\s*-->/g, '');
+            // Also remove the H2 crew section header if present
+            rawHtml = rawHtml.replace(/<h2[^>]*>.*?💬.*?<\/h2>/gi, '');
+            block.innerHTML = rawHtml;
+
+            // Append toggle and panel at end of block
+            block.appendChild(toggleBtn);
+            block.appendChild(panelDiv);
+        });
+    }
 
     // ========== STATS ==========
     function updateStats(md) {
