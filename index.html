@@ -1709,7 +1709,11 @@
                 if (!res.ok) throw new Error('not found');
             }
             currentMarkdown = await res.text();
-            el.innerHTML = '<div class="news-content">' + marked.parse(currentMarkdown) + '</div>';
+            // Convert crew comment markers to span tags before parsing
+            var mdToParse = currentMarkdown
+                .replace(/<!--\s*crew:(\w+)\s*-->/g, '<span class="crew-data" data-crew="$1">')
+                .replace(/<!--\s*\/crew\s*-->/g, '</span>');
+            el.innerHTML = '<div class="news-content">' + marked.parse(mdToParse) + '</div>';
             structureNewsBlocks();
             styleSourceLines();
             addAnchorLinks();
@@ -1912,26 +1916,15 @@
     function injectCrewComments() {
         var blocks = document.querySelectorAll('.news-block');
         blocks.forEach(function(block) {
-            // Find HTML comments inside the block
-            var walker = document.createTreeWalker(block, NodeFilter.SHOW_COMMENT, null, false);
+            // Find crew-data spans inside this block
+            var crewSpans = block.querySelectorAll('span.crew-data');
+            if (crewSpans.length === 0) return;
+
             var comments = [];
-            var currentKey = null;
-            var currentText = '';
-            var commentNodes = [];
-
-            // Collect all comment nodes first
-            var node;
-            while ((node = walker.nextNode())) {
-                commentNodes.push(node);
-            }
-
-            // Parse crew comments from the raw HTML of the block
-            var rawHtml = block.innerHTML;
-            var crewPattern = /<!--\s*crew:(\w+)\s*-->([\s\S]*?)<!--\s*\/crew\s*-->/g;
-            var match;
-            while ((match = crewPattern.exec(rawHtml)) !== null) {
-                comments.push({ key: match[1].trim(), text: match[2].trim() });
-            }
+            crewSpans.forEach(function(span) {
+                comments.push({ key: span.dataset.crew, text: span.innerHTML.trim() });
+                span.remove();
+            });
 
             if (comments.length === 0) return;
 
@@ -1972,12 +1965,6 @@
             });
             innerHtml += '</div>';
             panelDiv.innerHTML = innerHtml;
-
-            // Clean up raw comment markers from display
-            rawHtml = rawHtml.replace(/<!--\s*crew:\w+\s*-->[\s\S]*?<!--\s*\/crew\s*-->/g, '');
-            // Also remove the H2 crew section header if present
-            rawHtml = rawHtml.replace(/<h2[^>]*>.*?💬.*?<\/h2>/gi, '');
-            block.innerHTML = rawHtml;
 
             // Append toggle and panel at end of block
             block.appendChild(toggleBtn);

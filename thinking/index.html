@@ -1671,6 +1671,9 @@
                 if (!res.ok) throw new Error('not found');
                 var md = await res.text();
                 md = md.replace(/^# .+\n/, '');
+                // Convert crew comment markers to span tags before parsing (HTML comments get lost in DOM)
+                md = md.replace(/<!--\s*comment:(\w+)\s*-->/g, '<span class="crew-data" data-crew="$1">');
+                md = md.replace(/<!--\s*\/comment\s*-->/g, '</span>');
                 el.innerHTML = marked.parse(md);
             } catch (e) {
                 el.innerHTML = '<p style="color:var(--text-dim);font-style:italic;">日志加载失败</p>';
@@ -1691,23 +1694,25 @@
 
     function parseCrewComments() {
         document.querySelectorAll('.entry-content').forEach(function(el) {
-            var html = el.innerHTML;
-            // Find the crew comments section: look for H2 with 💬
-            var crewMatch = html.match(/<h2[^>]*>.*?💬.*?数字员工圆桌.*?<\/h2>([\s\S]*?)(?=<h2|$)/i);
-            if (!crewMatch) return;
+            // Find crew-data spans
+            var crewSpans = el.querySelectorAll('span.crew-data');
+            if (crewSpans.length === 0) return;
 
-            var section = crewMatch[0];
-            var commentsHtml = crewMatch[1];
-
-            // Parse individual comments: <!-- comment:key --> text <!-- /comment -->
-            var commentPattern = /<!--\s*comment:(\w+)\s*-->([\s\S]*?)<!--\s*\/comment\s*-->/g;
             var comments = [];
-            var match;
-            while ((match = commentPattern.exec(commentsHtml)) !== null) {
-                comments.push({ key: match[1].trim(), text: match[2].trim() });
-            }
+            crewSpans.forEach(function(span) {
+                comments.push({ key: span.dataset.crew, text: span.innerHTML.trim() });
+            });
 
             if (comments.length === 0) return;
+
+            // Remove the H2 crew section header and all crew spans
+            var h2s = el.querySelectorAll('h2');
+            h2s.forEach(function(h2) {
+                if (h2.textContent.indexOf('💬') >= 0 && h2.textContent.indexOf('数字员工') >= 0) {
+                    h2.remove();
+                }
+            });
+            crewSpans.forEach(function(span) { span.remove(); });
 
             // Build beautiful comment cards
             var cardsHtml = '<div class="crew-comments">';
@@ -1721,15 +1726,15 @@
                 cardsHtml += '  <div class="crew-avatar">' + avatarContent + '</div>';
                 cardsHtml += '  <div class="crew-body">';
                 cardsHtml += '    <div class="crew-name">' + cfg.name + ' <span class="crew-role">' + cfg.role + '</span></div>';
-                cardsHtml += '    <div class="crew-text">' + marked.parse(c.text) + '</div>';
+                cardsHtml += '    <div class="crew-text">' + c.text + '</div>';
                 cardsHtml += '  </div>';
                 cardsHtml += '</div>';
             });
 
             cardsHtml += '</div>';
 
-            // Replace the raw section with beautiful cards
-            el.innerHTML = html.replace(section, cardsHtml);
+            // Append at end of content
+            el.insertAdjacentHTML('beforeend', cardsHtml);
         });
     }
 
