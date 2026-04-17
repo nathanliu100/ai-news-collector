@@ -1726,7 +1726,7 @@
                 cardsHtml += '  <div class="crew-avatar">' + avatarContent + '</div>';
                 cardsHtml += '  <div class="crew-body">';
                 cardsHtml += '    <div class="crew-name">' + cfg.name + ' <span class="crew-role">' + cfg.role + '</span></div>';
-                cardsHtml += '    <div class="crew-text">' + c.text + '</div>';
+                cardsHtml += '    <div class="crew-text">' + marked.parseInline(c.text) + '</div>';
                 cardsHtml += '  </div>';
                 cardsHtml += '</div>';
             });

@@ -1960,7 +1960,7 @@
                 innerHtml += '<div class="crew-av">' + avContent + '</div>';
                 innerHtml += '<div class="crew-info">';
                 innerHtml += '<div class="crew-nm">' + cfg.name + '</div>';
-                innerHtml += '<div class="crew-msg">' + c.text + '</div>';
+                innerHtml += '<div class="crew-msg">' + marked.parseInline(c.text) + '</div>';
                 innerHtml += '</div></div>';
             });
             innerHtml += '</div>';
