@@ -1684,9 +1684,30 @@
     });
 
     // ========== NEWS FILE PATH ==========
+    // 周末（周六=6 / 周日=0）优先尝试 -weekend.md，fallback 到普通日报
+    function isWeekendDate(dateStr) {
+        var d = new Date(dateStr + 'T00:00:00');
+        var dow = d.getDay();
+        return dow === 0 || dow === 6;
+    }
     function newsPath(dateStr) {
-        if (currentLang === 'en') return 'news/' + dateStr + '.en.md';
-        return 'news/' + dateStr + '.md';
+        var suffix = currentLang === 'en' ? '.en.md' : '.md';
+        if (isWeekendDate(dateStr)) return 'news/' + dateStr + '-weekend' + suffix;
+        return 'news/' + dateStr + suffix;
+    }
+    // 生成一组候选路径：周末先 weekend、再普通日报；普通日先中文/英文主版，再 fallback 另一语言
+    function newsPathCandidates(dateStr) {
+        var isWeekend = isWeekendDate(dateStr);
+        var primary = currentLang === 'en' ? '.en.md' : '.md';
+        var fallbackLang = currentLang === 'en' ? '.md' : '.en.md';
+        var list = [];
+        if (isWeekend) {
+            list.push('news/' + dateStr + '-weekend' + primary);
+            list.push('news/' + dateStr + '-weekend' + fallbackLang);
+        }
+        list.push('news/' + dateStr + primary);
+        list.push('news/' + dateStr + fallbackLang);
+        return list;
     }
 
     // ========== LOAD DAILY ==========
@@ -1702,12 +1723,13 @@
         });
 
         try {
-            var res = await fetch(newsPath(dateStr));
-            if (!res.ok) {
-                var fallback = currentLang === 'en' ? ('news/' + dateStr + '.md') : ('news/' + dateStr + '.en.md');
-                res = await fetch(fallback);
-                if (!res.ok) throw new Error('not found');
+            var candidates = newsPathCandidates(dateStr);
+            var res = null;
+            for (var i = 0; i < candidates.length; i++) {
+                var tryRes = await fetch(candidates[i]);
+                if (tryRes.ok) { res = tryRes; break; }
             }
+            if (!res) throw new Error('not found');
             currentMarkdown = await res.text();
             // Convert crew comment markers to span tags before parsing
             var mdToParse = currentMarkdown
@@ -2090,8 +2112,19 @@
             d.setDate(d.getDate() - i);
             var ds = fmtDate(d);
             try {
-                var r = await fetch('news/' + ds + '.md', { method: 'HEAD' });
-                if (r.ok) files.push(ds);
+                // 周六日优先查 -weekend.md，没有再查普通版
+                var isWe = (d.getDay() === 0 || d.getDay() === 6);
+                var primary = isWe ? ('news/' + ds + '-weekend.md') : ('news/' + ds + '.md');
+                var r = await fetch(primary, { method: 'HEAD' });
+                if (r.ok) {
+                    files.push({ date: ds, weekend: isWe });
+                    continue;
+                }
+                if (isWe) {
+                    // weekend 版不存在就 fallback 到普通版
+                    var r2 = await fetch('news/' + ds + '.md', { method: 'HEAD' });
+                    if (r2.ok) files.push({ date: ds, weekend: false });
+                }
             } catch(e){}
         }
         if (!files.length) {
@@ -2099,7 +2132,8 @@
             return;
         }
         el.innerHTML = files.map(function(f) {
-            return '<div class="panel-item ' + (f===fmtDate(currentDate)?'active':'') + '" onclick="jumpTo(\'' + f + '\')">' + f + '</div>';
+            var label = f.weekend ? (f.date + ' 🌴 Weekend') : f.date;
+            return '<div class="panel-item ' + (f.date===fmtDate(currentDate)?'active':'') + '" onclick="jumpTo(\'' + f.date + '\')">' + label + '</div>';
         }).join('');
     }
 
