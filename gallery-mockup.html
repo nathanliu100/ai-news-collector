@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 创作 Gallery · 作品精选 | AI Daily Briefing</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- X widgets for embedding tweets -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FAFAF8;
+            --surface: #FFFFFF;
+            --surface-alt: #F5F4F0;
+            --border: #E8E6E1;
+            --border-strong: #D4D1C9;
+            --text: #1A1A18;
+            --text-secondary: #6B6960;
+            --text-tertiary: #9E9B91;
+            --accent: #C8402A;
+            --accent-soft: rgba(200, 64, 42, 0.08);
+            --ink: #2C2C2A;
+            --tag-red: #C8402A;
+            --tag-yellow: #B8860B;
+            --tag-green: #4A7C59;
+            --tag-blue: #3D5A80;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+            --radius: 4px;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #141413;
+                --surface: #1C1C1A;
+                --surface-alt: #222220;
+                --border: #2E2E2A;
+                --border-strong: #3A3A35;
+                --text: #EDECEA;
+                --text-secondary: #9E9B91;
+                --text-tertiary: #6B6960;
+                --accent: #E05A3E;
+                --accent-soft: rgba(224, 90, 62, 0.1);
+                --ink: #D4D1C9;
+                --tag-red: #E05A3E;
+                --tag-yellow: #D4A017;
+                --tag-green: #6BAF7B;
+                --tag-blue: #6B9BC3;
+                --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+                --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+                --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+            }
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ MASTHEAD (与主站一致) ============ */
+        .masthead {
+            border-bottom: 3px double var(--border-strong);
+            padding: 28px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .masthead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .masthead-title {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+        }
+
+        .masthead-sub {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ============ NAV BAR (与主站一致) ============ */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+        .nav-bar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+        .nav-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--ink);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            margin-right: 12px;
+        }
+        .nav-section-label {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            font-weight: 500;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pill {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .pill:hover {
+            color: var(--text);
+            border-color: var(--border);
+            background: var(--surface-alt);
+        }
+        .pill.active {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+        .back-link {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--accent); }
+
+        /* ========== 页头区 ========== */
+        .gallery-hero {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-label {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .hero-subtitle {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        /* ========== 筛选栏 ========== */
+        .filter-bar {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .filter-label {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: 4px;
+        }
+        .filter-chip {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .filter-chip:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .filter-chip.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        .filter-count {
+            margin-left: auto;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* ========== Gallery 网格 ========== */
+        .gallery-grid {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* 作品卡片 */
+        .video-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-strong);
+        }
+
+        /* 视频容器 */
+        .video-embed {
+            position: relative;
+            width: 100%;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+        }
+        .video-embed iframe,
+        .video-embed video,
+        .video-embed .twitter-tweet {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            border: 0 !important;
+        }
+        /* Fallback 缩略图（X embed 加载前显示） */
+        .video-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .video-fallback::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 25% 30%, rgba(200, 64, 42, 0.3), transparent 45%),
+                radial-gradient(circle at 75% 70%, rgba(61, 90, 128, 0.25), transparent 45%);
+        }
+        .play-button {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .video-card:hover .play-button {
+            transform: scale(1.08);
+        }
+        .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid #1a1a1a;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 6px;
+        }
+
+        /* 角标：时长/热度 */
+        .video-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 3px;
+            z-index: 2;
+        }
+        .video-badge.hot {
+            background: var(--accent);
+        }
+
+        /* 卡片内容区 */
+        .card-body {
+            padding: 20px 22px 22px;
+        }
+
+        .card-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .tool-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 3px;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .category-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', 'Noto Sans SC', serif;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .card-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .card-title a:hover {
+            color: var(--accent);
+        }
+
+        .card-creator {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-creator a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .card-creator a:hover {
+            color: var(--accent);
+        }
+
+        /* 编辑点评 */
+        .card-note {
+            padding: 14px 16px;
+            background: var(--surface-alt);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .card-note-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* 相关启示（针对 Nate 的用例） */
+        .card-insights {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+        .insight-item::before {
+            content: '→';
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* 卡片底栏 */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border);
+        }
+        .card-stats {
+            display: flex;
+            gap: 16px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+        .card-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .card-action-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .card-action-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .card-action-btn.primary {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+        .card-action-btn.primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* ========== Featured 大卡（精选置顶） ========== */
+        .featured-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-strong);
+            background: var(--surface);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .featured-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .featured-card .video-embed {
+            aspect-ratio: 16 / 9;
+            height: auto;
+            min-height: auto;
+        }
+        .featured-card .card-body {
+            padding: 28px 24px;
+        }
+        .featured-card .card-title {
+            font-size: 26px;
+            line-height: 1.2;
+        }
+
+        .featured-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: var(--accent);
+            color: white;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border-radius: 3px;
+            margin-bottom: 14px;
+            align-self: flex-start;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 600px) {
+            .gallery-grid { padding: 20px 16px; gap: 20px; }
+            .featured-card .card-body { padding: 20px 16px; }
+            .featured-card .card-title { font-size: 22px; }
+            .hero-title { font-size: 28px; }
+            .gallery-hero { padding: 28px 16px 20px; }
+            .nav-inner { padding: 0 12px; height: 48px; }
+            .nav-section-label { display: none; }
+            .filter-bar { padding: 16px; }
+        }
+
+        /* 底部标注 */
+        .mockup-notice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            background: var(--accent);
+            color: white;
+            font-family: var(--mono);
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+            z-index: 200;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Masthead（与主站一致） -->
+    <header class="masthead">
+        <h1 class="masthead-title">AI Daily Briefing</h1>
+        <p class="masthead-sub">Intelligence · Design · Trends</p>
+    </header>
+
+    <!-- Nav Bar（与主站一致的结构，适配 Gallery 内容） -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <span class="nav-brand">AI Briefing</span>
+                <a href="index.html" class="back-link">‹ 返回新闻</a>
+                <span style="color:var(--border-strong); margin: 0 8px;">|</span>
+                <span class="nav-section-label">🎬 作品精选 Gallery</span>
+            </div>
+            <div class="nav-right">
+                <button class="pill active">全部</button>
+                <button class="pill">叙事</button>
+                <button class="pill">角色</button>
+                <button class="pill">特效</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页头 Hero -->
+    <section class="gallery-hero">
+        <div class="hero-label">AI Creative Gallery · 作品精选</div>
+        <h1 class="hero-title">
+            值得反复观看的 <em>AI 影像</em><br>
+            来自全球创作者
+        </h1>
+        <p class="hero-subtitle">
+            一个持续更新的 AI 视频作品集。从 Kling 的电影感长镜头到 Higgsfield 的角色一致性，
+            从 Runway 的创意剪辑到即梦的中式叙事 — 每一个作品都附带编辑的技术拆解和落地启示。
+        </p>
+    </section>
+
+    <!-- 筛选信息条 -->
+    <section class="filter-bar">
+        <div class="filter-group">
+            <span class="filter-label">Tools</span>
+            <button class="filter-chip active">全部</button>
+            <button class="filter-chip">Higgsfield</button>
+            <button class="filter-chip">Kling</button>
+            <button class="filter-chip">Runway</button>
+            <button class="filter-chip">Veo</button>
+            <button class="filter-chip">即梦</button>
+        </div>
+        <span class="filter-count">共 1 件作品（Mockup）</span>
+    </section>
+
+    <!-- Gallery 网格 -->
+    <section class="gallery-grid">
+
+        <!-- ========== Featured 大卡（精选置顶）========== -->
+        <article class="featured-card">
+            <div class="video-embed">
+                <!-- 方案 A: 直接嵌入 X tweet（需要 platform.twitter.com/widgets.js） -->
+                <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+                    <p lang="en" dir="ltr">Loading tweet from @higgsfield...</p>
+                    <a href="https://x.com/higgsfield/status/2046284726659604564">
+                        查看原推文 →
+                    </a>
+                </blockquote>
+
+                <!-- 时长角标 -->
+                <div class="video-badge hot">🔥 本周必看</div>
+            </div>
+
+            <div class="card-body">
+                <span class="featured-banner">⭐ Editor's Pick</span>
+
+                <div class="card-meta-top">
+                    <span class="tool-badge">Higgsfield · Seedance 2.0</span>
+                    <span class="category-tag">长篇叙事 / Cinematic</span>
+                </div>
+
+                <h2 class="card-title">
+                    <a href="https://x.com/higgsfield/status/2046284726659604564" target="_blank" rel="noopener">
+                        AI 视频的"数码摄影时刻"
+                    </a>
+                </h2>
+
+                <div class="card-creator">
+                    by <a href="https://x.com/higgsfield" target="_blank">@higgsfield</a>
+                    · 2026-04-18 · Seedance 2.0 演示作品
+                </div>
+
+                <div class="card-note">
+                    <span class="card-note-label">Editor's Note · 编辑点评</span>
+                    Higgsfield 在 4/11 推出 <strong>Zephy（11 分钟连续生成）</strong> 后，
+                    又在 4/18 放出用 Seedance 2.0 制作的 <strong>23 分钟 AI 科幻试播集</strong>——
+                    4 天完成，原生 1080p，首次实现 AI 影片的"情感共鸣"。
+                    这条推文是配套的技术演示片段，展示了角色一致性、镜头语言和情感节奏。
+                </div>
+
+                <div class="card-insights">
+                    <div class="insight-item">
+                        <strong>角色一致性</strong>已达生产级——整段 10 分钟人物特征稳定，不再"变脸"
+                    </div>
+                    <div class="insight-item">
+                        <strong>电影级灯光 + 多镜头叙事</strong>原生支持，不用再靠后期拼接
+                    </div>
+                    <div class="insight-item">
+                        <strong>制作周期</strong>：4 位导演 × 4 天 = 10 分钟成片，完全匹配 B 站参赛节奏
+                    </div>
+                    <div class="insight-item">
+                        <strong>对 POE2 短剧的启示</strong>：可以直接尝试"单镜头 2-3 分钟 + 5-8 段"的结构
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="card-stats">
+                        <span class="card-stat">💬 2.3k</span>
+                        <span class="card-stat">🔁 8.7k</span>
+                        <span class="card-stat">❤️ 42k</span>
+                        <span class="card-stat">📺 1.2M 播放</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="card-action-btn">⎘ 拆解笔记</a>
+                        <a href="https://x.com/higgsfield/status/2046284726659604564" target="_blank" class="card-action-btn primary">
+                            在 X 打开 ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========== 普通卡片占位（说明后续会长这样）========== -->
+        <article class="video-card" style="opacity: 0.4;">
+            <div class="video-embed">
+                <div class="video-fallback">
+                    <div class="play-button"></div>
+                </div>
+                <div class="video-badge">0:45</div>
+            </div>
+            <div class="card-body">
+                <div class="card-meta-top">
+                    <span class="tool-badge">Kling 3.0</span>
+                    <span class="category-tag">角色动画</span>
+                </div>
+                <h3 class="card-title">
+                    <a href="#">（占位）后续添加的作品会长这样</a>
+                </h3>
+                <div class="card-creator">by @creator_name · 2026-04-20</div>
+                <div class="card-note">
+                    <span class="card-note-label">Editor's Note</span>
+                    每个作品的编辑点评放在这里——2-3 句，说明为什么值得看、技术上有什么突破。
+                </div>
+                <div class="card-footer">
+                    <div class="card-stats">
+                        <span class="card-stat">❤️ —</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="card-action-btn primary">在 X 打开 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="video-card" style="opacity: 0.4;">
+            <div class="video-embed">
+                <div class="video-fallback">
+                    <div class="play-button"></div>
+                </div>
+                <div class="video-badge">1:12</div>
+            </div>
+            <div class="card-body">
+                <div class="card-meta-top">
+                    <span class="tool-badge">Runway Gen-4.5</span>
+                    <span class="category-tag">特效实验</span>
+                </div>
+                <h3 class="card-title">
+                    <a href="#">（占位）瀑布流继续往下</a>
+                </h3>
+                <div class="card-creator">by @creator_name · 2026-04-19</div>
+                <div class="card-note">
+                    <span class="card-note-label">Editor's Note</span>
+                    未来你发给我 X 链接，我就自动产出这样一张卡片，嵌入视频 + 背景调研 + 启示点。
+                </div>
+                <div class="card-footer">
+                    <div class="card-stats">
+                        <span class="card-stat">❤️ —</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="card-action-btn primary">在 X 打开 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+    <div class="mockup-notice">MOCKUP · 演示版本</div>
+
+    <script>
+        // Scroll shadow (与主站一致)
+        window.addEventListener('scroll', function() {
+            document.getElementById('navBar').classList.toggle('scrolled', window.scrollY > 60);
+        });
+    </script>
+</body>
+</html>

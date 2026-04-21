@@ -952,6 +952,8 @@
 
         .mode-tab:hover { color: var(--text-secondary); }
 
+        a.mode-tab { text-decoration: none; }
+
         .mode-tab.active {
             color: var(--text);
             border-bottom-color: var(--accent);
@@ -1438,6 +1440,7 @@
 <div class="mode-tabs" id="modeTabs">
     <button class="mode-tab active" data-mode="daily" onclick="setMode('daily')" data-i18n-daily>Daily</button>
     <button class="mode-tab" data-mode="weekly" onclick="setMode('weekly')" data-i18n-weekly>Weekly</button>
+    <a class="mode-tab" href="gallery-mockup.html" data-mode="gallery" data-i18n-gallery>🎬 Gallery</a>
 </div>
 
 <div class="stats-ribbon" id="statsRibbon">
@@ -1531,7 +1534,7 @@
             no_briefing: '暂无简报', no_briefing_desc: '该日期的自动收集尚未执行。',
             no_weekly: '暂无周报', no_weekly_desc: '该周的周报尚未发布。',
             no_archive: '暂无存档。', scanning: '扫描中…',
-            lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报',
+            lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报', mode_gallery: '🎬 作品',
             toast_copied: '🔗 链接已复制',
         },
         en: {
@@ -1541,7 +1544,7 @@
             no_briefing: 'No briefing for this date', no_briefing_desc: 'The automation hasn\'t run for this date yet.',
             no_weekly: 'No weekly briefing', no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
             no_archive: 'No archives found.', scanning: 'Scanning\u2026',
-            lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly',
+            lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly', mode_gallery: '🎬 Gallery',
             toast_copied: '🔗 Link copied',
         }
     };
@@ -1570,6 +1573,7 @@
         });
         document.querySelector('.mode-tab[data-mode="daily"]').textContent = t('mode_daily');
         document.querySelector('.mode-tab[data-mode="weekly"]').textContent = t('mode_weekly');
+        document.querySelector('.mode-tab[data-mode="gallery"]').textContent = t('mode_gallery');
     }
 
     function toggleLang() {
