@@ -9,9 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- X widgets for embedding tweets -->
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -311,6 +308,9 @@
             background: #000;
             aspect-ratio: 16 / 9;
             overflow: hidden;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
         }
         .video-embed iframe,
         .video-embed video,
@@ -363,6 +363,31 @@
             border-top: 12px solid transparent;
             border-bottom: 12px solid transparent;
             margin-left: 6px;
+        }
+        .video-source-tag {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 24px;
+            z-index: 2;
+            letter-spacing: 0.02em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .video-embed:hover .video-source-tag {
+            background: var(--accent);
+            color: white;
+        }
+        .featured-card:hover .play-button {
+            transform: scale(1.08);
         }
 
         /* 角标：时长/热度 */
@@ -676,18 +701,13 @@
 
         <!-- ========== Featured 大卡（精选置顶）========== -->
         <article class="featured-card">
-            <div class="video-embed">
-                <!-- 方案 A: 直接嵌入 X tweet（需要 platform.twitter.com/widgets.js） -->
-                <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
-                    <p lang="en" dir="ltr">Loading tweet from @higgsfield...</p>
-                    <a href="https://x.com/higgsfield/status/2046284726659604564">
-                        查看原推文 →
-                    </a>
-                </blockquote>
-
-                <!-- 时长角标 -->
+            <a class="video-embed" href="https://x.com/higgsfield/status/2046284726659604564" target="_blank" rel="noopener" title="在 X 打开视频">
+                <div class="video-fallback">
+                    <div class="play-button"></div>
+                    <div class="video-source-tag">▶ 点击在 X 打开视频</div>
+                </div>
                 <div class="video-badge hot">🔥 本周必看</div>
-            </div>
+            </a>
 
             <div class="card-body">
                 <span class="featured-banner">⭐ Editor's Pick</span>
@@ -699,7 +719,7 @@
 
                 <h2 class="card-title">
                     <a href="https://x.com/higgsfield/status/2046284726659604564" target="_blank" rel="noopener">
-                        AI 视频的"数码摄影时刻"
+                        Higgsfield Seedance 2.0 演示：AI 长篇叙事的里程碑
                     </a>
                 </h2>
 
@@ -712,13 +732,13 @@
                     <span class="card-note-label">Editor's Note · 编辑点评</span>
                     Higgsfield 在 4/11 推出 <strong>Zephy（11 分钟连续生成）</strong> 后，
                     又在 4/18 放出用 Seedance 2.0 制作的 <strong>23 分钟 AI 科幻试播集</strong>——
-                    4 天完成，原生 1080p，首次实现 AI 影片的"情感共鸣"。
+                    4 天完成，原生 1080p，首次实现 AI 影片的「情感共鸣」。
                     这条推文是配套的技术演示片段，展示了角色一致性、镜头语言和情感节奏。
                 </div>
 
                 <div class="card-insights">
                     <div class="insight-item">
-                        <strong>角色一致性</strong>已达生产级——整段 10 分钟人物特征稳定，不再"变脸"
+                        <strong>角色一致性</strong>已达生产级——整段 10 分钟人物特征稳定，不再「变脸」
                     </div>
                     <div class="insight-item">
                         <strong>电影级灯光 + 多镜头叙事</strong>原生支持，不用再靠后期拼接
@@ -727,19 +747,17 @@
                         <strong>制作周期</strong>：4 位导演 × 4 天 = 10 分钟成片，完全匹配 B 站参赛节奏
                     </div>
                     <div class="insight-item">
-                        <strong>对 POE2 短剧的启示</strong>：可以直接尝试"单镜头 2-3 分钟 + 5-8 段"的结构
+                        <strong>对 POE2 短剧的启示</strong>：可以直接尝试「单镜头 2-3 分钟 + 5-8 段」的结构
                     </div>
                 </div>
 
                 <div class="card-footer">
                     <div class="card-stats">
-                        <span class="card-stat">💬 2.3k</span>
-                        <span class="card-stat">🔁 8.7k</span>
-                        <span class="card-stat">❤️ 42k</span>
-                        <span class="card-stat">📺 1.2M 播放</span>
+                        <span class="card-stat">🎬 Higgsfield</span>
+                        <span class="card-stat">⏱ 23 min pilot</span>
+                        <span class="card-stat">📐 1080p 原生</span>
                     </div>
                     <div class="card-actions">
-                        <a href="#" class="card-action-btn">⎘ 拆解笔记</a>
                         <a href="https://x.com/higgsfield/status/2046284726659604564" target="_blank" class="card-action-btn primary">
                             在 X 打开 ↗
                         </a>
