@@ -56,6 +56,10 @@
                 --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
                 --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
             }
+
+            .masthead-logo, .nav-logo {
+                filter: invert(1);
+            }
         }
 
         body {
@@ -85,6 +89,23 @@
             width: 40px;
             height: 3px;
             background: var(--accent);
+        }
+
+        .masthead-logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-logo {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+            margin-top: -2px;
         }
 
         .masthead-title {
@@ -758,6 +779,7 @@
 
     <!-- Masthead（与主站一致） -->
     <header class="masthead">
+        <img src="logo.png" alt="Logo" class="masthead-logo">
         <h1 class="masthead-title">AI Daily Briefing</h1>
         <p class="masthead-sub">Intelligence · Design · Trends</p>
     </header>
@@ -766,7 +788,7 @@
     <nav class="nav-bar" id="navBar">
         <div class="nav-inner">
             <div class="nav-left">
-                <span class="nav-brand">AI Briefing</span>
+                <span class="nav-brand"><img src="logo.png" alt="" class="nav-logo">AI Briefing</span>
             </div>
             <div class="nav-right">
             </div>

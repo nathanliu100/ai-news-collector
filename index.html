@@ -68,6 +68,10 @@
                 --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
                 --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
             }
+
+            .masthead-logo, .nav-logo {
+                filter: invert(1);
+            }
         }
 
         body {
@@ -116,6 +120,23 @@
             font-weight: 900;
             letter-spacing: -0.5px;
             color: var(--ink);
+        }
+
+        .masthead-logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-logo {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+            margin-top: -2px;
         }
 
         .masthead-sub {
@@ -1413,6 +1434,7 @@
 <body>
 
 <header class="masthead" id="masthead">
+    <img src="logo.png" alt="Logo" class="masthead-logo">
     <h1 class="masthead-title">AI Daily Briefing</h1>
     <p class="masthead-sub">Intelligence · Design · Trends</p>
 </header>
@@ -1420,7 +1442,7 @@
 <nav class="nav-bar" id="navBar">
     <div class="nav-inner">
         <div class="nav-left">
-            <span class="nav-brand" id="navBrand">AI Briefing</span>
+            <span class="nav-brand" id="navBrand"><img src="logo.png" alt="" class="nav-logo">AI Briefing</span>
             <button class="nav-btn" onclick="changeDate(-1)" aria-label="Previous day">&#8249;</button>
             <div class="nav-date" id="currentDate"></div>
             <button class="nav-btn" onclick="changeDate(1)" aria-label="Next day">&#8250;</button>
