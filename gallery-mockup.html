@@ -186,6 +186,36 @@
         }
         .back-link:hover { color: var(--accent); }
 
+        /* ============ MODE TABS（与主站一致）============ */
+        .mode-tabs {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+        .mode-tab {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-tertiary);
+            padding: 12px 20px;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+            bottom: -1px;
+            text-decoration: none;
+        }
+        .mode-tab:hover { color: var(--text-secondary); }
+        .mode-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--accent);
+        }
+
         /* ========== 页头区 ========== */
         .gallery-hero {
             max-width: 780px;
@@ -722,22 +752,6 @@
             .nav-section-label { display: none; }
             .filter-bar { padding: 16px; }
         }
-
-        /* 底部标注 */
-        .mockup-notice {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 16px;
-            background: var(--accent);
-            color: white;
-            font-family: var(--mono);
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: var(--shadow-lg);
-            z-index: 200;
-            letter-spacing: 0.05em;
-        }
     </style>
 </head>
 <body>
@@ -748,23 +762,23 @@
         <p class="masthead-sub">Intelligence · Design · Trends</p>
     </header>
 
-    <!-- Nav Bar（与主站一致的结构，适配 Gallery 内容） -->
+    <!-- Nav Bar（与主站一致的结构） -->
     <nav class="nav-bar" id="navBar">
         <div class="nav-inner">
             <div class="nav-left">
                 <span class="nav-brand">AI Briefing</span>
-                <a href="index.html" class="back-link">‹ 返回新闻</a>
-                <span style="color:var(--border-strong); margin: 0 8px;">|</span>
-                <span class="nav-section-label">🎬 作品精选 Gallery</span>
             </div>
             <div class="nav-right">
-                <button class="pill active">全部</button>
-                <button class="pill">叙事</button>
-                <button class="pill">角色</button>
-                <button class="pill">特效</button>
             </div>
         </div>
     </nav>
+
+    <!-- Mode Tabs（与主站统一） -->
+    <div class="mode-tabs">
+        <a class="mode-tab" href="index.html">日报</a>
+        <a class="mode-tab" href="index.html#weekly">周报</a>
+        <a class="mode-tab active" href="gallery-mockup.html">🎬 作品</a>
+    </div>
 
     <!-- 页头 Hero -->
     <section class="gallery-hero">
@@ -933,7 +947,8 @@
 
                         <div class="crew-comment">
                             <div class="crew-avatar-wrap">
-                                <div class="crew-avatar-fallback" style="display:flex">🎥</div>
+                                <img class="crew-avatar" src="thinking/avatars/tim.png" alt="Tim" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                                <div class="crew-avatar-fallback" style="display:none">🎥</div>
                             </div>
                             <div class="crew-content">
                                 <span class="crew-name">Tim · 影视飓风</span>
@@ -946,72 +961,7 @@
             </div>
         </article>
 
-        <!-- ========== 普通卡片占位（说明后续会长这样）========== -->
-        <article class="video-card" style="opacity: 0.4;">
-            <div class="video-embed">
-                <div class="video-fallback">
-                    <div class="play-button"></div>
-                </div>
-                <div class="video-badge">0:45</div>
-            </div>
-            <div class="card-body">
-                <div class="card-meta-top">
-                    <span class="tool-badge">Kling 3.0</span>
-                    <span class="category-tag">角色动画</span>
-                </div>
-                <h3 class="card-title">
-                    <a href="#">（占位）后续添加的作品会长这样</a>
-                </h3>
-                <div class="card-creator">by @creator_name · 2026-04-20</div>
-                <div class="card-note">
-                    <span class="card-note-label">Editor's Note</span>
-                    每个作品的编辑点评放在这里——2-3 句，说明为什么值得看、技术上有什么突破。
-                </div>
-                <div class="card-footer">
-                    <div class="card-stats">
-                        <span class="card-stat">❤️ —</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="#" class="card-action-btn primary">在 X 打开 ↗</a>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <article class="video-card" style="opacity: 0.4;">
-            <div class="video-embed">
-                <div class="video-fallback">
-                    <div class="play-button"></div>
-                </div>
-                <div class="video-badge">1:12</div>
-            </div>
-            <div class="card-body">
-                <div class="card-meta-top">
-                    <span class="tool-badge">Runway Gen-4.5</span>
-                    <span class="category-tag">特效实验</span>
-                </div>
-                <h3 class="card-title">
-                    <a href="#">（占位）瀑布流继续往下</a>
-                </h3>
-                <div class="card-creator">by @creator_name · 2026-04-19</div>
-                <div class="card-note">
-                    <span class="card-note-label">Editor's Note</span>
-                    未来你发给我 X 链接，我就自动产出这样一张卡片，嵌入视频 + 背景调研 + 启示点。
-                </div>
-                <div class="card-footer">
-                    <div class="card-stats">
-                        <span class="card-stat">❤️ —</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="#" class="card-action-btn primary">在 X 打开 ↗</a>
-                    </div>
-                </div>
-            </div>
-        </article>
-
     </section>
-
-    <div class="mockup-notice">MOCKUP · 演示版本</div>
 
     <script>
         // Scroll shadow (与主站一致)
