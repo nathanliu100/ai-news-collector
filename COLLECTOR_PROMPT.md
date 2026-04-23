@@ -291,11 +291,11 @@ GitHub Trending 是天然的高可信信源——数据来自 GitHub 官方，st
 | `elon` | Elon Musk | 战略狠辣、第一性原理、行业博弈视角 |
 | `jobs` | Steve Jobs | 产品体验、用户价值、"少即是多" |
 | `wanweigang` | 万维钢 | 科学实证、反常识、数据背后的含义 |
-| `trump` | Trump | 夸张口吻、"best / huge / tremendous"、反复强调美国/中国/竞争 |
+| `tim` | Tim（潘天鸿 / 影视飓风） | 影视制作专业视角、实操工艺判断、导演思维、敢质疑不盲从 |
 | `mrbeast` | MrBeast | 内容创作者视角、"这对创作者意味着什么"、爆款思维 |
 
 **写作要求：**
-- 每条评论 **1-2 句话**，口语化，保留角色语气特征（elon 狠、jobs 克制、万维钢科学、Trump 浮夸、MrBeast 内容人）
+- 每条评论 **1-2 句话**，口语化，保留角色语气特征（elon 狠、jobs 克制、万维钢科学、Tim 专业冷静、MrBeast 内容人）
 - 角色之间要有**观点差异**，不能五个人都夸或都喷
 - 用 `**加粗**` 突出每条评论最核心的那个点
 - **5 位全部都要写**，不能只写 3 位
@@ -310,7 +310,7 @@ GitHub Trending 是天然的高可信信源——数据来自 GitHub 官方，st
 <!-- crew:elon -->Elon 视角的评论，**加粗核心观点**。<!-- /crew -->
 <!-- crew:jobs -->Jobs 视角的评论，**加粗核心观点**。<!-- /crew -->
 <!-- crew:wanweigang -->万维钢视角的评论，**加粗核心观点**。<!-- /crew -->
-<!-- crew:trump -->Trump 视角的评论，**加粗核心观点**。<!-- /crew -->
+<!-- crew:tim -->Tim 视角的评论，**加粗核心观点**。<!-- /crew -->
 <!-- crew:mrbeast -->MrBeast 视角的评论，**加粗核心观点**。<!-- /crew -->
 ```
 
@@ -347,7 +347,7 @@ GitHub Trending 是天然的高可信信源——数据来自 GitHub 官方，st
 <!-- crew:elon -->Elon 视角 1-2 句，**加粗核心观点**。<!-- /crew -->
 <!-- crew:jobs -->Jobs 视角 1-2 句，**加粗核心观点**。<!-- /crew -->
 <!-- crew:wanweigang -->万维钢视角 1-2 句，**加粗核心观点**。<!-- /crew -->
-<!-- crew:trump -->Trump 视角 1-2 句，**加粗核心观点**。<!-- /crew -->
+<!-- crew:tim -->Tim 视角 1-2 句，**加粗核心观点**。<!-- /crew -->
 <!-- crew:mrbeast -->MrBeast 视角 1-2 句，**加粗核心观点**。<!-- /crew -->
 
 ### 🟡 [新闻标题](原文链接)
@@ -356,7 +356,7 @@ GitHub Trending 是天然的高可信信源——数据来自 GitHub 官方，st
 <!-- crew:elon -->...<!-- /crew -->
 <!-- crew:jobs -->...<!-- /crew -->
 <!-- crew:wanweigang -->...<!-- /crew -->
-<!-- crew:trump -->...<!-- /crew -->
+<!-- crew:tim -->...<!-- /crew -->
 <!-- crew:mrbeast -->...<!-- /crew -->
 
 ### 🔔 [Leak: 新闻标题](原文链接)

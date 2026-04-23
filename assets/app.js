@@ -408,8 +408,8 @@ var CREW = {
     elon:       { name: 'Elon Musk',  emoji: '🚀', avatar: 'thinking/avatars/elon.png' },
     jobs:       { name: 'Steve Jobs',  emoji: '🍎', avatar: 'thinking/avatars/jobs.png' },
     wanweigang: { name: '万维钢',      emoji: '📐', avatar: 'thinking/avatars/wanweigang.png' },
-    trump:      { name: 'Trump',       emoji: '🏆', avatar: 'thinking/avatars/trump.png' },
-    mrbeast:    { name: 'MrBeast',     emoji: '🎬', avatar: 'thinking/avatars/mrbeast.png' }
+    tim:        { name: 'Tim · 影视飓风', emoji: '🎬', avatar: 'thinking/avatars/tim.png' },
+    mrbeast:    { name: 'MrBeast',     emoji: '🎯', avatar: 'thinking/avatars/mrbeast.png' }
 };
 
 function injectCrewComments() {
