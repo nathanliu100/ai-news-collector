@@ -33,6 +33,8 @@ fi
 echo "📅 准备推送 ${DATE} 的周末特刊到企业微信..."
 
 VIEWER_URL="https://nathanliu100.github.io/ai-news-collector/"
+# UTM 参数：企微渠道 · 周末特刊
+VIEWER_URL_UTM="${VIEWER_URL}?utm_source=wecom&utm_medium=bot&utm_campaign=weekend"
 
 # ---------- 提取内容 ----------
 
@@ -73,7 +75,7 @@ ${TOOLS:-暂无}
 ## 🔭 本周大问题
 ${BIG_Q_TITLE:-暂无}
 
-[📖 查看完整特刊 →](${VIEWER_URL})"
+[📖 查看完整特刊 →](${VIEWER_URL_UTM})"
 
 # ---------- 发送 ----------
 PAYLOAD=$(cat <<EOF

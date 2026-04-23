@@ -1080,6 +1080,10 @@
             .crew-avatar { width: 32px; height: 32px; font-size: 16px; }
         }
     </style>
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0849573ed9a843e9a0ed404e42d4e742"}'></script>
+    <!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 
@@ -1088,9 +1092,9 @@
     <h1 class="header-title">Product Thinking</h1>
     <p class="header-sub">AI News Collector · 产品思考日志</p>
     <div class="header-meta">
-        <span>📅 <span class="num">9</span> entries</span>
-        <span>📝 <span class="num">50+</span> insights</span>
-        <span>🗓️ Apr 8 – 16, 2026</span>
+        <span>📅 <span class="num">15</span> entries</span>
+        <span>📝 <span class="num">100+</span> insights</span>
+        <span>🗓️ Apr 8 – 22, 2026</span>
         <span>✍️ 外特</span>
     </div>
 </header>
@@ -1099,7 +1103,7 @@
 <div class="mode-tabs">
     <button class="mode-tab active" data-tab="thinking" onclick="switchTab('thinking')">
         <span class="tab-icon">💭</span> Thinking
-        <span class="tab-count">9</span>
+        <span class="tab-count">15</span>
     </button>
     <button class="mode-tab" data-tab="changelog" onclick="switchTab('changelog')">
         <span class="tab-icon">🔧</span> Changelog
@@ -1110,6 +1114,12 @@
 <!-- Mobile navigation -->
 <nav class="mobile-nav" id="mobileNav">
     <a href="#progress" class="mobile-nav-item active">📋 清单</a>
+    <a href="#day-15" class="mobile-nav-item">D15 · 04-22</a>
+    <a href="#day-14" class="mobile-nav-item">D14 · 04-21</a>
+    <a href="#day-13" class="mobile-nav-item">D13 · 04-20</a>
+    <a href="#day-12" class="mobile-nav-item">D12 · 04-19</a>
+    <a href="#day-11" class="mobile-nav-item">D11 · 04-18</a>
+    <a href="#day-10" class="mobile-nav-item">D10 · 04-17</a>
     <a href="#day-9" class="mobile-nav-item">D9 · 04-16</a>
     <a href="#day-8" class="mobile-nav-item">D8 · 04-15</a>
     <a href="#day-7" class="mobile-nav-item">D7 · 04-14</a>
@@ -1133,7 +1143,37 @@
             <a href="#progress" class="sidebar-item active" data-nav="progress">
                 <span class="day-dot" style="background: var(--accent);"></span>
                 <span class="day-label">执行清单</span>
-                <span class="day-focus">v9</span>
+                <span class="day-focus">v15</span>
+            </a>
+            <a href="#day-15" class="sidebar-item" data-nav="day-15">
+                <span class="day-dot" style="background: var(--accent);"></span>
+                <span class="day-label">04-22 Wed</span>
+                <span class="day-focus">Gallery 影评</span>
+            </a>
+            <a href="#day-14" class="sidebar-item" data-nav="day-14">
+                <span class="day-dot" style="background: var(--blue);"></span>
+                <span class="day-label">04-21 Tue</span>
+                <span class="day-focus">Gallery 审视</span>
+            </a>
+            <a href="#day-13" class="sidebar-item" data-nav="day-13">
+                <span class="day-dot" style="background: var(--green);"></span>
+                <span class="day-label">04-20 Mon</span>
+                <span class="day-focus">P0 修复</span>
+            </a>
+            <a href="#day-12" class="sidebar-item" data-nav="day-12">
+                <span class="day-dot" style="background: var(--purple);"></span>
+                <span class="day-label">04-19 Sun</span>
+                <span class="day-focus">三周里程碑</span>
+            </a>
+            <a href="#day-11" class="sidebar-item" data-nav="day-11">
+                <span class="day-dot" style="background: var(--accent);"></span>
+                <span class="day-label">04-18 Sat</span>
+                <span class="day-focus">Crew + 周末</span>
+            </a>
+            <a href="#day-10" class="sidebar-item" data-nav="day-10">
+                <span class="day-dot" style="background: var(--amber);"></span>
+                <span class="day-label">04-17 Thu</span>
+                <span class="day-focus">关我事指数</span>
             </a>
             <a href="#day-9" class="sidebar-item" data-nav="day-9">
                 <span class="day-dot" style="background: var(--purple);"></span>
@@ -1218,11 +1258,11 @@
             <div class="sidebar-stats">
                 <div class="sidebar-stat">
                     <span>运行天数</span>
-                    <span class="stat-val">17</span>
+                    <span class="stat-val">24</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>日报数</span>
-                    <span class="stat-val">17 + 13 EN</span>
+                    <span class="stat-val">22 + 18 EN</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>日均新闻</span>
@@ -1230,11 +1270,15 @@
                 </div>
                 <div class="sidebar-stat">
                     <span>代码行数</span>
-                    <span class="stat-val">1,997</span>
+                    <span class="stat-val">~4,200</span>
+                </div>
+                <div class="sidebar-stat">
+                    <span>HTML 文件</span>
+                    <span class="stat-val">3 页面</span>
                 </div>
                 <div class="sidebar-stat">
                     <span>已执行</span>
-                    <span class="stat-val" style="color: var(--green);">5/8 ✅</span>
+                    <span class="stat-val" style="color: var(--green);">7 项 ✅</span>
                 </div>
             </div>
         </div>
@@ -1248,9 +1292,9 @@
 
         <!-- ============ EXECUTION TRACKER ============ -->
         <section class="progress-section" id="progress">
-            <h2 class="progress-title">执行清单 v9 · Post-Execution Review</h2>
+            <h2 class="progress-title">执行清单 v15 · Day 24</h2>
             <p style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px; font-family: var(--mono);">
-                8 天思考 → 50+ 条建议 → 5/8 已落地 ✅ · 剩余 5 项 ~1h45min
+                15 天思考 → 100+ 条建议 → 7 项已落地 ✅ · 剩余 12 项 ~3h35min
             </p>
             <div class="exec-list">
                 <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
@@ -1285,49 +1329,201 @@
                     </div>
                     <span class="exec-time">已完成</span>
                 </div>
+                <div class="exec-item" style="opacity: 0.5; text-decoration: line-through;">
+                    <span class="exec-priority p0" style="background: var(--green-soft); color: var(--green); border-color: rgba(107,175,123,0.2);">DONE</span>
+                    <div class="exec-details">
+                        <div class="exec-name">✅ 周末路径修复 + History 适配</div>
+                        <div class="exec-desc">newsPathCandidates() 支持 -weekend.md + scanFiles() 周末检测 + 🌴 标记</div>
+                    </div>
+                    <span class="exec-time">已完成</span>
+                </div>
                 <div style="height: 16px; border-bottom: 1px dashed var(--border); margin-bottom: 8px;"></div>
                 <div class="exec-item">
+                    <span class="exec-priority p0">P0</span>
+                    <div class="exec-details">
+                        <div class="exec-name">📁 CSS/JS 分离 → 多页面共用</div>
+                        <div class="exec-desc">抽出 style.css + app.js · 3 个 HTML 共用 · 16 天未动 🚨</div>
+                    </div>
+                    <span class="exec-time">40min</span>
+                </div>
+                <div class="exec-item">
                     <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
-                        <div class="exec-name">🔔 传闻标签 Bug 修复</div>
-                        <div class="exec-desc">stats ribbon 计数 + filter 归属 · 🔔 目前被归为 unknown 级别</div>
+                        <div class="exec-name">📅 周日自动回退</div>
+                        <div class="exec-desc">loadNews() 404 后回退最近 3 天 + fallback banner</div>
+                    </div>
+                    <span class="exec-time">15min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p1">P1</span>
+                    <div class="exec-details">
+                        <div class="exec-name">💎 部门特别关注 section</div>
+                        <div class="exec-desc">采集 prompt 加"💎 部门关注"段 + 企微推送分两段</div>
                     </div>
                     <span class="exec-time">20min</span>
                 </div>
                 <div class="exec-item">
                     <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
-                        <div class="exec-name">企微推送信源同步</div>
-                        <div class="exec-desc">推送标题加 ✅/📡 标签 + 信源统计概览 + 传闻单独标注</div>
+                        <div class="exec-name">🔔 传闻标签 filter + stats</div>
+                        <div class="exec-desc">stats ribbon 计数 + filter 归属 · 🔔 目前被归为 unknown</div>
                     </div>
                     <span class="exec-time">20min</span>
                 </div>
                 <div class="exec-item">
                     <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
-                        <div class="exec-name">CSS/JS 分离</div>
-                        <div class="exec-desc">style.css + app.js · 1997 行已过拐点，从 P2 升级</div>
+                        <div class="exec-name">📊 Stats ribbon 周末适配</div>
+                        <div class="exec-desc">周末特刊时隐藏或特殊展示</div>
                     </div>
-                    <span class="exec-time">30min</span>
+                    <span class="exec-time">5min</span>
                 </div>
                 <div class="exec-item">
                     <span class="exec-priority p1">P1</span>
                     <div class="exec-details">
-                        <div class="exec-name">勘误机制 Level 1</div>
-                        <div class="exec-desc">被纠正日报末尾追加勘误表格</div>
+                        <div class="exec-name">企微推送格式升级</div>
+                        <div class="exec-desc">信源标签 + 💎 部门段</div>
+                    </div>
+                    <span class="exec-time">25min</span>
+                </div>
+                <div class="exec-item">
+                    <span class="exec-priority p2">P2</span>
+                    <div class="exec-details">
+                        <div class="exec-name">🎬 Gallery 优化</div>
+                        <div class="exec-desc">文件名去 "mockup" + 共用 style.css（依赖 CSS/JS 分离）</div>
                     </div>
                     <span class="exec-time">15min</span>
                 </div>
                 <div class="exec-item">
                     <span class="exec-priority p2">P2</span>
                     <div class="exec-details">
-                        <div class="exec-name">A11y 基础修复</div>
-                        <div class="exec-desc">role/tabindex/focus ring/reduced-motion</div>
+                        <div class="exec-name">📦 Gallery 数据化架构</div>
+                        <div class="exec-desc">作品信息 → JSON + HTML 模板渲染 · 避免 DOM 膨胀</div>
                     </div>
-                    <span class="exec-time">20min</span>
+                    <span class="exec-time">45min</span>
                 </div>
             </div>
         </section>
+
+        <!-- ============ DAY 15 ============ -->
+        <article class="entry" id="day-15" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">15</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-22 <span class="weekday">Wednesday · Gallery 影评平台</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag ui">Gallery 深化</span>
+                        <span class="focus-tag tech">R2 CDN</span>
+                        <span class="focus-tag strategy">Tim 角色</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-15"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>Gallery → AI 影评平台 · 12 commits · 3 fix = 架构红旗</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 14 ============ -->
+        <article class="entry" id="day-14" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">14</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-21 <span class="weekday">Tuesday · Gallery 产品审视</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag ui">Gallery UX</span>
+                        <span class="focus-tag tech">MPA 拐点</span>
+                        <span class="focus-tag review">行为模式</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-14"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>Gallery 来了 · CSS/JS 分离升 P0</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 13 ============ -->
+        <article class="entry" id="day-13" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">13</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-20 <span class="weekday">Monday · P0 修复 + 黄金日</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag tech">P0 验证</span>
+                        <span class="focus-tag review">Crew 实战</span>
+                        <span class="focus-tag strategy">💎 黄金日</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-13"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>P0 修了 · Crew 首次自动化 · 设计三角战争</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 12 ============ -->
+        <article class="entry" id="day-12" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">12</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-19 <span class="weekday">Sunday · 三周里程碑</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag review">三周回顾</span>
+                        <span class="focus-tag ui">周末黑洞</span>
+                        <span class="focus-tag strategy">清单债务</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-12"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>体验层 4★ · 基础设施层 2★</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 11 ============ -->
+        <article class="entry" id="day-11" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">11</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-18 <span class="weekday">Saturday · Crew + 周末特刊</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag ui">Crew Comments</span>
+                        <span class="focus-tag strategy">周末特刊</span>
+                        <span class="focus-tag tech">P0 Bug</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-11"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>Crew 上线 + 周末特刊首发 + P0 路径 bug</span>
+            </div>
+        </article>
+
+        <!-- ============ DAY 10 ============ -->
+        <article class="entry" id="day-10" style="animation-delay: 0.02s;">
+            <div class="entry-header">
+                <div class="entry-day-num">10</div>
+                <div class="entry-meta-block">
+                    <div class="entry-date">2026-04-17 <span class="weekday">Thursday · "关我事"指数</span></div>
+                    <div class="entry-focus-tags">
+                        <span class="focus-tag strategy">部门关联</span>
+                        <span class="focus-tag ui">💎 过滤</span>
+                        <span class="focus-tag review">元审计</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-content" id="content-day-10"></div>
+            <div class="entry-footer">
+                <span class="author">外特 · 18:00</span>
+                <span>💎 部门特别关注 · 10 篇思考的元审计</span>
+            </div>
+        </article>
 
         <!-- ============ DAY 9 ============ -->
         <article class="entry" id="day-9" style="animation-delay: 0.02s;">
@@ -1627,6 +1823,12 @@
 
     // Mobile nav templates
     var thinkingMobileNav = '<a href="#progress" class="mobile-nav-item active">📋 清单</a>' +
+        '<a href="#day-15" class="mobile-nav-item">D15 · 04-22</a>' +
+        '<a href="#day-14" class="mobile-nav-item">D14 · 04-21</a>' +
+        '<a href="#day-13" class="mobile-nav-item">D13 · 04-20</a>' +
+        '<a href="#day-12" class="mobile-nav-item">D12 · 04-19</a>' +
+        '<a href="#day-11" class="mobile-nav-item">D11 · 04-18</a>' +
+        '<a href="#day-10" class="mobile-nav-item">D10 · 04-17</a>' +
         '<a href="#day-9" class="mobile-nav-item">D9 · 04-16</a>' +
         '<a href="#day-8" class="mobile-nav-item">D8 · 04-15</a>' +
         '<a href="#day-7" class="mobile-nav-item">D7 · 04-14</a>' +
@@ -1652,6 +1854,12 @@
         { id: 'content-day-7', file: '2026-04-14.md' },
         { id: 'content-day-8', file: '2026-04-15.md' },
         { id: 'content-day-9', file: '2026-04-16.md' },
+        { id: 'content-day-10', file: '2026-04-17.md' },
+        { id: 'content-day-11', file: '2026-04-18.md' },
+        { id: 'content-day-12', file: '2026-04-19.md' },
+        { id: 'content-day-13', file: '2026-04-20.md' },
+        { id: 'content-day-14', file: '2026-04-21.md' },
+        { id: 'content-day-15', file: '2026-04-22.md' },
     ];
 
     // ========== LOAD CHANGELOG ENTRIES ==========

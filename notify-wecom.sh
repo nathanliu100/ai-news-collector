@@ -38,6 +38,9 @@ echo "📰 准备推送 ${DATE} 的新闻到企业微信..."
 
 # ---------- 配置 ----------
 VIEWER_URL="https://nathanliu100.github.io/ai-news-collector/"
+# UTM 参数：用于企微渠道流量追踪
+UTM_PARAMS="utm_source=wecom&utm_medium=bot&utm_campaign=daily"
+VIEWER_URL_UTM="${VIEWER_URL}?${UTM_PARAMS}"
 
 # ---------- 提取内容 ----------
 
@@ -85,7 +88,7 @@ while IFS= read -r line; do
         # 去掉加粗标记
         cleaned=$(echo "$line" | sed 's/\*\*//g')
         # 追加锚点链接（企微 markdown 支持 [text](url) 格式）
-        MUST_READ_WITH_LINKS="${MUST_READ_WITH_LINKS}${cleaned} [📖 详情](${VIEWER_URL}#news-${LINE_NUM})
+        MUST_READ_WITH_LINKS="${MUST_READ_WITH_LINKS}${cleaned} [📖 详情](${VIEWER_URL}?${UTM_PARAMS}#news-${LINE_NUM})
 "
     else
         MUST_READ_WITH_LINKS="${MUST_READ_WITH_LINKS}${line}
@@ -122,7 +125,7 @@ ${SNAPSHOT_LINE:-暂无}
 🔭 **编辑观察**
 ${EDITOR_SHORT:-暂无}
 
-[📖 查看完整快报 →](${VIEWER_URL})"
+[📖 查看完整快报 →](${VIEWER_URL_UTM})"
 
 # ---------- 发送 ----------
 
