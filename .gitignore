@@ -1,3 +1,7 @@
 .DS_Store
 .workbuddy/
 .env
+
+# 本地视频素材（太大，用 R2 托管，不入仓）
+videos/
+*.mp4.part
