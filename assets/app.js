@@ -58,6 +58,7 @@ function toggleLang() {
     } else {
         loadWeekly();
     }
+    updateUrl();
 }
 
 // ========== STATE ==========
@@ -126,8 +127,9 @@ function setMode(mode) {
         document.getElementById('statsRibbon').style.display = 'none';
         document.querySelectorAll('.pill[data-level]').forEach(function(p) { p.style.display = 'none'; });
         document.getElementById('mobileFilterBar').style.display = 'none';
-        findLatestWeekly().then(function() { loadWeekly(); });
+        findLatestWeekly().then(function() { loadWeekly(); updateUrl(); });
     }
+    updateUrl();
 }
 
 // ========== NAV ==========
@@ -141,6 +143,7 @@ function changeDate(delta) {
         document.getElementById('currentDate').innerHTML = displayWeek(weeklyDate);
         loadWeekly();
     }
+    updateUrl();
 }
 
 // ========== P1: MASTHEAD COLLAPSE (IntersectionObserver) ==========
@@ -620,12 +623,73 @@ function jumpTo(ds) {
     document.getElementById('currentDate').innerHTML = displayDate(currentDate);
     loadNews(ds);
     togglePanel();
+    updateUrl();
+}
+
+// ========== URL ROUTING ==========
+function getUrlParams() {
+    var params = new URLSearchParams(window.location.search);
+    return {
+        mode: params.get('mode'),
+        date: params.get('date'),
+        week: params.get('week')
+    };
+}
+
+function updateUrl() {
+    var params = new URLSearchParams(window.location.search);
+    // 保留 UTM 参数
+    var utmKeys = [];
+    params.forEach(function(val, key) {
+        if (key.startsWith('utm_')) utmKeys.push(key);
+    });
+    var newParams = new URLSearchParams();
+    utmKeys.forEach(function(key) { newParams.set(key, params.get(key)); });
+
+    if (currentMode === 'weekly') {
+        newParams.set('mode', 'weekly');
+        var wn = getISOWeek(weeklyDate);
+        var yr = getISOWeekYear(weeklyDate);
+        newParams.set('week', yr + '-W' + String(wn).padStart(2, '0'));
+    } else {
+        newParams.set('mode', 'daily');
+        newParams.set('date', fmtDate(currentDate));
+    }
+    var newUrl = window.location.pathname + '?' + newParams.toString() + window.location.hash;
+    history.replaceState(null, '', newUrl);
 }
 
 // ========== INIT ==========
-applyI18n();
-document.getElementById('currentDate').innerHTML = displayDate(currentDate);
-loadNews(fmtDate(currentDate));
+(function initFromUrl() {
+    var p = getUrlParams();
+    if (p.mode === 'weekly') {
+        // 解析 week 参数，如 2026-W18
+        if (p.week && /^\d{4}-W\d{2}$/.test(p.week)) {
+            var parts = p.week.split('-W');
+            var yr = parseInt(parts[0]);
+            var wk = parseInt(parts[1]);
+            // 计算该 ISO 周的周一日期
+            var jan4 = new Date(yr, 0, 4);
+            var dayOfWeek = jan4.getDay() || 7;
+            var mondayOfWeek1 = new Date(jan4);
+            mondayOfWeek1.setDate(jan4.getDate() - dayOfWeek + 1);
+            weeklyDate = new Date(mondayOfWeek1);
+            weeklyDate.setDate(weeklyDate.getDate() + (wk - 1) * 7);
+        }
+        applyI18n();
+        setMode('weekly');
+    } else {
+        // daily 模式
+        if (p.date && /^\d{4}-\d{2}-\d{2}$/.test(p.date)) {
+            currentDate = new Date(p.date + 'T00:00:00');
+        }
+        applyI18n();
+        document.getElementById('currentDate').innerHTML = displayDate(currentDate);
+        loadNews(fmtDate(currentDate));
+    }
+    // 初始化后更新 URL（确保 URL 始终有参数）
+    setTimeout(updateUrl, 100);
+})();
 
 // ========== DEV MODE EASTER EGG ==========
 (function() {
