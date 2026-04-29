@@ -46,10 +46,22 @@ VIEWER_URL_UTM="${VIEWER_URL}?${UTM_PARAMS}"
 
 # 提取标题行的统计数据
 STATS_LINE=$(grep -m1 '今日共收集\|Today.*collection' "$NEWS_FILE" || echo "")
+# 提取信源统计行（📡 信息来源）
+SOURCE_LINE=$(grep -m1 '^> 📡 信息来源' "$NEWS_FILE" | sed 's/^> //' || echo "")
+# 提取可信度统计行（🛡️ 来源可信度）
+TRUST_LINE=$(grep -m1 '^> 🛡️ 来源可信度' "$NEWS_FILE" | sed 's/^> //' || echo "")
 
 # 提取「今日必看」/「Today's Must-Read」板块，带序号用于生成锚点
 MUST_READ=$(awk '
     /^## ⚡/ { found=1; next }
+    found && /^---$/ { exit }
+    found && /^## / { exit }
+    found { print }
+' "$NEWS_FILE" | sed '/^$/d')
+
+# 提取「💎 部门特别关注」板块
+DEPT_FOCUS=$(awk '
+    /^## 💎/ { found=1; next }
     found && /^---$/ { exit }
     found && /^## / { exit }
     found { print }
@@ -113,12 +125,30 @@ if [[ -n "$EDITOR_NOTE" ]]; then
     fi
 fi
 
+# 格式化 💎 部门特别关注板块（去掉 Markdown 加粗，保留列表格式）
+DEPT_FOCUS_CLEAN=""
+if [[ -n "$DEPT_FOCUS" ]]; then
+    DEPT_FOCUS_CLEAN=$(echo "$DEPT_FOCUS" | sed 's/\*\*//g')
+fi
+
 # 构建最终消息
 MESSAGE="# 🗞️ AI 每日新闻速递 - ${DATE}
 ${STATS_LINE:+> ${STATS_LINE//> /}}
+${SOURCE_LINE:+> ${SOURCE_LINE}}
+${TRUST_LINE:+> ${TRUST_LINE}}
 
 ## ⚡ 今日必看
-${MUST_READ_WITH_LINKS}
+${MUST_READ_WITH_LINKS}"
+
+# 💎 部门特别关注（仅在存在该 section 时追加）
+if [[ -n "$DEPT_FOCUS_CLEAN" ]]; then
+    MESSAGE="${MESSAGE}
+## 💎 部门特别关注
+${DEPT_FOCUS_CLEAN}
+"
+fi
+
+MESSAGE="${MESSAGE}
 📊 **数据快照**
 ${SNAPSHOT_LINE:-暂无}
 
@@ -152,6 +182,12 @@ if [[ "$HTTP_CODE" == "200" ]]; then
     if [[ "$ERRCODE" == "0" ]]; then
         echo "✅ 推送成功！消息已发送到企业微信群"
         echo "   📌 今日必看含 ${LINE_NUM} 条锚点链接"
+        if [[ -n "$DEPT_FOCUS_CLEAN" ]]; then
+            DEPT_COUNT=$(echo "$DEPT_FOCUS_CLEAN" | grep -c '^- ' || echo "0")
+            echo "   💎 部门特别关注含 ${DEPT_COUNT} 条"
+        else
+            echo "   ⚠️  今日无 💎 部门特别关注板块（可能 prompt 未生成）"
+        fi
     else
         echo "⚠️ 企微返回错误：${BODY}"
         exit 1

@@ -327,6 +327,49 @@ body {
     background: var(--border);
 }
 
+/* 🔔 传闻计数（低调呈现） */
+.stat-rumor {
+    opacity: 0.7;
+    font-size: 12px;
+}
+.stat-rumor .stat-num {
+    font-size: 12px;
+    color: var(--text-secondary, var(--text));
+}
+
+/* 周末模式 ribbon 视觉提示 */
+.stats-ribbon.weekend-mode {
+    background: linear-gradient(90deg, rgba(234,179,8,0.04), rgba(251,146,60,0.04));
+}
+.stats-ribbon.weekend-mode::before {
+    content: '🌴 Weekend';
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #c2410c;
+    letter-spacing: 0.04em;
+    margin-right: 8px;
+}
+
+/* Fallback banner（当访问日期无简报、自动回退到最近可用日报） */
+.fallback-banner {
+    max-width: 780px;
+    margin: 0 auto 24px;
+    padding: 12px 18px;
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.25);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary, var(--text));
+    line-height: 1.5;
+    text-align: center;
+}
+.fallback-banner strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
 /* ============ MAIN ============ */
 .main {
     max-width: 780px;

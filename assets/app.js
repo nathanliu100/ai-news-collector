@@ -205,9 +205,28 @@ async function loadNews(dateStr) {
     try {
         var candidates = newsPathCandidates(dateStr);
         var res = null;
+        var fallbackDate = null;
         for (var i = 0; i < candidates.length; i++) {
             var tryRes = await fetch(candidates[i]);
             if (tryRes.ok) { res = tryRes; break; }
+        }
+        // 所有候选路径都 404 后，尝试回退最近 3 天
+        if (!res) {
+            for (var retry = 1; retry <= 3; retry++) {
+                var retryDate = new Date(dateStr + 'T00:00:00');
+                retryDate.setDate(retryDate.getDate() - retry);
+                var retryStr = fmtDate(retryDate);
+                var retryCandidates = newsPathCandidates(retryStr);
+                for (var j = 0; j < retryCandidates.length; j++) {
+                    var retryRes = await fetch(retryCandidates[j]);
+                    if (retryRes.ok) {
+                        res = retryRes;
+                        fallbackDate = retryStr;
+                        break;
+                    }
+                }
+                if (res) break;
+            }
         }
         if (!res) throw new Error('not found');
         currentMarkdown = await res.text();
@@ -215,7 +234,14 @@ async function loadNews(dateStr) {
         var mdToParse = currentMarkdown
             .replace(/<!--\s*crew:(\w+)\s*-->/g, '<span class="crew-data" data-crew="$1">')
             .replace(/<!--\s*\/crew\s*-->/g, '</span>');
-        el.innerHTML = '<div class="news-content">' + marked.parse(mdToParse) + '</div>';
+        var bannerHtml = '';
+        if (fallbackDate) {
+            var origMsg = currentLang === 'zh'
+                ? ('📭 <strong>' + dateStr + '</strong> 暂无简报，已自动为你加载 <strong>' + fallbackDate + '</strong> 的内容')
+                : ('📭 No briefing for <strong>' + dateStr + '</strong>. Showing <strong>' + fallbackDate + '</strong> instead.');
+            bannerHtml = '<div class="fallback-banner">' + origMsg + '</div>';
+        }
+        el.innerHTML = bannerHtml + '<div class="news-content">' + marked.parse(mdToParse) + '</div>';
         structureNewsBlocks();
         styleSourceLines();
         addAnchorLinks();
@@ -275,6 +301,7 @@ function structureNewsBlocks() {
             if (text.indexOf('\uD83D\uDD34') >= 0) level = 'high';
             else if (text.indexOf('\uD83D\uDFE1') >= 0) level = 'medium';
             else if (text.indexOf('\uD83D\uDFE2') >= 0) level = 'low';
+            else if (text.indexOf('\uD83D\uDD14') >= 0) level = 'rumor';
 
             var block = document.createElement('div');
             block.className = 'news-block';
@@ -412,7 +439,9 @@ var CREW = {
     jobs:       { name: 'Steve Jobs',  emoji: '🍎', avatar: 'thinking/avatars/jobs.png' },
     wanweigang: { name: '万维钢',      emoji: '📐', avatar: 'thinking/avatars/wanweigang.png' },
     tim:        { name: 'Tim · 影视飓风', emoji: '🎬', avatar: 'thinking/avatars/tim.png' },
-    mrbeast:    { name: 'MrBeast',     emoji: '🎯', avatar: 'thinking/avatars/mrbeast.png' }
+    mrbeast:    { name: 'MrBeast',     emoji: '🎯', avatar: 'thinking/avatars/mrbeast.png' },
+    // 退役员工（仅用于历史新闻回填，新日报不再写入）
+    trump:      { name: 'Trump · 已退役', emoji: '🏛️', avatar: 'thinking/avatars/trump.png' }
 };
 
 function injectCrewComments() {
@@ -476,13 +505,37 @@ function injectCrewComments() {
 
 // ========== STATS ==========
 function updateStats(md) {
+    var ribbon = document.getElementById('statsRibbon');
+    // 周末特刊模式：检测 ☕ 八卦板块存在
+    var isWeekend = md.indexOf('## ☕') >= 0 || md.indexOf('-weekend') >= 0 || /周末特刊/.test(md);
+
+    if (isWeekend && ribbon) {
+        ribbon.classList.add('weekend-mode');
+        var gossip = (md.match(/^###?\s*☕/gm) || []).length;
+        var tools = (md.match(/^###?\s*🎮/gm) || []).length;
+        var bigQ = (md.match(/^##\s*🔭/gm) || []).length;
+        document.getElementById('totalCount').textContent = (gossip + tools + bigQ) || '—';
+        document.getElementById('highCount').textContent = gossip;
+        document.getElementById('mediumCount').textContent = tools;
+        document.getElementById('lowCount').textContent = bigQ;
+        document.getElementById('mediaCount').textContent = '—';
+        document.getElementById('xCount').textContent = '—';
+        document.getElementById('officialCount').textContent = '—';
+        var rumorEl = document.getElementById('rumorCount');
+        if (rumorEl) rumorEl.textContent = '—';
+        return;
+    }
+
+    if (ribbon) ribbon.classList.remove('weekend-mode');
+
     var h3s = (md.match(/^### /gm) || []).length;
     var highs = (md.match(/^### 🔴/gm) || []).length;
     var meds = (md.match(/^### 🟡/gm) || []).length;
     var lows = (md.match(/^### 🟢/gm) || []).length;
-    var media = (md.match(/📰/g) || []).length;
-    var xkol = (md.match(/🐦/g) || []).length;
-    var official = (md.match(/🏢/g) || []).length;
+    var rumors = (md.match(/^### 🔔/gm) || []).length;
+    var media = (md.match(/\[📰 媒体\]/g) || []).length;
+    var xkol = (md.match(/\[🐦 X\/KOL\]/g) || []).length;
+    var official = (md.match(/\[🏢 官方\]/g) || []).length;
 
     document.getElementById('totalCount').textContent = h3s || 0;
     document.getElementById('highCount').textContent = highs;
@@ -491,11 +544,16 @@ function updateStats(md) {
     document.getElementById('mediaCount').textContent = media;
     document.getElementById('xCount').textContent = xkol;
     document.getElementById('officialCount').textContent = official;
+    var rumorEl2 = document.getElementById('rumorCount');
+    if (rumorEl2) rumorEl2.textContent = rumors;
 }
 
 function resetStats() {
-    ['totalCount','highCount','mediumCount','lowCount','mediaCount','xCount','officialCount']
-        .forEach(function(id) { document.getElementById(id).textContent = '\u2014'; });
+    ['totalCount','highCount','mediumCount','lowCount','mediaCount','xCount','officialCount','rumorCount']
+        .forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = '\u2014';
+        });
 }
 
 // ========== FILTER ==========
@@ -517,6 +575,10 @@ function applyFilter() {
     blocks.forEach(function(block) {
         if (currentFilter === 'all') {
             block.classList.remove('hidden');
+        } else if (currentFilter === 'low') {
+            // FYI 同时包含 🟢 和 🔔 传闻（同属"了解即可"层级）
+            var lvl = block.dataset.level;
+            block.classList.toggle('hidden', lvl !== 'low' && lvl !== 'rumor');
         } else {
             block.classList.toggle('hidden', block.dataset.level !== currentFilter);
         }
