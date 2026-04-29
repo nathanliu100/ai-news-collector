@@ -7,7 +7,7 @@ const i18n = {
         no_briefing: '暂无简报', no_briefing_desc: '该日期的自动收集尚未执行。',
         no_weekly: '暂无周报', no_weekly_desc: '该周的周报尚未发布。',
         no_archive: '暂无存档。', scanning: '扫描中…',
-        lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报', mode_gallery: '🎬 作品',
+        lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报', mode_gallery: '🎬 作品', mode_ideas: '💡 想法',
         toast_copied: '🔗 链接已复制',
     },
     en: {
@@ -17,7 +17,7 @@ const i18n = {
         no_briefing: 'No briefing for this date', no_briefing_desc: 'The automation hasn\'t run for this date yet.',
         no_weekly: 'No weekly briefing', no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
         no_archive: 'No archives found.', scanning: 'Scanning\u2026',
-        lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly', mode_gallery: '🎬 Gallery',
+        lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly', mode_gallery: '🎬 Gallery', mode_ideas: '💡 Ideas',
         toast_copied: '🔗 Link copied',
     }
 };
@@ -47,6 +47,8 @@ function applyI18n() {
     document.querySelector('.mode-tab[data-mode="daily"]').textContent = t('mode_daily');
     document.querySelector('.mode-tab[data-mode="weekly"]').textContent = t('mode_weekly');
     document.querySelector('.mode-tab[data-mode="gallery"]').textContent = t('mode_gallery');
+    var ideasTab = document.querySelector('.mode-tab[data-mode="ideas"]');
+    if (ideasTab) ideasTab.textContent = t('mode_ideas');
 }
 
 function toggleLang() {
@@ -834,6 +836,91 @@ function updateUrl() {
                 digits.forEach(function(d, i) { d.value = pasted[i]; });
                 digits[3].focus();
                 // 触发检查
+                digits[3].dispatchEvent(new Event('input'));
+            }
+        });
+    });
+})();
+
+// ========== IDEAS LAB PASSWORD GATE ==========
+function showIdeasGate() {
+    var modal = document.getElementById('ideasModal');
+    if (!modal) return;
+    modal.classList.add('show');
+    var digits = modal.querySelectorAll('.ideas-pin');
+    var hint = document.getElementById('ideasHint');
+    digits.forEach(function(d) { d.value = ''; d.classList.remove('error'); });
+    hint.textContent = 'Enter PIN to continue';
+    hint.style.color = '';
+    setTimeout(function() { digits[0].focus(); }, 100);
+}
+
+(function() {
+    var PIN = '9527';
+    var modal = document.getElementById('ideasModal');
+    if (!modal) return;
+    var hint = document.getElementById('ideasHint');
+    var digits = modal.querySelectorAll('.ideas-pin');
+
+    // Close on overlay click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) modal.classList.remove('show');
+    });
+
+    // ESC close
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            modal.classList.remove('show');
+        }
+    });
+
+    digits.forEach(function(input, idx) {
+        input.addEventListener('input', function() {
+            var val = this.value;
+            if (val.length > 1) this.value = val.slice(-1);
+            this.classList.remove('error');
+
+            if (this.value && idx < 3) {
+                digits[idx + 1].focus();
+            }
+
+            var code = '';
+            digits.forEach(function(d) { code += d.value; });
+            if (code.length === 4) {
+                if (code === PIN) {
+                    hint.textContent = '✅ Access granted';
+                    hint.style.color = 'var(--green, #4A7C59)';
+                    setTimeout(function() {
+                        modal.classList.remove('show');
+                        window.location.href = 'ideas/';
+                    }, 600);
+                } else {
+                    hint.textContent = '❌ Wrong PIN';
+                    hint.style.color = 'var(--accent)';
+                    digits.forEach(function(d) { d.classList.add('error'); });
+                    setTimeout(function() {
+                        digits.forEach(function(d) { d.value = ''; d.classList.remove('error'); });
+                        hint.textContent = 'Enter PIN to continue';
+                        hint.style.color = '';
+                        digits[0].focus();
+                    }, 800);
+                }
+            }
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                digits[idx - 1].focus();
+                digits[idx - 1].value = '';
+            }
+        });
+
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            var pasted = (e.clipboardData || window.clipboardData).getData('text').trim();
+            if (/^\d{4}$/.test(pasted)) {
+                digits.forEach(function(d, i) { d.value = pasted[i]; });
+                digits[3].focus();
                 digits[3].dispatchEvent(new Event('input'));
             }
         });

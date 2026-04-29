@@ -69,6 +69,21 @@
     <button class="mode-tab active" data-mode="daily" onclick="setMode('daily')" data-i18n-daily>Daily</button>
     <button class="mode-tab" data-mode="weekly" onclick="setMode('weekly')" data-i18n-weekly>Weekly</button>
     <a class="mode-tab" href="gallery-mockup.html" data-mode="gallery" data-i18n-gallery>🎬 Gallery</a>
+    <button class="mode-tab" data-mode="ideas" onclick="showIdeasGate()" data-i18n-ideas>💡 Ideas</button>
+</div>
+
+<!-- Ideas password modal -->
+<div class="dev-modal-overlay" id="ideasModal">
+    <div class="dev-modal">
+        <h4>💡 Ideas Lab</h4>
+        <div class="pin-input">
+            <input type="number" class="pin-digit ideas-pin" maxlength="1" min="0" max="9" data-idx="0">
+            <input type="number" class="pin-digit ideas-pin" maxlength="1" min="0" max="9" data-idx="1">
+            <input type="number" class="pin-digit ideas-pin" maxlength="1" min="0" max="9" data-idx="2">
+            <input type="number" class="pin-digit ideas-pin" maxlength="1" min="0" max="9" data-idx="3">
+        </div>
+        <div class="dev-hint" id="ideasHint">Enter PIN to continue</div>
+    </div>
 </div>
 
 <div class="stats-ribbon" id="statsRibbon">
