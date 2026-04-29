@@ -40,6 +40,12 @@ function switchTab(tab) {
 
 // Mobile nav templates
 var thinkingMobileNav = '<a href="#progress" class="mobile-nav-item active">📋 清单</a>' +
+    '<a href="#day-21" class="mobile-nav-item">D21 · 04-28</a>' +
+    '<a href="#day-20" class="mobile-nav-item">D20 · 04-27</a>' +
+    '<a href="#day-19" class="mobile-nav-item">D19 · 04-26</a>' +
+    '<a href="#day-18" class="mobile-nav-item">D18 · 04-25</a>' +
+    '<a href="#day-17" class="mobile-nav-item">D17 · 04-24</a>' +
+    '<a href="#day-16" class="mobile-nav-item">D16 · 04-23</a>' +
     '<a href="#day-15" class="mobile-nav-item">D15 · 04-22</a>' +
     '<a href="#day-14" class="mobile-nav-item">D14 · 04-21</a>' +
     '<a href="#day-13" class="mobile-nav-item">D13 · 04-20</a>' +
@@ -77,6 +83,12 @@ const entries = [
     { id: 'content-day-13', file: '2026-04-20.md' },
     { id: 'content-day-14', file: '2026-04-21.md' },
     { id: 'content-day-15', file: '2026-04-22.md' },
+    { id: 'content-day-16', file: '2026-04-23.md' },
+    { id: 'content-day-17', file: '2026-04-24.md' },
+    { id: 'content-day-18', file: '2026-04-25.md' },
+    { id: 'content-day-19', file: '2026-04-26.md' },
+    { id: 'content-day-20', file: '2026-04-27.md' },
+    { id: 'content-day-21', file: '2026-04-28.md' },
 ];
 
 // ========== LOAD CHANGELOG ENTRIES ==========
@@ -114,7 +126,8 @@ var CREW_CONFIG = {
     jobs:       { name: 'Steve Jobs',  role: '首席品味官',   emoji: '🍎', avatar: 'avatars/jobs.png' },
     wanweigang: { name: '万维钢',      role: '首席实证官',   emoji: '📐', avatar: 'avatars/wanweigang.png' },
     trump:      { name: 'Trump',       role: '首席自信官',   emoji: '🏆', avatar: 'avatars/trump.png' },
-    mrbeast:    { name: 'MrBeast',     role: '首席流量官',   emoji: '🎬', avatar: 'avatars/mrbeast.png' }
+    tim:        { name: 'Tim',         role: '首席影像官',   emoji: '🎬', avatar: 'avatars/tim.png' },
+    mrbeast:    { name: 'MrBeast',     role: '首席流量官',   emoji: '🎯', avatar: 'avatars/mrbeast.png' }
 };
 
 function parseCrewComments() {
