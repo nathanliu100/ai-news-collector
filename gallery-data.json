@@ -1,6 +1,75 @@
 {
   "works": [
     {
+      "id": "zombie-scavenger",
+      "featured": true,
+      "featuredBanner": "⭐ Editor's Pick",
+      "videoSrc": "https://pub-51163ae388a44e2791077f1ad1a427ea.r2.dev/zombie-scavenger.mp4",
+      "videoBadge": "🔥 全网爆款",
+      "videoBadgeClass": "hot",
+      "toolBadge": "Seedance 2.0",
+      "categoryTag": "AI Auteur / 丧尸·原子朋克",
+      "tool": "Higgsfield",
+      "title": "丧尸清道夫：一人十天 3000 元，做出「国产版爱死机」",
+      "titleLink": "https://www.bilibili.com/video/BV1FFRQB2Eqw/",
+      "creatorName": "Mx-Shell",
+      "creatorLink": "https://space.bilibili.com/Mx-Shell",
+      "date": "2026-05-09",
+      "creatorExtra": "好莱坞 AI 制片人公开找人",
+      "noteLabel": "Editor's Note · 为什么这部重要",
+      "noteHtml": "《丧尸清道夫》是云南摄影师 Mx-Shell（刘梓瑜）独立完成的 3 分 34 秒 AI 短片——<strong>一人、十天、总成本约 3000 元（Seedance 2.0 算力）</strong>。短片融合末日废土、原子朋克、西部公路与黑色幽默，全片零台词、纯视觉叙事。好莱坞 AI 制片工作室 CEO、全球现象级 AI 内容创作者 <strong>PJ Ace</strong> 公开评价：「This is one of the best short films I've seen in years. Very soon, we'll stop calling it AI film and just call it film.」<br><br>更值得关注的是<strong>传播路径</strong>：B站首发 → X/Reddit 海外专业社区引爆 → 出口转内销反向席卷国内——全网播放量破千万，抖音 30w+ 赞。这是 AI 短片第一次跑通「海外专业共识 → 国内主流爆发」的高维传播链路。",
+      "insights": [
+        "<strong>零门槛创作者入局</strong>：非科班摄影师，无传统影视制作经验，纯靠 AI 工具 + 个人审美完成全流程",
+        "<strong>题材策略精准</strong>：丧尸末日废土天然包容 AI 生成的「脏乱破」质感，把技术不完美转化为风格一部分",
+        "<strong>叙事完整度突破</strong>：机器人牛仔 × 鸵鸟坐骑 × 塑料模特爱情线——具备完整三幕结构和情感反转",
+        "<strong>对部门 AI 短剧的启示</strong>：3000 元 + 10 天 = 电影级 AI 短片。丧尸/废土/末日是 AI 内容出海的「黄金壳子」，值得 POE2 短剧参考"
+      ],
+      "stats": [
+        "🎬 Seedance 2.0",
+        "⏱ 3:34",
+        "👤 1 人 / 10 天 / ¥3000"
+      ],
+      "ctaText": "B站观看 ↗",
+      "ctaLink": "https://www.bilibili.com/video/BV1FFRQB2Eqw/",
+      "crew": [
+        {
+          "key": "elon",
+          "name": "Elon Musk",
+          "avatar": "thinking/avatars/elon.png",
+          "emoji": "🚀",
+          "html": "3000 块做出好莱坞追着找人的短片——<strong>这就是我一直说的：AI 让创作成本趋近于零，唯一的壁垒是品味</strong>。传统影视公司还在用几百万拍一集 45 分钟的剧，这个人用一顿火锅钱就打穿了它们的护城河。Seedance 2.0 是国产模型，这更有意思——<strong>中国 AI 视频工具正在反向输出好莱坞</strong>。三年内，YouTube 上一半的爆款内容会是一个人 + AI 做出来的。"
+        },
+        {
+          "key": "jobs",
+          "name": "Steve Jobs",
+          "avatar": "thinking/avatars/jobs.png",
+          "emoji": "🍎",
+          "html": "我注意到这部片子<strong>全片没有一句台词</strong>——这是真正懂视觉叙事的人才会做的选择。当你不能依赖对白，每一个镜头、每一个动作、每一帧构图都必须自己讲故事。机器人爱上塑料模特这个设定太妙了——<strong>它让观众在一部「AI 生成的片子」里感受到了 humanity</strong>。工具从来不是重点，重点是<strong>这个创作者知道什么是好故事</strong>。Apple 做 iPhone 的时候也一样：技术只是手段，体验才是目的。"
+        },
+        {
+          "key": "wanweigang",
+          "name": "万维钢",
+          "avatar": "thinking/avatars/wanweigang.png",
+          "emoji": "🔬",
+          "html": "这件事最有意思的不是短片本身，是<strong>传播路径</strong>。B站首发没火 → X/Reddit 海外专业社区爆了 → PJ Ace 权威背书 → 出口转内销国内才跟着火。这是一个经典的<strong>「信息级联」（information cascade）</strong>现象：大众不独立判断内容质量，而是等待少数权威节点先表态。物理学里这叫<strong>成核现象</strong>——液体不会自发结晶，需要一个「晶核」引发链式反应。PJ Ace 就是那个晶核。<br><br>另一个有趣的数据点：<strong>丧尸末日题材为什么特别适合 AI</strong>？因为末日废土的「脏乱破」美学天然容忍 AI 生成的不完美——这不是巧合，这是<strong>创作者对工具边界的精准认知</strong>。最聪明的创作者不是对抗工具的缺陷，而是把缺陷变成风格。"
+        },
+        {
+          "key": "tim",
+          "name": "Tim · 影视飓风",
+          "avatar": "thinking/avatars/tim.png",
+          "emoji": "🎬",
+          "html": "看完这部片子我第一反应是——<strong>镜头语言过硬</strong>。不是那种「AI 随机生成看起来像电影」的感觉，而是每个镜头都有明确的叙事功能：建立-推进-反转-落幅，节奏卡得死。全片零台词但你完全不觉得缺少信息，这就是<strong>视觉叙事的基本功</strong>。Seedance 2.0 的角色一致性在这个片子里经受住了考验——同一个机器人角色跨几十个镜头没飘，这是生产级水准。<br><br><strong>对我们的启示</strong>：丧尸/废土/末日确实是当前 AI 视频的「安全题材」，因为它对画面精度的要求更宽容。但下一步挑战是：<strong>能不能用同样的工具做一部「干净」题材的片子</strong>——比如都市爱情、家庭剧——那才是真正证明 AI 已经到了生产级。"
+        },
+        {
+          "key": "mrbeast",
+          "name": "MrBeast",
+          "avatar": "thinking/avatars/mrbeast.png",
+          "emoji": "🎯",
+          "html": "好吧我来算这笔账——<strong>3000 块人民币，大概 $400，做出一个全网破千万播放的爆款</strong>。传统拍摄同等质感的短片至少 $50K 起步。ROI 差 100 倍。但真正让我兴奋的不是成本，是<strong>传播机制</strong>：这个片子不是靠平台算法推的，是靠跨平台的「审美共识」自然扩散的。在 YouTube 的世界里，这意味着<strong>好内容终于可以不靠 CTR 优化</strong>，纯靠内容本身的「传播力」破圈。不过我得说——3 分半的片子做到这个效果可以，但要做成系列化月更的频道，你得证明这不是一次性灵感，而是可复制的工作流。"
+        }
+      ]
+    },
+    {
       "id": "hell-grind",
       "featured": true,
       "featuredBanner": "⭐ Editor's Pick",
