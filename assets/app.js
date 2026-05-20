@@ -7,7 +7,7 @@ const i18n = {
         no_briefing: '暂无简报', no_briefing_desc: '该日期的自动收集尚未执行。',
         no_weekly: '暂无周报', no_weekly_desc: '该周的周报尚未发布。',
         no_archive: '暂无存档。', scanning: '扫描中…',
-        lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报', mode_gallery: '🎬 作品', mode_ideas: '💡 想法',
+        lang_label: 'EN', mode_daily: '日报', mode_weekly: '周报', mode_gallery: '🎬 作品', mode_playbook: '📖 技巧', mode_ideas: '💡 想法',
         toast_copied: '🔗 链接已复制',
     },
     en: {
@@ -17,7 +17,7 @@ const i18n = {
         no_briefing: 'No briefing for this date', no_briefing_desc: 'The automation hasn\'t run for this date yet.',
         no_weekly: 'No weekly briefing', no_weekly_desc: 'The weekly briefing hasn\'t been published yet.',
         no_archive: 'No archives found.', scanning: 'Scanning\u2026',
-        lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly', mode_gallery: '🎬 Gallery', mode_ideas: '💡 Ideas',
+        lang_label: '中文', mode_daily: 'Daily', mode_weekly: 'Weekly', mode_gallery: '🎬 Gallery', mode_playbook: '📖 Playbook', mode_ideas: '💡 Ideas',
         toast_copied: '🔗 Link copied',
     }
 };
@@ -47,6 +47,8 @@ function applyI18n() {
     document.querySelector('.mode-tab[data-mode="daily"]').textContent = t('mode_daily');
     document.querySelector('.mode-tab[data-mode="weekly"]').textContent = t('mode_weekly');
     document.querySelector('.mode-tab[data-mode="gallery"]').textContent = t('mode_gallery');
+    var playbookTab = document.querySelector('.mode-tab[data-mode="playbook"]');
+    if (playbookTab) playbookTab.textContent = t('mode_playbook');
     var ideasTab = document.querySelector('.mode-tab[data-mode="ideas"]');
     if (ideasTab) ideasTab.textContent = t('mode_ideas');
 }
