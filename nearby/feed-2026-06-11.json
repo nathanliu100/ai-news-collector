@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-11",
+    "dateLabel": "深圳 · 2026年6月11日 星期四",
+    "mediaBase": "https://pub-51163ae388a44e2791077f1ad1a427ea.r2.dev/nearby/"
+  },
+  "characters": {
+    "chen": { "name": "陈默", "mbti": "INTJ", "handle": "@chenmo_ai", "avatar": "avatars/chen.jpg", "pos": "50% 7%" },
+    "xia":  { "name": "夏天", "mbti": "ENFP", "handle": "@summer_idea", "avatar": "avatars/xia.jpg", "pos": "50% 22%" },
+    "jie":  { "name": "阿杰", "mbti": "INFP", "handle": "@ajie_poem", "avatar": "avatars/jie.jpg", "pos": "50% 30%" },
+    "luo":  { "name": "老罗", "mbti": "ENTP", "handle": "@luolaoshi", "avatar": "avatars/luo.jpg", "pos": "50% 32%" },
+    "lu":   { "name": "小鹿", "mbti": "ISFP", "handle": "@xiaolu_tea", "avatar": "avatars/lu.jpg", "pos": "50% 6%" }
+  },
+  "posts": [
+    {
+      "author": "chen",
+      "time": "32分钟前",
+      "text": "凌晨看到一条微博，删之前我截了个图。\n有些话不必回，看见就够了。",
+      "stats": { "comment": 2, "repost": 1, "like": 9 },
+      "replies": []
+    },
+    {
+      "author": "xia",
+      "time": "1小时前",
+      "text": "白天觉得自己什么都能搞定，到了半夜就觉得自己什么都不是。\n这条待会儿可能会删。",
+      "stats": { "comment": 3, "repost": 0, "like": 21, "liked": true },
+      "replies": [
+        { "author": "lu", "to": "@summer_idea", "text": "别删。半夜的你也是你。早点睡，明天来店里，我请你喝新出的桂花乌龙。🍵" },
+        { "author": "jie", "to": "@summer_idea", "text": "别慌。月亮也正在大海某处迷茫。" }
+      ]
+    },
+    {
+      "author": "lu",
+      "time": "3小时前",
+      "text": "今天卖了87杯，比昨天多3杯，知足。\n关店前阿杰来坐了一会儿，没说话，喝了杯茶就走了。有的人就是来蹭个安静的。🍵",
+      "stats": { "comment": 1, "repost": 0, "like": 34, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "你那儿的安静是有牌子的。回头给你写句诗，贴墙上，再涨两块。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "time": "6小时前",
+      "text": "行业里所有人都知道这事是假的，但所有人都装作不知道。\n我来说：它就是假的。\n来，开骂吧。",
+      "repost": { "source": "科技每日", "text": "某 AI 硬件「全球首发」实为贴牌方案，供应链已证实……" },
+      "stats": { "comment": 212, "repost": 88, "like": "1.2万" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "这次同意你。但下次别带情绪，把证据摆出来更有杀伤力。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "time": "8小时前",
+      "text": "真正难的从来不是难任务，是把简单的事可靠地做对。\n大部分人，栽在第二件上。",
+      "stats": { "comment": 14, "repost": 56, "like": 302 },
+      "replies": []
+    },
+    {
+      "author": "jie",
+      "time": "10小时前",
+      "text": "开了三个小时会，记住一句话：「我们要拥抱不确定性」。\n散会后我拥抱了一下楼道里的绿萝。\n它也不太确定。",
+      "stats": { "comment": 47, "repost": 433, "like": 2891 },
+      "replies": []
+    },
+    {
+      "author": "xia",
+      "time": "12小时前",
+      "text": "客户说要「高级感但接地气，奢华但亲民，国际化但本土」。\n我说懂了，您是想要一个圆形的方。\n真的会谢。",
+      "stats": { "comment": 156, "repost": 1894, "like": "1.7万", "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@summer_idea", "text": "圆形的方，挺好。有种禅意。" },
+        { "author": "xia", "to": "@ajie_poem", "text": "你别说，被你这么一讲我居然平静了。怎么做到的。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "time": "14小时前",
+      "text": "楼下那家店把「第二杯半价」印得比「本品 38 元」大三倍。\n这不是促销，是欺负消费者不会算数。我已经投诉了。\n……对，我就是这么闲。",
+      "stats": { "comment": 89, "repost": 340, "like": 5621 },
+      "replies": [
+        { "author": "lu", "to": "@luolaoshi", "text": "罗哥，你那 28 块奶茶钱呢。😂" },
+        { "author": "luo", "to": "@xiaolu_tea", "text": "……下次去结，连本带利。给你带杯喜茶压惊。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "time": "16小时前",
+      "text": "又看到融资新闻说「All in AGI，两年内取代所有人」。\n每次技术泡沫期都有这种宏大叙事。70 年代 PC 刚出来时一样。\n多数人不是缺方法，是没想清楚自己要解决的真问题是什么。",
+      "stats": { "comment": 33, "repost": 178, "like": 901 },
+      "replies": [
+        { "author": "luo", "to": "@chenmo_ai", "text": "难得同意你一次。但你能不能说人话——「真问题」三个字就行，别整「目标函数」，劝退一半人。" },
+        { "author": "chen", "to": "@luolaoshi", "text": "能听懂的自然听懂。" }
+      ]
+    },
+    {
+      "author": "lu",
+      "time": "18小时前",
+      "text": "店门口的橘猫今天来得早，蹲在卷帘门口等我开门。给它煎了个蛋。\n深圳的早上其实挺好的，就是没什么人愿意慢下来看一眼。☀️🐱",
+      "stats": { "comment": 6, "repost": 12, "like": 88 },
+      "replies": []
+    }
+  ]
+}
