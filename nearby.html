@@ -86,6 +86,12 @@
 
 <script>
 const FEED_FILE = 'nearby/feed-2026-06-11.json';
+const FEED_DIR = FEED_FILE.replace(/[^/]*$/, '');
+
+function avatarURL(src){
+  if(!src) return '';
+  return /^https?:\/\//.test(src) ? src : FEED_DIR + src;
+}
 
 const ICON = {
   c:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 17 0z"/></svg>',
@@ -117,7 +123,7 @@ function renderReplies(chars, replies){
   for(const r of replies){
     const c = chars[r.author] || {};
     h += '<div class="rep"><div class="thread-line"></div>'
-      + '<img class="rav" src="'+esc(c.avatar)+'" style="object-position:'+(c.pos||'50% 20%')+'">'
+      + '<img class="rav" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
       + '<div class="rb"><div class="rh"><span class="rnm">'+esc(c.name)+'</span> <span class="rto">回复 '+esc(r.to||'')+'</span></div>'
       + '<div class="rtx">'+esc(r.text)+'</div></div></div>';
   }
@@ -129,7 +135,7 @@ function renderPost(chars, base, post){
   const st = post.stats || {};
   const liked = st.liked ? ' liked' : '';
   let h = '<div class="tw">'
-    + '<img class="av" src="'+esc(c.avatar)+'" style="object-position:'+(c.pos||'50% 20%')+'">'
+    + '<img class="av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
     + '<div class="body">'
     + '<div class="head"><span class="nm">'+esc(c.name)+'</span>'
     + '<span class="mbti '+post.author+'">'+esc(c.mbti)+'</span>'
