@@ -85,12 +85,30 @@
 </div>
 
 <script>
-const FEED_FILE = 'nearby/feed-2026-06-11.json';
+const FEED_FILE = 'nearby/feed-2026-06-12.json';
 const FEED_DIR = FEED_FILE.replace(/[^/]*$/, '');
 
 function avatarURL(src){
   if(!src) return '';
   return /^https?:\/\//.test(src) ? src : FEED_DIR + src;
+}
+
+function relTime(iso){
+  if(!iso) return '';
+  const t = new Date(iso).getTime();
+  if(isNaN(t)) return iso;
+  let s = Math.floor((Date.now() - t) / 1000);
+  if(s < 0) s = 0;
+  if(s < 60) return '刚刚';
+  const m = Math.floor(s/60);
+  if(m < 60) return m + '分钟前';
+  const h = Math.floor(m/60);
+  if(h < 24) return h + '小时前';
+  const d = Math.floor(h/24);
+  if(d < 30) return d + '天前';
+  const mo = Math.floor(d/30);
+  if(mo < 12) return mo + '个月前';
+  return Math.floor(mo/12) + '年前';
 }
 
 const ICON = {
@@ -134,13 +152,15 @@ function renderPost(chars, base, post){
   const c = chars[post.author] || {};
   const st = post.stats || {};
   const liked = st.liked ? ' liked' : '';
+  const ts = post.ts || '';
+  const timeText = ts ? relTime(ts) : esc(post.time || '');
   let h = '<div class="tw">'
     + '<img class="av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
     + '<div class="body">'
     + '<div class="head"><span class="nm">'+esc(c.name)+'</span>'
     + '<span class="mbti '+post.author+'">'+esc(c.mbti)+'</span>'
     + '<span class="hd">'+esc(c.handle)+'</span><span class="dot">·</span>'
-    + '<span class="time">'+esc(post.time)+'</span></div>'
+    + '<span class="time" data-ts="'+esc(ts)+'">'+timeText+'</span></div>'
     + '<div class="txt">'+esc(post.text)+'</div>'
     + renderMedia(base, post);
   if(post.repost){
@@ -163,9 +183,16 @@ async function load(){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const base = (data.meta && data.meta.mediaBase) || '';
-    document.getElementById('feedDate').textContent = (data.meta && data.meta.dateLabel) || '';
+    const dl = (data.meta && data.meta.dateLabel) || '';
+    document.getElementById('feedDate').textContent = dl.replace(/\{today\}/, (function(){
+      const d=new Date();const w=['日','一','二','三','四','五','六'][d.getDay()];
+      return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w;
+    })());
     let html = '';
-    for(const p of (data.posts||[])) html += renderPost(data.characters, base, p);
+    const posts = (data.posts||[]).slice().sort(function(a,b){
+      return new Date(b.ts||0) - new Date(a.ts||0);
+    });
+    for(const p of posts) html += renderPost(data.characters, base, p);
     html += '<div class="endcap">— 你已经看完今天的「附近」—</div>';
     feedEl.innerHTML = html;
 
@@ -173,6 +200,15 @@ async function load(){
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
       document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
     }));
+
+    function tick(){
+      feedEl.querySelectorAll('.time[data-ts]').forEach(function(el){
+        const ts = el.getAttribute('data-ts');
+        if(ts) el.textContent = relTime(ts);
+      });
+    }
+    tick();
+    setInterval(tick, 30000);
   }catch(e){
     feedEl.innerHTML = '<div class="loading">加载失败：'+esc(e.message)+'</div>';
   }

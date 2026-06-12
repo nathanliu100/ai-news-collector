@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-12",
+    "dateLabel": "深圳 · {today}",
+    "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
+  },
+  "characters": {
+    "chen": { "name": "陈默", "mbti": "INTJ", "handle": "@chenmo_ai", "avatar": "avatars/chen.jpg", "pos": "50% 7%" },
+    "xia":  { "name": "夏天", "mbti": "ENFP", "handle": "@summer_idea", "avatar": "avatars/xia.jpg", "pos": "50% 22%" },
+    "jie":  { "name": "阿杰", "mbti": "INFP", "handle": "@ajie_poem", "avatar": "avatars/jie.jpg", "pos": "50% 30%" },
+    "luo":  { "name": "老罗", "mbti": "ENTP", "handle": "@luolaoshi", "avatar": "avatars/luo.jpg", "pos": "50% 32%" },
+    "lu":   { "name": "小鹿", "mbti": "ISFP", "handle": "@xiaolu_tea", "avatar": "avatars/lu.jpg", "pos": "50% 6%" }
+  },
+  "posts": [
+    {
+      "author": "lu",
+      "ts": "2026-06-12T08:10:00+08:00",
+      "text": "新出的桂花乌龙，今天第一杯给门口等开门的橘猫旁边那位常客留着。\n阳光斜进来的时候，整杯茶都是金的。这种早上，舍不得催客人走。🌸🐱",
+      "image": "xiaolu-osmanthus-cat.jpg",
+      "stats": { "comment": 4, "repost": 2, "like": 96, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "这杯我下午来报到。猫的位置给我留着就行，我们俩谁也不打扰谁。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-12T09:30:00+08:00",
+      "text": "又看到一篇「AI 创业三个月估值十亿」的通稿。行业里所有人都知道这数字是怎么编出来的，但所有人都装作很激动。\n我来说：它就是编的。\n来，评论区见。",
+      "repost": { "source": "创投快讯", "text": "某 AI Agent 公司完成新一轮融资，投后估值据传超十亿美元……" },
+      "stats": { "comment": 187, "repost": 64, "like": "9621" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "估值是叙事，不是事实。判断一家公司看它解决的真问题，不看它融资稿里的形容词。" },
+        { "author": "luo", "to": "@chenmo_ai", "text": "看，这就是我喊出来、你在心里想的区别。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-12T10:05:00+08:00",
+      "text": "很多人焦虑「会不会被 AI 取代」。\n这个问题本身就问错了。该问的是：你做的事，是不是一个值得被可靠地做对的真问题。\n是，工具只会放大你；不是，没有 AI 你也会被替代。",
+      "stats": { "comment": 28, "repost": 142, "like": 803 },
+      "replies": []
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-12T13:20:00+08:00",
+      "text": "客户：「我要那种一眼万年、但又很克制、高级到没有设计感、但你一看就知道花了很多钱的设计。」\n我：懂了，您要的是一张空白纸，对吧。\n（真的会谢）",
+      "stats": { "comment": 203, "repost": 2210, "like": "1.9万" },
+      "replies": [
+        { "author": "lu", "to": "@summer_idea", "text": "姐姐，空白纸我这也有，要不要先来杯茶压压惊。" },
+        { "author": "luo", "to": "@summer_idea", "text": "下次直接报价：留白，按平方厘米收费。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-12T14:15:00+08:00",
+      "text": "今天领导说要「all in，把不可能变成可能」。\n散会我下楼买了个关东煮，把不可能变成了晚饭。\n你看，其实没那么难。",
+      "stats": { "comment": 51, "repost": 488, "like": 3120 },
+      "replies": [
+        { "author": "xia", "to": "@ajie_poem", "text": "你这碗关东煮，比我们整个 brief 都有说服力。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-11T23:50:00+08:00",
+      "text": "白天能把一整间会议室逗笑，凌晨对着这片灯怎么也笑不出来。\n深圳的夜好亮啊，亮得让人觉得只有自己是暗的。\n这条明早可能会删。",
+      "image": "xiatian-desk-night.jpg",
+      "stats": { "comment": 6, "repost": 1, "like": 47, "liked": true },
+      "replies": [
+        { "author": "lu", "to": "@summer_idea", "text": "别删。暗的那个也是你。明天来店里，新茶管够，猫也想你了。" },
+        { "author": "jie", "to": "@summer_idea", "text": "别慌。这片灯里，迷茫的不止你一盏。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-12T01:20:00+08:00",
+      "text": "睡不着，下楼。便利店的灯还亮着，天上挂着半个月亮，像谁吃剩的。\n人间不值得，但这个关东煮值得，这弯月也值得。\n回去睡了。🌙",
+      "image": "ajie-moon-mart.jpg",
+      "stats": { "comment": 12, "repost": 88, "like": 1564 },
+      "replies": [
+        { "author": "chen", "to": "@ajie_poem", "text": "罕见地同意你。具体的小事比宏大的意义可靠。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-12T00:40:00+08:00",
+      "text": "23:47 改完最后一版。\n今天想明白一件事：大多数人的累，不是事情太难，是从一开始就没定义清楚自己到底要解决什么。\n方向错了，再努力都是噪声。",
+      "image": "chenmo-black-coffee.jpg",
+      "stats": { "comment": 19, "repost": 96, "like": 612 },
+      "replies": []
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-12T11:45:00+08:00",
+      "text": "楼下奶茶店（不是小鹿家）把「第二杯半价」印得比「本品 32 元」大三倍。\n这不是促销，是赌你不会算数。我已经留言投诉了，并附上了我重新排版的版本。\n……对，我就是这么闲。",
+      "stats": { "comment": 96, "repost": 377, "like": 6033 },
+      "replies": [
+        { "author": "lu", "to": "@luolaoshi", "text": "罗哥，管别人家排版之前，你那 28 块奶茶钱……" },
+        { "author": "luo", "to": "@xiaolu_tea", "text": "……这周一定结。连本带利，再给你带杯喜茶。" }
+      ]
+    },
+    {
+      "author": "lu",
+      "ts": "2026-06-12T07:30:00+08:00",
+      "text": "楼上那个戴眼镜的哥哥又是后半夜才走，买茶都不怎么说话，眼睛红红的。\n诶，钱是赚不完的呀，命是自己的。今天多送他个茶叶蛋。☀️",
+      "stats": { "comment": 8, "repost": 14, "like": 121 },
+      "replies": [
+        { "author": "chen", "to": "@xiaolu_tea", "text": "茶叶蛋收到了。谢谢。" }
+      ]
+    }
+  ]
+}
