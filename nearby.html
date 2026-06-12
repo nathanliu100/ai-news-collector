@@ -17,22 +17,63 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-  .app{max-width:600px;margin:0 auto;background:var(--card);min-height:100vh;border-left:1px solid var(--line);border-right:1px solid var(--line)}
 
-  .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);padding:13px 18px}
-  .top .back{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:10px}
+  .shell{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:248px minmax(0,1fr) 232px;gap:0;align-items:start}
+  .col-feed{background:var(--card);border-left:1px solid var(--line);border-right:1px solid var(--line);min-height:100vh}
+  .col-left,.col-right{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:14px 14px 40px}
+  .col-left::-webkit-scrollbar,.col-right::-webkit-scrollbar{width:0}
+
+  /* sidebar */
+  .side-h{font-size:12px;font-weight:700;color:var(--faint);letter-spacing:.05em;margin:14px 4px 8px}
+  .side-h:first-child{margin-top:0}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;margin-bottom:9px;cursor:pointer;transition:border-color .15s,transform .15s}
+  .pcard:hover{border-color:#d4d9df;transform:translateY(-1px)}
+  .pcard-top{display:flex;align-items:center;gap:9px}
+  .pcard .pa{width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed}
+  .pcard .pn{font-size:14px;font-weight:700;display:flex;align-items:center;gap:5px}
+  .pcard .pm{font-size:9px;font-weight:700;letter-spacing:.05em;color:#fff;padding:1px 5px;border-radius:7px}
+  .pcard .pt{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.3}
+  .pcard-detail{max-height:0;overflow:hidden;transition:max-height .3s ease;opacity:0}
+  .pcard.open .pcard-detail{max-height:520px;opacity:1;margin-top:10px}
+  .pcard-bio{font-size:12px;line-height:1.65;color:var(--ink);padding-top:9px;border-top:1px solid var(--line)}
+  .pcard-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .ptag{font-size:10.5px;color:var(--muted);background:#f1f3f5;padding:2px 7px;border-radius:8px}
+  .pcard-quote{font-size:12px;font-style:italic;color:var(--muted);margin-top:9px;padding-left:8px;border-left:2px solid var(--line)}
+  .pcard-rel{margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.7}
+  .pcard-rel b{color:var(--ink);font-weight:600}
+
+  .relbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+  .relbox .rt{font-size:12.5px;font-weight:700;margin-bottom:7px}
+  .relbox .rl{font-size:11.5px;color:var(--muted);line-height:1.85}
+  .relbox .rl b{color:var(--ink);font-weight:600}
+
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:10px}
+  .rcard .rh{font-size:12.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .rnews{display:block;text-decoration:none;color:var(--ink);font-size:12px;line-height:1.45;padding:6px 0;border-bottom:1px solid var(--line)}
+  .rnews:last-child{border-bottom:0}
+  .rnews:hover{color:var(--accent)}
+  .rnews .rdot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .online-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:4px 0}
+  .online-row .od{width:7px;height:7px;border-radius:50%;background:var(--rt);flex-shrink:0}
+  .online-row img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+
+  /* feed header — compact, single sticky row */
+  .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);padding:10px 18px}
+  .top-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .top .logo{font-size:19px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:baseline;gap:7px}
+  .top .logo span{font-size:11px;font-weight:500;color:var(--faint);letter-spacing:.08em}
+  .top .tabs{display:flex;gap:14px}
+  .top .tab{font-size:14px;font-weight:600;color:var(--faint);cursor:pointer;position:relative;padding:2px 0}
+  .top .tab.on{color:var(--ink)}
+  .top .tab.on::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:30px;height:3px;border-radius:3px;background:var(--accent)}
+  .top .meta{font-size:11.5px;color:var(--faint);margin-top:5px}
+  .top .back{font-size:12px;color:var(--muted);text-decoration:none}
   .top .back:hover{color:var(--accent)}
-  .top .logo{font-size:20px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px}
-  .top .logo span{font-size:12px;font-weight:500;color:var(--faint);letter-spacing:.08em}
-  .top .date{font-size:12px;color:var(--muted);margin-top:2px}
-  .tabs{display:flex;margin-top:12px;gap:0}
-  .tab{flex:1;text-align:center;font-size:14px;font-weight:600;color:var(--muted);padding:6px 0;cursor:pointer;position:relative}
-  .tab.on{color:var(--ink)}
-  .tab.on::after{content:"";position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:38px;height:3px;border-radius:3px;background:var(--accent)}
 
-  .tw{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);cursor:default}
+  /* tweet */
+  .tw{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
   .tw:hover{background:#fafbfc}
-  .av{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed}
+  .av{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed;cursor:pointer}
   .body{flex:1;min-width:0}
   .head{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:14px;line-height:1.3}
   .nm{font-weight:700;color:var(--ink)}
@@ -43,9 +84,12 @@
   .time{color:var(--faint)}
   .txt{font-size:15px;line-height:1.6;margin-top:3px;color:var(--ink);white-space:pre-wrap;word-break:break-word}
   .media{margin-top:10px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
-  .media img,.media video{width:100%;display:block;max-height:420px;object-fit:cover;background:#000}
+  .media img,.media video{width:100%;display:block;max-height:440px;object-fit:cover;background:#000}
+  .media.selfie img{max-height:520px;object-fit:cover}
   .rtbar{font-size:12.5px;color:var(--muted);margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}
+  .rtbar a{color:inherit;text-decoration:none}
   .rtbar b{color:var(--ink);font-weight:600}
+  .rtbar .nbadge{display:inline-block;font-size:11px;color:var(--accent);margin-right:5px}
 
   .acts{display:flex;justify-content:space-between;max-width:340px;margin-top:10px;color:var(--muted)}
   .act{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
@@ -65,50 +109,93 @@
 
   .endcap{text-align:center;color:var(--faint);font-size:13px;padding:26px 0 40px}
   .loading{text-align:center;padding:60px 0;color:var(--faint);font-size:13px;letter-spacing:.1em}
+
+  .mobile-only{display:none}
+  @media(max-width:980px){
+    .shell{grid-template-columns:1fr;max-width:600px}
+    .col-left,.col-right{display:none}
+    .col-feed{border-left:0;border-right:0}
+    .mobile-only{display:block}
+    .m-cast{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+    .m-cast .mc{flex-shrink:0;text-align:center;cursor:pointer;width:54px}
+    .m-cast .mc img{width:46px;height:46px;border-radius:50%;object-fit:cover}
+    .m-cast .mc span{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+  }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="shell">
 
-  <div class="top">
-    <a class="back" href="index.html">&#8249; 返回 AI Briefing</a>
-    <div class="logo">附近<span>nearby</span></div>
-    <div class="date" id="feedDate">加载中…</div>
-    <div class="tabs">
-      <div class="tab on">关注</div>
-      <div class="tab">推荐</div>
+  <aside class="col-left" id="colLeft">
+    <div class="side-h">深圳五人</div>
+    <div id="profileCards"></div>
+    <div class="relbox">
+      <div class="rt">关系网</div>
+      <div class="rl" id="relWeb"></div>
     </div>
-  </div>
+  </aside>
 
-  <div id="feed"><div class="loading">LOADING</div></div>
+  <main class="col-feed">
+    <div class="top">
+      <a class="back" href="index.html">&#8249; 返回 AI Briefing</a>
+      <div class="top-row" style="margin-top:8px">
+        <div class="logo">附近<span>nearby</span></div>
+        <div class="tabs">
+          <div class="tab on">关注</div>
+          <div class="tab">推荐</div>
+        </div>
+      </div>
+      <div class="meta" id="feedMeta">加载中…</div>
+    </div>
+
+    <div class="mobile-only m-cast" id="mCast"></div>
+
+    <div id="feed"><div class="loading">LOADING</div></div>
+  </main>
+
+  <aside class="col-right" id="colRight">
+    <div class="side-h">动态</div>
+    <div class="rcard">
+      <div class="rh">📰 今日联动新闻</div>
+      <div id="newsList"><div style="font-size:12px;color:var(--faint)">读取中…</div></div>
+    </div>
+    <div class="rcard">
+      <div class="rh">🟢 在线状态</div>
+      <div id="onlineList"></div>
+    </div>
+    <div class="rcard">
+      <div class="rh"># 今日话题</div>
+      <div id="topicList" style="font-size:12px;color:var(--muted);line-height:1.9"></div>
+    </div>
+  </aside>
 
 </div>
 
 <script>
 const FEED_FILE = 'nearby/feed-2026-06-12.json';
+const CHARS_FILE = 'nearby/characters.json';
 const FEED_DIR = FEED_FILE.replace(/[^/]*$/, '');
 
-function avatarURL(src){
-  if(!src) return '';
-  return /^https?:\/\//.test(src) ? src : FEED_DIR + src;
-}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);}
+function avatarURL(src){ if(!src) return ''; return /^https?:\/\//.test(src) ? src : FEED_DIR + src; }
+function mediaURL(base, src){ if(!src) return ''; return /^https?:\/\//.test(src) ? src : base + src; }
 
 function relTime(iso){
   if(!iso) return '';
   const t = new Date(iso).getTime();
   if(isNaN(t)) return iso;
-  let s = Math.floor((Date.now() - t) / 1000);
+  let s = Math.floor((Date.now() - t)/1000);
   if(s < 0) s = 0;
   if(s < 60) return '刚刚';
-  const m = Math.floor(s/60);
-  if(m < 60) return m + '分钟前';
-  const h = Math.floor(m/60);
-  if(h < 24) return h + '小时前';
-  const d = Math.floor(h/24);
-  if(d < 30) return d + '天前';
-  const mo = Math.floor(d/30);
-  if(mo < 12) return mo + '个月前';
-  return Math.floor(mo/12) + '年前';
+  const m = Math.floor(s/60); if(m < 60) return m+'分钟前';
+  const h = Math.floor(m/60); if(h < 24) return h+'小时前';
+  const d = Math.floor(h/24); if(d < 30) return d+'天前';
+  const mo = Math.floor(d/30); if(mo < 12) return mo+'个月前';
+  return Math.floor(mo/12)+'年前';
+}
+function todayLabel(){
+  const d=new Date();const w=['日','一','二','三','四','五','六'][d.getDay()];
+  return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w;
 }
 
 const ICON = {
@@ -117,29 +204,59 @@ const ICON = {
   l:'<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
 };
 
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);}
+let CHARS = {};
 
-// 媒体：以 http 开头当绝对 URL（R2），否则拼 mediaBase（也指向 R2）
-function mediaURL(base, src){
-  if(!src) return '';
-  return /^https?:\/\//.test(src) ? src : base + src;
+function renderProfiles(members){
+  const wrap = document.getElementById('profileCards');
+  let html = '';
+  for(const m of members){
+    const rels = (m.relations||[]).map(r=>{
+      const o = CHARS[r.to]; const nm = o ? o.name : r.to;
+      return '<div>↔ <b>'+esc(nm)+'</b> · '+esc(r.label)+'</div>';
+    }).join('');
+    const tags = (m.tags||[]).map(t=>'<span class="ptag">'+esc(t)+'</span>').join('');
+    html += '<div class="pcard" data-key="'+m.key+'">'
+      + '<div class="pcard-top">'
+      + '<img class="pa" src="'+esc(avatarURL(m.avatar))+'" style="object-position:'+(m.pos||'50% 20%')+'">'
+      + '<div><div class="pn">'+esc(m.name)+' <span class="pm" style="background:'+m.color+'">'+esc(m.mbti)+'</span></div>'
+      + '<div class="pt">'+esc(m.tagline)+'</div></div></div>'
+      + '<div class="pcard-detail">'
+      + '<div class="pcard-bio">'+esc(m.bio)+'</div>'
+      + '<div class="pcard-quote">“'+esc(m.quote)+'”</div>'
+      + '<div class="pcard-tags">'+tags+'</div>'
+      + (rels ? '<div class="pcard-rel">'+rels+'</div>' : '')
+      + '</div></div>';
+  }
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('.pcard').forEach(c=>{
+    c.addEventListener('click',()=>c.classList.toggle('open'));
+  });
 }
 
-function renderMedia(base, post){
-  if(post.video){
-    return '<div class="media"><video src="'+mediaURL(base,post.video)+'" controls preload="metadata"'+(post.poster?' poster="'+mediaURL(base,post.poster)+'"':'')+'></video></div>';
+function renderRelWeb(members){
+  const seen = new Set(); const lines = [];
+  for(const m of members){
+    for(const r of (m.relations||[])){
+      const k = [m.key,r.to].sort().join('-');
+      if(seen.has(k)) continue; seen.add(k);
+      const o = CHARS[r.to];
+      lines.push('<b>'+esc(m.name)+'</b> ↔ <b>'+esc(o?o.name:r.to)+'</b><br><span style="color:var(--faint)">'+esc(r.label)+'</span>');
+    }
   }
-  if(post.image){
-    return '<div class="media"><img src="'+mediaURL(base,post.image)+'" loading="lazy" alt=""></div>';
-  }
-  return '';
+  document.getElementById('relWeb').innerHTML = lines.join('<div style="height:6px"></div>');
 }
 
-function renderReplies(chars, replies){
+function renderMobileCast(members){
+  document.getElementById('mCast').innerHTML = members.map(m=>
+    '<div class="mc" data-key="'+m.key+'"><img src="'+esc(avatarURL(m.avatar))+'" style="object-position:'+(m.pos||'50% 20%')+'"><span>'+esc(m.name)+'</span></div>'
+  ).join('');
+}
+
+function renderReplies(replies){
   if(!replies || !replies.length) return '';
   let h = '<div class="reps">';
   for(const r of replies){
-    const c = chars[r.author] || {};
+    const c = CHARS[r.author] || {};
     h += '<div class="rep"><div class="thread-line"></div>'
       + '<img class="rav" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
       + '<div class="rb"><div class="rh"><span class="rnm">'+esc(c.name)+'</span> <span class="rto">回复 '+esc(r.to||'')+'</span></div>'
@@ -148,12 +265,23 @@ function renderReplies(chars, replies){
   return h + '</div>';
 }
 
-function renderPost(chars, base, post){
-  const c = chars[post.author] || {};
+function renderMedia(base, post){
+  if(post.video){
+    return '<div class="media"><video src="'+mediaURL(base,post.video)+'" controls preload="metadata"'+(post.poster?' poster="'+mediaURL(base,post.poster)+'"':'')+'></video></div>';
+  }
+  if(post.image){
+    const cls = post.selfie ? 'media selfie' : 'media';
+    return '<div class="'+cls+'"><img src="'+mediaURL(base,post.image)+'" loading="lazy" alt=""></div>';
+  }
+  return '';
+}
+
+function renderPost(base, post){
+  const c = CHARS[post.author] || {};
   const st = post.stats || {};
   const liked = st.liked ? ' liked' : '';
   const ts = post.ts || '';
-  const timeText = ts ? relTime(ts) : esc(post.time || '');
+  const timeText = ts ? relTime(ts) : esc(post.time||'');
   let h = '<div class="tw">'
     + '<img class="av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
     + '<div class="body">'
@@ -164,51 +292,111 @@ function renderPost(chars, base, post){
     + '<div class="txt">'+esc(post.text)+'</div>'
     + renderMedia(base, post);
   if(post.repost){
-    h += '<div class="rtbar">🔗 转发了 <b>'+esc(post.repost.source)+'</b>：'+esc(post.repost.text)+'</div>';
+    const inner = '🔗 '+(post.repost.news?'<span class="nbadge">AI Briefing</span>':'转发了 ')+'<b>'+esc(post.repost.source)+'</b>：'+esc(post.repost.text);
+    h += post.repost.link
+      ? '<div class="rtbar"><a href="'+esc(post.repost.link)+'" target="_blank">'+inner+'</a></div>'
+      : '<div class="rtbar">'+inner+'</div>';
   }
   h += '<div class="acts">'
     + '<div class="act c">'+ICON.c+(st.comment??0)+'</div>'
     + '<div class="act r">'+ICON.r+(st.repost??0)+'</div>'
     + '<div class="act l'+liked+'">'+ICON.l+(st.like??0)+'</div>'
     + '</div>'
-    + renderReplies(chars, post.replies)
+    + renderReplies(post.replies)
     + '</div></div>';
   return h;
+}
+
+function renderRightRail(data, posts){
+  const newsEl = document.getElementById('newsList');
+  const news = data.news || [];
+  if(news.length){
+    const dotColor = {high:'#f4212e',medium:'#ffd400',low:'#00ba7c'};
+    newsEl.innerHTML = news.map(n=>
+      '<a class="rnews" href="'+esc(n.link||'#')+'" target="_blank"><span class="rdot" style="background:'+(dotColor[n.level]||'#ccc')+'"></span>'+esc(n.title)+'</a>'
+    ).join('');
+  } else {
+    newsEl.innerHTML = '<div style="font-size:12px;color:var(--faint)">今日暂无联动新闻</div>';
+  }
+
+  const last = {};
+  for(const p of posts){ if(!last[p.author]) last[p.author]=p.ts; }
+  const members = data._members || [];
+  document.getElementById('onlineList').innerHTML = members.map(m=>{
+    const lt = last[m.key];
+    return '<div class="online-row"><span class="od"></span><img src="'+esc(avatarURL(m.avatar))+'" style="object-position:'+(m.pos||'50% 20%')+'"><span>'+esc(m.name)+(lt?' · '+relTime(lt):'')+'</span></div>';
+  }).join('');
+
+  const topics = data.topics || [];
+  document.getElementById('topicList').innerHTML = topics.length
+    ? topics.map(t=>'<div>#'+esc(t)+'</div>').join('')
+    : '<div style="color:var(--faint)">—</div>';
 }
 
 async function load(){
   const feedEl = document.getElementById('feed');
   try{
-    const res = await fetch(FEED_FILE, {cache:'no-cache'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
+    const [cr, fr] = await Promise.all([
+      fetch(CHARS_FILE,{cache:'no-cache'}),
+      fetch(FEED_FILE,{cache:'no-cache'})
+    ]);
+    if(!cr.ok) throw new Error('characters HTTP '+cr.status);
+    if(!fr.ok) throw new Error('feed HTTP '+fr.status);
+    const cdata = await cr.json();
+    const data = await fr.json();
+    const members = cdata.members || [];
+    members.forEach(m=>CHARS[m.key]=m);
+    data._members = members;
+
+    renderProfiles(members);
+    renderRelWeb(members);
+    renderMobileCast(members);
+
     const base = (data.meta && data.meta.mediaBase) || '';
-    const dl = (data.meta && data.meta.dateLabel) || '';
-    document.getElementById('feedDate').textContent = dl.replace(/\{today\}/, (function(){
-      const d=new Date();const w=['日','一','二','三','四','五','六'][d.getDay()];
-      return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w;
-    })());
+    const posts = (data.posts||[]).slice().sort((a,b)=>new Date(b.ts||0)-new Date(a.ts||0));
+
+    const city = (data.meta && data.meta.city) || '深圳';
+    document.getElementById('feedMeta').textContent = city+' · '+todayLabel()+' · '+members.length+'人在线 · '+posts.length+'条动态';
+
     let html = '';
-    const posts = (data.posts||[]).slice().sort(function(a,b){
-      return new Date(b.ts||0) - new Date(a.ts||0);
-    });
-    for(const p of posts) html += renderPost(data.characters, base, p);
+    for(const p of posts) html += renderPost(base, p);
     html += '<div class="endcap">— 你已经看完今天的「附近」—</div>';
     feedEl.innerHTML = html;
 
+    renderRightRail(data, posts);
+
     feedEl.querySelectorAll('.act.l').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('liked')));
-    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    document.querySelectorAll('.top .tab').forEach(t=>t.addEventListener('click',()=>{
+      document.querySelectorAll('.top .tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    }));
+    feedEl.querySelectorAll('.tw').forEach(tw=>{
+      const av = tw.querySelector('.av');
+      if(!av) return;
+      av.addEventListener('click',()=>{
+        const mb = tw.querySelector('.mbti');
+        const key = mb ? mb.className.split(' ').pop() : '';
+        const card = document.querySelector('.pcard[data-key="'+key+'"]');
+        if(card){
+          card.classList.add('open');
+          card.scrollIntoView({behavior:'smooth',block:'center'});
+        } else {
+          const c = CHARS[key];
+          if(c) alert(c.name+'（'+c.mbti+'）\n'+c.tagline+'\n\n'+c.bio+'\n\n“'+c.quote+'”');
+        }
+      });
+    });
+    document.querySelectorAll('.m-cast .mc').forEach(mc=>mc.addEventListener('click',()=>{
+      const k=mc.getAttribute('data-key'); const c=CHARS[k];
+      if(c) alert(c.name+'（'+c.mbti+'）\n'+c.tagline+'\n\n'+c.bio+'\n\n“'+c.quote+'”');
     }));
 
     function tick(){
-      feedEl.querySelectorAll('.time[data-ts]').forEach(function(el){
-        const ts = el.getAttribute('data-ts');
-        if(ts) el.textContent = relTime(ts);
+      document.querySelectorAll('.time[data-ts]').forEach(el=>{
+        const ts=el.getAttribute('data-ts'); if(ts) el.textContent=relTime(ts);
       });
+      document.getElementById('feedMeta').textContent = city+' · '+todayLabel()+' · '+members.length+'人在线 · '+posts.length+'条动态';
     }
-    tick();
-    setInterval(tick, 30000);
+    tick(); setInterval(tick,30000);
   }catch(e){
     feedEl.innerHTML = '<div class="loading">加载失败：'+esc(e.message)+'</div>';
   }

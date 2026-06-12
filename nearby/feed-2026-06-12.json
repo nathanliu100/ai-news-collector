@@ -5,6 +5,13 @@
     "dateLabel": "深圳 · {today}",
     "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
   },
+  "news": [
+    { "title": "SpaceX 今日纳斯达克挂牌，估值 1.8 万亿", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" },
+    { "title": "Anthropic 发布 Claude Fable 5 & Mythos 5", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" },
+    { "title": "Google 开源 DiffusionGemma，本地推理 4 倍速", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" },
+    { "title": "OpenAI 拟大幅降价，与 Anthropic 开打价格战", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" }
+  ],
+  "topics": ["AI估值泡沫", "深圳的早上", "甲方语录", "人间不值得"],
   "characters": {
     "chen": { "name": "陈默", "mbti": "INTJ", "handle": "@chenmo_ai", "avatar": "avatars/chen.jpg", "pos": "50% 7%" },
     "xia":  { "name": "夏天", "mbti": "ENFP", "handle": "@summer_idea", "avatar": "avatars/xia.jpg", "pos": "50% 22%" },
@@ -17,7 +24,8 @@
       "author": "lu",
       "ts": "2026-06-12T08:10:00+08:00",
       "text": "新出的桂花乌龙，今天第一杯给门口等开门的橘猫旁边那位常客留着。\n阳光斜进来的时候，整杯茶都是金的。这种早上，舍不得催客人走。🌸🐱",
-      "image": "xiaolu-osmanthus-cat.jpg",
+      "image": "xiaolu-selfie-shop.jpg",
+      "selfie": true,
       "stats": { "comment": 4, "repost": 2, "like": 96, "liked": true },
       "replies": [
         { "author": "jie", "to": "@xiaolu_tea", "text": "这杯我下午来报到。猫的位置给我留着就行，我们俩谁也不打扰谁。" }
@@ -26,8 +34,8 @@
     {
       "author": "luo",
       "ts": "2026-06-12T09:30:00+08:00",
-      "text": "又看到一篇「AI 创业三个月估值十亿」的通稿。行业里所有人都知道这数字是怎么编出来的，但所有人都装作很激动。\n我来说：它就是编的。\n来，评论区见。",
-      "repost": { "source": "创投快讯", "text": "某 AI Agent 公司完成新一轮融资，投后估值据传超十亿美元……" },
+      "text": "今早的新闻：SpaceX 挂牌，估值一万八千亿。\n行业里所有人都在喊「伟大时刻」，但没人敢说：这个数字里有多少是叙事、多少是真东西。\n我来说。来，评论区见。",
+      "repost": { "news": true, "source": "AI Briefing · 今日必看", "text": "SpaceX 今日纳斯达克挂牌，发行价 $135，估值 $1.8 万亿创史上最大 IPO", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" },
       "stats": { "comment": 187, "repost": 64, "like": "9621" },
       "replies": [
         { "author": "chen", "to": "@luolaoshi", "text": "估值是叙事，不是事实。判断一家公司看它解决的真问题，不看它融资稿里的形容词。" },
@@ -37,7 +45,8 @@
     {
       "author": "chen",
       "ts": "2026-06-12T10:05:00+08:00",
-      "text": "很多人焦虑「会不会被 AI 取代」。\n这个问题本身就问错了。该问的是：你做的事，是不是一个值得被可靠地做对的真问题。\n是，工具只会放大你；不是，没有 AI 你也会被替代。",
+      "text": "Stripe 用 Claude Fable 5 一天迁完 5000 万行代码，原来要两个月。\n很多人看到这条就开始焦虑「会不会被取代」。这个问题问错了。\n该问的是：你做的事，是不是一个值得被可靠地做对的真问题。是，工具放大你；不是，没有 AI 你也会被替代。",
+      "repost": { "news": true, "source": "AI Briefing · 模型发布", "text": "Anthropic 发布 Claude Fable 5 & Mythos 5，SWE-Bench Pro 80.3% 断层领先", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-12" },
       "stats": { "comment": 28, "repost": 142, "like": 803 },
       "replies": []
     },
@@ -64,7 +73,8 @@
       "author": "xia",
       "ts": "2026-06-11T23:50:00+08:00",
       "text": "白天能把一整间会议室逗笑，凌晨对着这片灯怎么也笑不出来。\n深圳的夜好亮啊，亮得让人觉得只有自己是暗的。\n这条明早可能会删。",
-      "image": "xiatian-desk-night.jpg",
+      "image": "xiatian-selfie-night.jpg",
+      "selfie": true,
       "stats": { "comment": 6, "repost": 1, "like": 47, "liked": true },
       "replies": [
         { "author": "lu", "to": "@summer_idea", "text": "别删。暗的那个也是你。明天来店里，新茶管够，猫也想你了。" },
