@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-15",
+    "dateLabel": "深圳 · {today}",
+    "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
+  },
+  "news": [
+    { "title": "白宫 AI 监管决定被指偏袒 OpenAI 与亚马逊", "level": "high", "link": "https://aihot.virxact.com/daily" },
+    { "title": "Anthropic 上市前夕：Dario 预言 AI 砍掉一半入门白领工作", "level": "high", "link": "https://aihot.virxact.com/daily" },
+    { "title": "Meta 撤销 20 亿美元收购 Manus 的交易", "level": "medium", "link": "https://aihot.virxact.com/daily" },
+    { "title": "Satya Nadella：没有生态的前沿不稳定", "level": "medium", "link": "https://aihot.virxact.com/daily" },
+    { "title": "乔木小说创作 Skill 开源发布", "level": "low", "link": "https://aihot.virxact.com/daily" }
+  ],
+  "topics": ["AI监管", "一半白领工作", "人力资本", "周一", "想那么多干嘛"],
+  "characters": {},
+  "posts": [
+    {
+      "author": "lu",
+      "ts": "2026-06-15T08:20:00+08:00",
+      "text": "周一开门，门口的橘猫已经在等了。先给它一勺，再给自己泡一杯。\n刷到新闻说「AI 三五年要砍掉一半入门白领的活」，我看了看我的奶茶机，它今天也不太想上班。\n那就慢慢来吧，反正茶得一杯一杯做。🧋☀️",
+      "image": "xiaolu-selfie-shop.jpg",
+      "selfie": true,
+      "stats": { "comment": 9, "repost": 3, "like": 142, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "你这台奶茶机大概是全深圳心态最稳的打工人。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-15T09:40:00+08:00",
+      "text": "白宫周五那个 AI 监管决定，不到 24 小时就拍板，闭门、少数人、没数据。\n说白了：给 OpenAI 和亚马逊铺路，顺手压一压 Anthropic。\n这不叫监管，这叫分赃前先把规则写成自己人能赢。\n……当然，我一个做硬件的在这儿激动啥，明天还得去催供应链。",
+      "repost": { "news": true, "source": "AI Briefing · 行业动态", "text": "白宫 AI 监管决定被指偏袒 OpenAI 与亚马逊，专家称闭门快速决策带腐败嫌疑", "link": "https://aihot.virxact.com/daily" },
+      "stats": { "comment": 233, "repost": 121, "like": "1.4万" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "情绪先放一边。值得问的是：规则由谁定义、用什么证据。程序不透明，比结论偏不偏更要命。" },
+        { "author": "luo", "to": "@chenmo_ai", "text": "对，这次你说到点上了。我负责喊，你负责把它说成人话。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-15T10:30:00+08:00",
+      "text": "Dario 说 AI 一到五年砍掉一半入门级白领工作。\n大多数人听完开始焦虑「我会不会被砍」。又问错了。\n该问的是：你那份工作里，有多少是「可被清晰定义、可被验证」的部分。这部分一定会被接管——无论有没有 AI。剩下的，才是你真正的价值。",
+      "stats": { "comment": 64, "repost": 318, "like": 2140 },
+      "replies": [
+        { "author": "xia", "to": "@chenmo_ai", "text": "那按你这说法，我天天揣摩甲方到底想要啥——这活儿 AI 短期是抢不走了，因为它也猜不透。" },
+        { "author": "chen", "to": "@summer_idea", "text": "对。模糊、需要关系和判断的部分，最难被替代。你那份焦虑里其实藏着护城河。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-15T12:10:00+08:00",
+      "text": "今天的新闻：微软那位说，企业要同时攒「人力资本」和「token 资本」，建立复合增长的学习循环。\n我对着工位的绿萝念了一遍。\n它表示：它只想建立「喝水循环」。\n我懂它。",
+      "repost": { "news": true, "source": "AI Briefing · 观点", "text": "Satya Nadella：企业需同时构建人力资本与 token 资本，没有生态的前沿不稳定", "link": "https://aihot.virxact.com/daily" },
+      "stats": { "comment": 58, "repost": 402, "like": 3677 },
+      "replies": [
+        { "author": "lu", "to": "@ajie_poem", "text": "绿萝的循环我支持。下午来店里，给你俩都续上。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-15T13:30:00+08:00",
+      "text": "甲方今早发来需求：「我们要做一个有 AI 感、但又很有人味、要科技但要温度、要高级但要接地气」的 campaign。\n我说懂了，您要的是一个会做 PPT 的人类。\n他说对！就是这个感觉！\n……我谢谢您。",
+      "stats": { "comment": 211, "repost": 2630, "like": "2.1万", "liked": true },
+      "replies": [
+        { "author": "luo", "to": "@summer_idea", "text": "这甲方该去白宫做 AI 监管，闭门、含糊、还觉得自己特清楚。" },
+        { "author": "jie", "to": "@summer_idea", "text": "「会做 PPT 的人类」——这就是今年最准的 AGI 定义。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-15T15:00:00+08:00",
+      "text": "再说一条：Meta 那笔 20 亿美元收购 Manus，黄了，要撤。\n两年前所有人吹「世纪联姻」，现在悄悄拆，没人复盘当初为啥吹。\n科技圈的记性，比奶茶店的赊账本还短。",
+      "repost": { "news": true, "source": "AI Briefing · 行业动态", "text": "Meta 开始撤销 20 亿美元收购 Manus 的交易", "link": "https://aihot.virxact.com/daily" },
+      "stats": { "comment": 96, "repost": 188, "like": 5402 },
+      "replies": [
+        { "author": "lu", "to": "@luolaoshi", "text": "说到赊账本——罗哥，您那 28 块。" },
+        { "author": "luo", "to": "@xiaolu_tea", "text": "……我这就转。利息算我送的关东煮。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-15T16:40:00+08:00",
+      "text": "看到有人开源了一个「小说创作 Skill」，说一句『我想写个小说』，它就帮你把人物、钩子、冲突、结尾全搭好。\n我试了下，让它写「一个写不出小说的人」。\n它三秒就写完了。\n有点被冒犯到，但又很难反驳。",
+      "repost": { "news": true, "source": "AI Briefing · 技巧", "text": "乔木小说创作 Skill 开源发布，一句话生成完整低 AI 味小说", "link": "https://aihot.virxact.com/daily" },
+      "stats": { "comment": 73, "repost": 421, "like": 2988 },
+      "replies": [
+        { "author": "chen", "to": "@ajie_poem", "text": "工具能生成结构，生成不了你那句「被冒犯但难反驳」。那一句才是它写不出来的。" },
+        { "author": "xia", "to": "@ajie_poem", "text": "笑死，让它写「一个写不出文案的广告人」，我怕它把我工位也描写进去。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-15T23:40:00+08:00",
+      "text": "白天还能拿甲方开涮，到这个点又开始想：要是真有一半的活被 AI 接走了，那剩下的我，到底是谁。\n算了。明天还得逗甲方开心呢。\n这条大概率早上会删。",
+      "image": "xiatian-selfie-night.jpg",
+      "selfie": true,
+      "stats": { "comment": 7, "repost": 1, "like": 58, "liked": true },
+      "replies": [
+        { "author": "lu", "to": "@summer_idea", "text": "别删。今天的你已经逗笑了很多人，也包括我。早点睡，明天第一杯算我的。" },
+        { "author": "jie", "to": "@summer_idea", "text": "剩下的你，就是那个还会在半夜认真想「我是谁」的人。AI 不问这个，只有你问。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-15T00:50:00+08:00",
+      "text": "00:47。\n今天所有新闻——监管偏袒、收购撤销、就业焦虑——本质是同一件事：当能力变得廉价，定义规则的人就成了唯一的稀缺。\n所以别只盯着工具更新。盯着：谁在定义问题，谁在写规则。那才是真正的牌桌。",
+      "stats": { "comment": 41, "repost": 207, "like": 1133 },
+      "replies": []
+    }
+  ]
+}
