@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关系网 · 附近 nearby</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --ink:#eef1f5; --muted:#9aa4b2; --faint:#6b7480;
+    --line:#262b34; --accent:#1d9bf0;
+    --sans:"PingFang SC","Helvetica Neue","Microsoft YaHei",Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+  .app{max-width:760px;margin:0 auto;padding:0 0 50px}
+  .nav{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:13px 18px;display:flex;align-items:center;gap:12px}
+  .nav a.back{font-size:18px;color:var(--ink);text-decoration:none}
+  .nav .nt{font-size:16px;font-weight:700}
+  .nav .ns{font-size:12px;color:var(--faint);margin-top:1px}
+  .hero{text-align:center;padding:22px 18px 4px}
+  .hero h1{font-size:22px;font-weight:800;letter-spacing:.01em}
+  .hero p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+  .stage{position:relative;width:100%}
+  svg{width:100%;height:auto;display:block}
+  .edge{stroke:#39414d;stroke-width:1.5;transition:stroke .2s,stroke-width .2s;cursor:pointer}
+  .edge.hot{stroke:var(--accent);stroke-width:3}
+  .edge.dim{stroke:#222831;opacity:.4}
+  .node{cursor:pointer}
+  .node circle.ring{fill:none;stroke-width:2.5;transition:r .2s,opacity .2s}
+  .node image{clip-path:circle(31px at 50% 50%);transition:opacity .2s}
+  .node text{fill:var(--ink);font-size:13px;font-weight:700;text-anchor:middle}
+  .node .nrole{fill:var(--faint);font-size:10.5px;font-weight:400}
+  .node.dim image,.node.dim text,.node.dim .nrole{opacity:.32}
+  .node.dim circle.ring{opacity:.3}
+  .panel{margin:6px 18px 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;min-height:96px;transition:border-color .2s}
+  .panel.empty{display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:13px;text-align:center}
+  .pr-pair{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .pr-pair img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#222}
+  .pr-pair .x{color:var(--faint);font-size:13px}
+  .pr-names{font-size:15px;font-weight:700}
+  .pr-label{display:inline-block;font-size:12px;color:var(--accent);background:rgba(29,155,240,.12);border:1px solid rgba(29,155,240,.3);border-radius:8px;padding:2px 10px;margin-top:2px}
+  .pr-detail{font-size:14px;line-height:1.7;color:var(--muted);margin-top:6px}
+  .pr-go{display:inline-block;margin-top:10px;margin-right:10px;font-size:12.5px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:5px 11px}
+  .pr-go:hover{border-color:var(--accent)}
+  .legend{text-align:center;font-size:12px;color:var(--faint);margin-top:14px;padding:0 18px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="nav">
+    <a class="back" href="nearby.html">&#8249;</a>
+    <div><div class="nt">五人关系网</div><div class="ns">深圳五人 · 谁和谁，是什么关系</div></div>
+  </div>
+  <div class="hero">
+    <h1>他们之间，藏着整个故事</h1>
+    <p>点一个人，看他和谁有牵连；点一条线，听他们之间发生过什么。</p>
+  </div>
+  <div class="stage">
+    <svg id="net" viewBox="0 0 760 520" role="img" aria-label="五人关系网络图"></svg>
+  </div>
+  <div class="panel empty" id="panel">点头像或连线，看他们的关系</div>
+  <div class="legend">线越亮 = 互动越多 · 这是别处没有的「关系剧场」<br>后续每段关系会沉淀两人所有互动历史</div>
+</div>
+
+<script>
+const CHARS_FILE='nearby/characters.json';
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);}
+function avatarURL(src){return /^https?:\/\//.test(src)?src:'nearby/'+String(src).replace(/^nearby\//,'');}
+
+const CX=380, CY=270, R=170;
+let CHARS={}, EDGES=[], NODEPOS={};
+
+function buildEdges(members){
+  const seen=new Set(); const edges=[];
+  for(const m of members){
+    for(const r of (m.relations||[])){
+      const k=[m.key,r.to].sort().join('-');
+      if(seen.has(k)) continue; seen.add(k);
+      edges.push({a:m.key,b:r.to,label:r.label, labelB:(CHARS[r.to].relations||[]).find(x=>x.to===m.key)?.label});
+    }
+  }
+  return edges;
+}
+
+function render(members){
+  const n=members.length;
+  members.forEach((m,i)=>{
+    const ang=-Math.PI/2 + i*2*Math.PI/n;
+    NODEPOS[m.key]={x:CX+R*Math.cos(ang), y:CY+R*Math.sin(ang)};
+  });
+  EDGES=buildEdges(members);
+
+  let svg='';
+  EDGES.forEach((e,i)=>{
+    const p1=NODEPOS[e.a], p2=NODEPOS[e.b];
+    svg+='<line class="edge" data-edge="'+i+'" x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'"></line>';
+  });
+  members.forEach(m=>{
+    const p=NODEPOS[m.key];
+    svg+='<g class="node" data-key="'+m.key+'">'
+      +'<circle class="ring" cx="'+p.x+'" cy="'+p.y+'" r="33" stroke="'+m.color+'"></circle>'
+      +'<image href="'+esc(avatarURL(m.avatar))+'" x="'+(p.x-31)+'" y="'+(p.y-31)+'" width="62" height="62" preserveAspectRatio="xMidYMid slice"></image>'
+      +'<text x="'+p.x+'" y="'+(p.y+50)+'">'+esc(m.name)+'</text>'
+      +'<text class="nrole" x="'+p.x+'" y="'+(p.y+65)+'">'+esc(m.role)+'</text>'
+      +'</g>';
+  });
+  document.getElementById('net').innerHTML=svg;
+
+  const net=document.getElementById('net');
+  net.querySelectorAll('.edge').forEach(ed=>ed.addEventListener('click',()=>showEdge(+ed.getAttribute('data-edge'))));
+  net.querySelectorAll('.node').forEach(nd=>nd.addEventListener('click',()=>focusNode(nd.getAttribute('data-key'))));
+}
+
+function clearHot(){
+  document.querySelectorAll('.edge').forEach(e=>e.classList.remove('hot','dim'));
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('dim'));
+}
+
+function focusNode(key){
+  clearHot();
+  const related=new Set([key]);
+  document.querySelectorAll('.edge').forEach((e,i)=>{
+    const ed=EDGES[i];
+    if(ed.a===key||ed.b===key){ e.classList.add('hot'); related.add(ed.a); related.add(ed.b); }
+    else e.classList.add('dim');
+  });
+  document.querySelectorAll('.node').forEach(n=>{ if(!related.has(n.getAttribute('data-key'))) n.classList.add('dim'); });
+  const m=CHARS[key];
+  const conns=EDGES.map((e,i)=>({e,i})).filter(({e})=>e.a===key||e.b===key);
+  let h='<div class="pr-pair"><img src="'+esc(avatarURL(m.avatar))+'"><div><div class="pr-names">'+esc(m.name)+' 的关系网</div><div class="pr-label">'+esc(m.role)+'</div></div></div>';
+  h+='<div class="pr-detail">';
+  conns.forEach(({e})=>{
+    const other=e.a===key?e.b:e.a;
+    const lbl=e.a===key?e.label:(e.labelB||e.label);
+    h+='· 和 <b style="color:var(--ink)">'+esc(CHARS[other].name)+'</b>：'+esc(lbl)+'<br>';
+  });
+  h+='</div><a class="pr-go" href="u.html?u='+key+'">进入 '+esc(m.name)+' 的主页 →</a>';
+  const panel=document.getElementById('panel'); panel.classList.remove('empty'); panel.innerHTML=h;
+}
+
+function showEdge(i){
+  clearHot();
+  const e=EDGES[i];
+  document.querySelectorAll('.edge')[i].classList.add('hot');
+  document.querySelectorAll('.edge').forEach((el,j)=>{ if(j!==i) el.classList.add('dim'); });
+  document.querySelectorAll('.node').forEach(n=>{ const k=n.getAttribute('data-key'); if(k!==e.a&&k!==e.b) n.classList.add('dim'); });
+  const A=CHARS[e.a], B=CHARS[e.b];
+  let h='<div class="pr-pair"><img src="'+esc(avatarURL(A.avatar))+'"><span class="x">↔</span><img src="'+esc(avatarURL(B.avatar))+'"><div><div class="pr-names">'+esc(A.name)+' &amp; '+esc(B.name)+'</div></div></div>';
+  h+='<div><span class="pr-label">'+esc(e.label)+'</span></div>';
+  if(e.labelB && e.labelB!==e.label) h+='<div class="pr-detail">'+esc(B.name)+'眼里的'+esc(A.name)+'：'+esc(e.labelB)+'</div>';
+  h+='<a class="pr-go" href="u.html?u='+e.a+'">'+esc(A.name)+'主页</a><a class="pr-go" href="u.html?u='+e.b+'">'+esc(B.name)+'主页</a>';
+  const panel=document.getElementById('panel'); panel.classList.remove('empty'); panel.innerHTML=h;
+}
+
+async function load(){
+  try{
+    const d=await (await fetch(CHARS_FILE,{cache:'no-cache'})).json();
+    (d.members||[]).forEach(m=>CHARS[m.key]=m);
+    render(d.members||[]);
+  }catch(e){
+    document.getElementById('panel').textContent='加载失败：'+e.message;
+  }
+}
+load();
+</script>
+</body>
+</html>

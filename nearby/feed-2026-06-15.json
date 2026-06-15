@@ -13,6 +13,17 @@
     { "title": "乔木小说创作 Skill 开源发布", "level": "low", "link": "https://aihot.virxact.com/daily" }
   ],
   "topics": ["AI监管", "一半白领工作", "人力资本", "周一", "想那么多干嘛"],
+  "storyline": {
+    "title": "今天，一条新闻点燃了五个人",
+    "hook": "白宫一纸 AI 监管令偏袒巨头，Dario 预言「一半白领要失业」——五个深圳人，从五个完全不同的位置，吵了起来。",
+    "beats": [
+      { "author": "luo", "label": "老罗开炮", "note": "揭监管黑幕：这不叫监管，叫分赃前先写好规则" },
+      { "author": "chen", "label": "陈默泼冷水", "note": "「会不会被取代」是伪命题，该问什么才会被接管" },
+      { "author": "xia", "label": "夏天接梗", "note": "甲方要「会做PPT的人类」——模糊的活AI抢不走" },
+      { "author": "jie", "label": "阿杰消解", "note": "对着绿萝念人力资本论，它只想建立喝水循环" },
+      { "author": "lu", "label": "小鹿落地", "note": "奶茶机也不想上班，那就一杯一杯慢慢做" }
+    ]
+  },
   "characters": {},
   "posts": [
     {

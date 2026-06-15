@@ -49,6 +49,8 @@
 
   .rcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:10px}
   .rcard .rh{font-size:12.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .relentry{display:block;text-decoration:none;color:inherit;transition:border-color .15s}
+  .relentry:hover{border-color:var(--accent)}
   .rnews{display:block;text-decoration:none;color:var(--ink);font-size:12px;line-height:1.45;padding:6px 0;border-bottom:1px solid var(--line)}
   .rnews:last-child{border-bottom:0}
   .rnews:hover{color:var(--accent)}
@@ -111,6 +113,22 @@
   .loading{text-align:center;padding:60px 0;color:var(--faint);font-size:13px;letter-spacing:.1em}
 
   .av,.pa,.rav,.m-cast .mc img{cursor:zoom-in}
+  .story{border-bottom:1px solid var(--line);padding:16px 18px;background:linear-gradient(180deg,#f0f6fd,#fff)}
+  .story-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.04em;margin-bottom:7px}
+  .story-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .story-title{font-size:18px;font-weight:800;line-height:1.35;margin-bottom:6px}
+  .story-hook{font-size:13.5px;line-height:1.6;color:var(--muted);margin-bottom:14px}
+  .story-beats{display:flex;flex-direction:column;gap:0;position:relative}
+  .beat{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:6px 0;position:relative}
+  .beat::before{content:"";position:absolute;left:13px;top:30px;bottom:-6px;width:2px;background:var(--line)}
+  .beat:last-child::before{display:none}
+  .beat-av{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed;z-index:1}
+  .beat-b{flex:1;min-width:0}
+  .beat-l{font-size:13px;font-weight:700}
+  .beat-l .arrow{font-size:11px;color:var(--accent);margin-left:6px;font-weight:500}
+  .beat-n{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .beat:hover .beat-l{color:var(--accent)}
   .pin{background:linear-gradient(180deg,#fbfcfe,#fff);border-bottom:1px solid var(--line)}
   .pin-h{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);font-weight:600;padding:10px 18px 4px}
   .pin-h svg{width:13px;height:13px;fill:currentColor}
@@ -173,6 +191,8 @@
 
     <div class="mobile-only m-cast" id="mCast"></div>
 
+    <div id="storyline"></div>
+
     <div id="openerPin" class="pin"></div>
 
     <div id="feed"><div class="loading">LOADING</div></div>
@@ -180,6 +200,10 @@
 
   <aside class="col-right" id="colRight">
     <div class="side-h">动态</div>
+    <a class="rcard relentry" href="relations.html">
+      <div class="rh">🕸️ 五人关系网</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">点开看谁和谁有牵连——互怼、暗恋、赊账…整个故事的暗线 →</div>
+    </a>
     <div class="rcard">
       <div class="rh">📰 今日联动新闻</div>
       <div id="newsList"><div style="font-size:12px;color:var(--faint)">读取中…</div></div>
@@ -282,6 +306,36 @@ function renderProfiles(members){
       c.classList.toggle('open');
     });
   });
+}
+
+function renderStoryline(story, posts){
+  const el = document.getElementById('storyline');
+  if(!story || !story.beats){ el.innerHTML=''; return; }
+  const firstTsByAuthor = {};
+  posts.forEach(p=>{ if(!firstTsByAuthor[p.author]) firstTsByAuthor[p.author]=p.ts; });
+  let beats = '';
+  for(const b of story.beats){
+    const c = CHARS[b.author] || {};
+    beats += '<div class="beat" data-key="'+b.author+'">'
+      + '<img class="beat-av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
+      + '<div class="beat-b"><div class="beat-l">'+esc(b.label)+'<span class="arrow">跳到 ↓</span></div>'
+      + '<div class="beat-n">'+esc(b.note)+'</div></div></div>';
+  }
+  el.innerHTML = '<div class="story">'
+    + '<div class="story-tag">今日故事线</div>'
+    + '<div class="story-title">'+esc(story.title)+'</div>'
+    + '<div class="story-hook">'+esc(story.hook)+'</div>'
+    + '<div class="story-beats">'+beats+'</div></div>';
+  el.querySelectorAll('.beat').forEach(b=>b.addEventListener('click',()=>{
+    const key = b.getAttribute('data-key');
+    const target = document.querySelector('#feed .tw .mbti.'+key);
+    if(target){
+      const tw = target.closest('.tw');
+      tw.scrollIntoView({behavior:'smooth',block:'center'});
+      tw.style.transition='background .3s'; tw.style.background='#eaf4fd';
+      setTimeout(()=>tw.style.background='',1200);
+    }
+  }));
 }
 
 function renderOpeners(members){
@@ -440,6 +494,7 @@ async function load(){
     feedEl.innerHTML = html;
 
     renderRightRail(data, posts);
+    renderStoryline(data.storyline, posts);
 
     feedEl.querySelectorAll('.act.l').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('liked')));
     document.querySelectorAll('.top .tab').forEach(t=>t.addEventListener('click',()=>{
