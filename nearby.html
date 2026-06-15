@@ -115,7 +115,13 @@
   .pin-h{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);font-weight:600;padding:10px 18px 4px}
   .pin-h svg{width:13px;height:13px;fill:currentColor}
   .opener .txt{color:var(--ink)}
-  .opener .ob{font-size:11px;color:var(--faint);margin-top:2px}
+  .opener .ob{font-size:11px;color:var(--faint);margin-top:6px}
+  .opener-photo{cursor:zoom-in}
+  .namelink{text-decoration:none;color:var(--ink)}
+  .namelink:hover{text-decoration:underline}
+  .pcard-more{display:block;margin-top:10px;font-size:12px;font-weight:600;text-decoration:none;color:var(--accent)}
+  .pcard-more:hover{text-decoration:underline}
+  .tagline-tag{background:transparent;border:1px solid;font-weight:500}
 
   .lb{position:fixed;inset:0;background:rgba(15,20,25,.92);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;cursor:zoom-out}
   .lb.on{display:flex}
@@ -256,12 +262,13 @@ function renderProfiles(members){
       + '<div class="pcard-top">'
       + '<img class="pa" src="'+esc(avatarURL(m.avatar))+'" style="object-position:'+(m.pos||'50% 20%')+'">'
       + '<div><div class="pn">'+esc(m.name)+' <span class="pm" style="background:'+m.color+'">'+esc(m.mbti)+'</span></div>'
-      + '<div class="pt">'+esc(m.tagline)+'</div></div></div>'
+      + '<div class="pt">'+esc(m.role)+'</div></div></div>'
       + '<div class="pcard-detail">'
       + '<div class="pcard-bio">'+esc(m.bio)+'</div>'
       + '<div class="pcard-quote">“'+esc(m.quote)+'”</div>'
-      + '<div class="pcard-tags">'+tags+'</div>'
+      + '<div class="pcard-tags"><span class="ptag tagline-tag" style="border-color:'+m.color+';color:'+m.color+'">'+esc(m.tagline)+'</span>'+tags+'</div>'
       + (rels ? '<div class="pcard-rel">'+rels+'</div>' : '')
+      + '<a class="pcard-more" href="u.html?u='+m.key+'">查看 '+esc(m.name)+' 的主页 →</a>'
       + '</div></div>';
   }
   wrap.innerHTML = html;
@@ -281,21 +288,23 @@ function renderOpeners(members){
   const pin = document.getElementById('openerPin');
   const withOpener = members.filter(m=>m.opener);
   if(!withOpener.length){ pin.innerHTML=''; return; }
-  let h = '<div class="pin-h"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H7l-2 2V5z"/></svg>初次见面 · 开场白</div>';
+  let h = '<div class="pin-h"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H7l-2 2V5z"/></svg>初次见面 · 五人入场</div>';
   for(const m of withOpener){
+    const portraitSrc = m.portrait ? avatarURL(m.portrait) : avatarURL(m.avatar);
     h += '<div class="tw opener">'
       + '<img class="av" data-key="'+m.key+'" src="'+esc(avatarURL(m.avatar))+'" style="object-position:'+(m.pos||'50% 20%')+'">'
       + '<div class="body">'
-      + '<div class="head"><span class="nm">'+esc(m.name)+'</span>'
+      + '<div class="head"><a class="nm namelink" href="u.html?u='+m.key+'">'+esc(m.name)+'</a>'
       + '<span class="mbti '+m.key+'">'+esc(m.mbti)+'</span>'
-      + '<span class="hd">'+esc(m.handle)+'</span></div>'
+      + '<span class="hd">'+esc(m.handle)+' · '+esc(m.role)+'</span></div>'
       + '<div class="txt">'+esc(m.opener)+'</div>'
-      + '<div class="ob">— 加入「附近」时说的第一句话</div>'
+      + '<div class="media"><img class="opener-photo" data-key="'+m.key+'" src="'+esc(portraitSrc)+'" loading="lazy" alt="'+esc(m.name)+'"></div>'
+      + '<div class="ob">— '+esc(m.name)+' 加入「附近」· 点头像看大图，点名字进主页</div>'
       + '</div></div>';
   }
   pin.innerHTML = h;
-  pin.querySelectorAll('.av').forEach(av=>av.addEventListener('click',()=>{
-    const c = CHARS[av.getAttribute('data-key')]; if(c) openLightbox(c);
+  pin.querySelectorAll('.av,.opener-photo').forEach(el=>el.addEventListener('click',()=>{
+    const c = CHARS[el.getAttribute('data-key')]; if(c) openLightbox(c);
   }));
 }
 
@@ -351,7 +360,7 @@ function renderPost(base, post){
   let h = '<div class="tw">'
     + '<img class="av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
     + '<div class="body">'
-    + '<div class="head"><span class="nm">'+esc(c.name)+'</span>'
+    + '<div class="head"><a class="nm namelink" href="u.html?u='+post.author+'">'+esc(c.name)+'</a>'
     + '<span class="mbti '+post.author+'">'+esc(c.mbti)+'</span>'
     + '<span class="hd">'+esc(c.handle)+'</span><span class="dot">·</span>'
     + '<span class="time" data-ts="'+esc(ts)+'">'+timeText+'</span></div>'
