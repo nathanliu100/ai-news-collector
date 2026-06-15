@@ -92,7 +92,8 @@
   .txt{font-size:15px;line-height:1.6;margin-top:3px;color:var(--ink);white-space:pre-wrap;word-break:break-word}
   .media{margin-top:10px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
   .media img,.media video{width:100%;display:block;max-height:440px;object-fit:cover;background:#000}
-  .media.selfie img{max-height:520px;object-fit:cover}
+  .media.selfie{background:#0f1115}
+  .media.selfie img{max-height:600px;object-fit:contain}
   .rtbar{font-size:12.5px;color:var(--muted);margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}
   .rtbar a{color:inherit;text-decoration:none}
   .rtbar b{color:var(--ink);font-weight:600}
@@ -139,6 +140,11 @@
   .pin{background:linear-gradient(180deg,#fbfcfe,#fff);border-bottom:1px solid var(--line)}
   .pin-h{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);font-weight:600;padding:10px 18px 4px}
   .pin-h svg{width:13px;height:13px;fill:currentColor}
+  .pin-h .pin-x{margin-left:auto;cursor:pointer;color:var(--faint);font-size:12px;font-weight:500;border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+  .pin-h .pin-x:hover{color:var(--ink);border-color:var(--muted)}
+  .pin-sub{font-size:11.5px;color:var(--faint);padding:0 18px 6px;font-weight:400}
+  .remeet{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--accent);padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;background:#fbfcfe}
+  .remeet:hover{background:#f3f8fd}
   .opener .txt{color:var(--ink)}
   .opener .ob{font-size:11px;color:var(--faint);margin-top:6px}
   .opener-photo{cursor:zoom-in}
@@ -201,6 +207,7 @@
     <div id="storyline"></div>
 
     <div id="openerPin" class="pin"></div>
+    <div id="remeet"></div>
 
     <div id="feed"><div class="loading">LOADING</div></div>
   </main>
@@ -347,9 +354,14 @@ function renderStoryline(story, posts){
 
 function renderOpeners(members){
   const pin = document.getElementById('openerPin');
+  const remeet = document.getElementById('remeet');
   const withOpener = members.filter(m=>m.opener);
   if(!withOpener.length){ pin.innerHTML=''; return; }
-  let h = '<div class="pin-h"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H7l-2 2V5z"/></svg>初次见面 · 五人入场</div>';
+
+  const SEEN_KEY = 'nearby_openers_seen';
+  let h = '<div class="pin-h"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H7l-2 2V5z"/></svg>先认识一下这五个人'
+    + '<span class="pin-x" id="pinClose">看过了，收起 ✕</span></div>'
+    + '<div class="pin-sub">这是他们刚来「附近」时的第一句话和样子 — 往下就是他们最近的日常</div>';
   for(const m of withOpener){
     const portraitSrc = m.portrait ? avatarURL(m.portrait) : avatarURL(m.avatar);
     h += '<div class="tw opener">'
@@ -359,7 +371,7 @@ function renderOpeners(members){
       + '<span class="mbti '+m.key+'">'+esc(m.mbti)+'</span>'
       + '<span class="hd">'+esc(m.handle)+' · '+esc(m.role)+'</span></div>'
       + '<div class="txt">'+esc(m.opener)+'</div>'
-      + '<div class="media"><img class="opener-photo" data-key="'+m.key+'" src="'+esc(portraitSrc)+'" loading="lazy" alt="'+esc(m.name)+'"></div>'
+      + '<div class="media selfie"><img class="opener-photo" data-key="'+m.key+'" src="'+esc(portraitSrc)+'" loading="lazy" alt="'+esc(m.name)+'"></div>'
       + '<div class="ob">— '+esc(m.name)+' 加入「附近」· 点头像看大图，点名字进主页</div>'
       + '</div></div>';
   }
@@ -367,6 +379,25 @@ function renderOpeners(members){
   pin.querySelectorAll('.av,.opener-photo').forEach(el=>el.addEventListener('click',()=>{
     const c = CHARS[el.getAttribute('data-key')]; if(c) openLightbox(c);
   }));
+
+  function showRemeet(){
+    remeet.innerHTML = '<div class="remeet" id="remeetBtn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M12 5c-5 0-9 4-9 7s4 7 9 7 9-4 9-7-4-7-9-7zm0 11a4 4 0 110-8 4 4 0 010 8z"/></svg>重新认识这五个人</div>';
+    document.getElementById('remeetBtn').addEventListener('click',()=>{
+      pin.style.display=''; remeet.innerHTML='';
+      try{ localStorage.removeItem(SEEN_KEY); }catch(e){}
+      pin.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
+  function dismiss(){
+    pin.style.display='none';
+    try{ localStorage.setItem(SEEN_KEY,'1'); }catch(e){}
+    showRemeet();
+  }
+  document.getElementById('pinClose').addEventListener('click',dismiss);
+
+  let seen=false;
+  try{ seen = localStorage.getItem(SEEN_KEY)==='1'; }catch(e){}
+  if(seen){ pin.style.display='none'; showRemeet(); }
 }
 
 function renderRelWeb(members){

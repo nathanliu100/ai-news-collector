@@ -56,6 +56,8 @@
   .txt{font-size:15px;line-height:1.6;margin-top:3px;white-space:pre-wrap;word-break:break-word}
   .media{margin-top:10px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
   .media img{width:100%;display:block;max-height:460px;object-fit:cover;background:#000}
+  .media.selfie{background:#0f1115}
+  .media.selfie img{max-height:600px;object-fit:contain}
   .rtbar{font-size:12.5px;color:var(--muted);margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}
   .rtbar a{color:inherit;text-decoration:none}
   .rtbar b{color:var(--ink);font-weight:600}
@@ -152,7 +154,7 @@ function postHTML(p, withReplies){
   const c=CHARS[p.author]||{};
   const st=p.stats||{};
   let media='';
-  if(p.image) media='<div class="media"><img src="'+mediaURL(p.image)+'" loading="lazy" alt=""></div>';
+  if(p.image) media='<div class="media'+(p.selfie?' selfie':'')+'"><img src="'+mediaURL(p.image)+'" loading="lazy" alt=""></div>';
   let rt='';
   if(p.repost){
     const inner='🔗 '+(p.repost.news?'<span class="nbadge">AI Briefing</span>':'转发了 ')+'<b>'+esc(p.repost.source)+'</b>：'+esc(p.repost.text);
