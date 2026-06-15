@@ -56,8 +56,9 @@
   .txt{font-size:15px;line-height:1.6;margin-top:3px;white-space:pre-wrap;word-break:break-word}
   .media{margin-top:10px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
   .media img{width:100%;display:block;max-height:460px;object-fit:cover;background:#000}
-  .media.selfie{background:#0f1115}
-  .media.selfie img{max-height:600px;object-fit:contain}
+  .media.selfie{position:relative;background:#0f1115}
+  .media.selfie .blurbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(28px) brightness(.78);transform:scale(1.15)}
+  .media.selfie img.fg{position:relative;width:100%;max-height:600px;object-fit:contain}
   .rtbar{font-size:12.5px;color:var(--muted);margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}
   .rtbar a{color:inherit;text-decoration:none}
   .rtbar b{color:var(--ink);font-weight:600}
@@ -154,7 +155,12 @@ function postHTML(p, withReplies){
   const c=CHARS[p.author]||{};
   const st=p.stats||{};
   let media='';
-  if(p.image) media='<div class="media'+(p.selfie?' selfie':'')+'"><img src="'+mediaURL(p.image)+'" loading="lazy" alt=""></div>';
+  if(p.image){
+    const u=mediaURL(p.image);
+    media = p.selfie
+      ? '<div class="media selfie"><img class="blurbg" src="'+u+'" aria-hidden="true"><img class="fg" src="'+u+'" loading="lazy" alt=""></div>'
+      : '<div class="media"><img src="'+u+'" loading="lazy" alt=""></div>';
+  }
   let rt='';
   if(p.repost){
     const inner='🔗 '+(p.repost.news?'<span class="nbadge">AI Briefing</span>':'转发了 ')+'<b>'+esc(p.repost.source)+'</b>：'+esc(p.repost.text);
@@ -194,7 +200,7 @@ function renderStream(tab){
   }
   html+='<div class="endcap">— '+esc(ME.name)+' 的全部动态 —</div>';
   el.innerHTML=html;
-  el.querySelectorAll('.media img').forEach(im=>im.addEventListener('click',()=>openLb(im.src)));
+  el.querySelectorAll('.media img:not(.blurbg)').forEach(im=>im.addEventListener('click',()=>openLb(im.src)));
 }
 
 async function load(){
