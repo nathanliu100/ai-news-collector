@@ -23,16 +23,28 @@
   .hero p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
   .stage{position:relative;width:100%}
   svg{width:100%;height:auto;display:block}
-  .edge{stroke:#39414d;stroke-width:1.5;transition:stroke .2s,stroke-width .2s;cursor:pointer}
+  .edge{stroke:#39414d;stroke-width:1.5;transition:stroke .25s,stroke-width .25s,opacity .25s;cursor:pointer}
   .edge.hot{stroke:var(--accent);stroke-width:3}
+  .edge.flow{stroke-dasharray:7 9;animation:flow 1s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-32}}
   .edge.dim{stroke:#222831;opacity:.4}
+  .edge.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .7s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
   .node{cursor:pointer}
-  .node circle.ring{fill:none;stroke-width:2.5;transition:r .2s,opacity .2s}
+  .node.pop{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards;transform-box:fill-box;transform-origin:center}
+  @keyframes pop{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:scale(1)}}
+  .node .float{animation:float 5s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .node circle.ring{fill:none;stroke-width:2.5;transition:opacity .2s}
+  .node circle.pulse{fill:none;stroke-width:2.5;opacity:0;transform-box:fill-box;transform-origin:center}
+  .node.active circle.pulse{animation:pulse 1.8s ease-out infinite}
+  @keyframes pulse{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
   .node image{clip-path:circle(31px at 50% 50%);transition:opacity .2s}
   .node text{fill:var(--ink);font-size:13px;font-weight:700;text-anchor:middle}
   .node .nrole{fill:var(--faint);font-size:10.5px;font-weight:400}
   .node.dim image,.node.dim text,.node.dim .nrole{opacity:.32}
   .node.dim circle.ring{opacity:.3}
+  .node.dim .float{animation-play-state:paused}
   .panel{margin:6px 18px 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;min-height:96px;transition:border-color .2s}
   .panel.empty{display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:13px;text-align:center}
   .pr-pair{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -94,27 +106,31 @@ function render(members){
   let svg='';
   EDGES.forEach((e,i)=>{
     const p1=NODEPOS[e.a], p2=NODEPOS[e.b];
-    svg+='<line class="edge" data-edge="'+i+'" x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'"></line>';
+    const len=Math.hypot(p2.x-p1.x,p2.y-p1.y).toFixed(0);
+    svg+='<line class="edge draw" data-edge="'+i+'" style="--len:'+len+';animation-delay:'+(0.15*i)+'s" x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'"></line>';
   });
-  members.forEach(m=>{
+  members.forEach((m,i)=>{
     const p=NODEPOS[m.key];
-    svg+='<g class="node" data-key="'+m.key+'">'
+    svg+='<g class="node pop" data-key="'+m.key+'" style="animation-delay:'+(0.5+0.12*i)+'s">'
+      +'<g class="float" style="animation-delay:'+(0.4*i)+'s">'
+      +'<circle class="pulse" cx="'+p.x+'" cy="'+p.y+'" r="33" stroke="'+m.color+'"></circle>'
       +'<circle class="ring" cx="'+p.x+'" cy="'+p.y+'" r="33" stroke="'+m.color+'"></circle>'
       +'<image href="'+esc(avatarURL(m.avatar))+'" x="'+(p.x-31)+'" y="'+(p.y-31)+'" width="62" height="62" preserveAspectRatio="xMidYMid slice"></image>'
       +'<text x="'+p.x+'" y="'+(p.y+50)+'">'+esc(m.name)+'</text>'
       +'<text class="nrole" x="'+p.x+'" y="'+(p.y+65)+'">'+esc(m.role)+'</text>'
-      +'</g>';
+      +'</g></g>';
   });
   document.getElementById('net').innerHTML=svg;
 
   const net=document.getElementById('net');
   net.querySelectorAll('.edge').forEach(ed=>ed.addEventListener('click',()=>showEdge(+ed.getAttribute('data-edge'))));
   net.querySelectorAll('.node').forEach(nd=>nd.addEventListener('click',()=>focusNode(nd.getAttribute('data-key'))));
+  setTimeout(()=>net.querySelectorAll('.edge').forEach(e=>e.classList.remove('draw')), 2600);
 }
 
 function clearHot(){
-  document.querySelectorAll('.edge').forEach(e=>e.classList.remove('hot','dim'));
-  document.querySelectorAll('.node').forEach(n=>n.classList.remove('dim'));
+  document.querySelectorAll('.edge').forEach(e=>e.classList.remove('hot','dim','flow'));
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('dim','active'));
 }
 
 function focusNode(key){
@@ -122,10 +138,14 @@ function focusNode(key){
   const related=new Set([key]);
   document.querySelectorAll('.edge').forEach((e,i)=>{
     const ed=EDGES[i];
-    if(ed.a===key||ed.b===key){ e.classList.add('hot'); related.add(ed.a); related.add(ed.b); }
+    if(ed.a===key||ed.b===key){ e.classList.add('hot','flow'); related.add(ed.a); related.add(ed.b); }
     else e.classList.add('dim');
   });
-  document.querySelectorAll('.node').forEach(n=>{ if(!related.has(n.getAttribute('data-key'))) n.classList.add('dim'); });
+  document.querySelectorAll('.node').forEach(n=>{
+    const k=n.getAttribute('data-key');
+    if(k===key) n.classList.add('active');
+    else if(!related.has(k)) n.classList.add('dim');
+  });
   const m=CHARS[key];
   const conns=EDGES.map((e,i)=>({e,i})).filter(({e})=>e.a===key||e.b===key);
   let h='<div class="pr-pair"><img src="'+esc(avatarURL(m.avatar))+'"><div><div class="pr-names">'+esc(m.name)+' 的关系网</div><div class="pr-label">'+esc(m.role)+'</div></div></div>';
@@ -142,9 +162,10 @@ function focusNode(key){
 function showEdge(i){
   clearHot();
   const e=EDGES[i];
-  document.querySelectorAll('.edge')[i].classList.add('hot');
-  document.querySelectorAll('.edge').forEach((el,j)=>{ if(j!==i) el.classList.add('dim'); });
-  document.querySelectorAll('.node').forEach(n=>{ const k=n.getAttribute('data-key'); if(k!==e.a&&k!==e.b) n.classList.add('dim'); });
+  const el=document.querySelectorAll('.edge')[i];
+  el.classList.add('hot','flow');
+  document.querySelectorAll('.edge').forEach((x,j)=>{ if(j!==i) x.classList.add('dim'); });
+  document.querySelectorAll('.node').forEach(n=>{ const k=n.getAttribute('data-key'); if(k===e.a||k===e.b) n.classList.add('active'); else n.classList.add('dim'); });
   const A=CHARS[e.a], B=CHARS[e.b];
   let h='<div class="pr-pair"><img src="'+esc(avatarURL(A.avatar))+'"><span class="x">↔</span><img src="'+esc(avatarURL(B.avatar))+'"><div><div class="pr-names">'+esc(A.name)+' &amp; '+esc(B.name)+'</div></div></div>';
   h+='<div><span class="pr-label">'+esc(e.label)+'</span></div>';

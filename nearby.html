@@ -75,6 +75,11 @@
   /* tweet */
   .tw{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
   .tw:hover{background:#fafbfc}
+  .tw.in{animation:twIn .45s ease backwards}
+  @keyframes twIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .act.l svg{transition:transform .2s}
+  .act.l.liked svg{animation:heart .4s ease}
+  @keyframes heart{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}
   .av{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed;cursor:pointer}
   .body{flex:1;min-width:0}
   .head{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:14px;line-height:1.3}
@@ -113,14 +118,16 @@
   .loading{text-align:center;padding:60px 0;color:var(--faint);font-size:13px;letter-spacing:.1em}
 
   .av,.pa,.rav,.m-cast .mc img{cursor:zoom-in}
-  .story{border-bottom:1px solid var(--line);padding:16px 18px;background:linear-gradient(180deg,#f0f6fd,#fff)}
+  .story{border-bottom:1px solid var(--line);padding:16px 18px;background:linear-gradient(180deg,#f0f6fd,#fff);animation:storyIn .5s ease backwards}
+  @keyframes storyIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
   .story-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.04em;margin-bottom:7px}
   .story-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   .story-title{font-size:18px;font-weight:800;line-height:1.35;margin-bottom:6px}
   .story-hook{font-size:13.5px;line-height:1.6;color:var(--muted);margin-bottom:14px}
   .story-beats{display:flex;flex-direction:column;gap:0;position:relative}
-  .beat{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:6px 0;position:relative}
+  .beat{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:6px 0;position:relative;animation:beatIn .4s ease backwards}
+  @keyframes beatIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
   .beat::before{content:"";position:absolute;left:13px;top:30px;bottom:-6px;width:2px;background:var(--line)}
   .beat:last-child::before{display:none}
   .beat-av{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8eaed;z-index:1}
@@ -314,13 +321,13 @@ function renderStoryline(story, posts){
   const firstTsByAuthor = {};
   posts.forEach(p=>{ if(!firstTsByAuthor[p.author]) firstTsByAuthor[p.author]=p.ts; });
   let beats = '';
-  for(const b of story.beats){
+  story.beats.forEach((b,i)=>{
     const c = CHARS[b.author] || {};
-    beats += '<div class="beat" data-key="'+b.author+'">'
+    beats += '<div class="beat" data-key="'+b.author+'" style="animation-delay:'+(0.25+0.08*i)+'s">'
       + '<img class="beat-av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
       + '<div class="beat-b"><div class="beat-l">'+esc(b.label)+'<span class="arrow">跳到 ↓</span></div>'
       + '<div class="beat-n">'+esc(b.note)+'</div></div></div>';
-  }
+  });
   el.innerHTML = '<div class="story">'
     + '<div class="story-tag">今日故事线</div>'
     + '<div class="story-title">'+esc(story.title)+'</div>'
@@ -405,13 +412,14 @@ function renderMedia(base, post){
   return '';
 }
 
-function renderPost(base, post){
+function renderPost(base, post, idx){
   const c = CHARS[post.author] || {};
   const st = post.stats || {};
   const liked = st.liked ? ' liked' : '';
   const ts = post.ts || '';
   const timeText = ts ? relTime(ts) : esc(post.time||'');
-  let h = '<div class="tw">'
+  const delay = idx!=null ? Math.min(idx,8)*0.05 : 0;
+  let h = '<div class="tw in" style="animation-delay:'+delay+'s">'
     + '<img class="av" src="'+esc(avatarURL(c.avatar))+'" style="object-position:'+(c.pos||'50% 20%')+'">'
     + '<div class="body">'
     + '<div class="head"><a class="nm namelink" href="u.html?u='+post.author+'">'+esc(c.name)+'</a>'
@@ -489,7 +497,7 @@ async function load(){
     document.getElementById('feedMeta').textContent = city+' · '+todayLabel()+' · '+members.length+'人在线 · '+posts.length+'条动态';
 
     let html = '';
-    for(const p of posts) html += renderPost(base, p);
+    posts.forEach((p,i)=>{ html += renderPost(base, p, i); });
     html += '<div class="endcap">— 你已经看完今天的「附近」—</div>';
     feedEl.innerHTML = html;
 
