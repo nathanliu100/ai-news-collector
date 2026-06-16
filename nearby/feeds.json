@@ -1,8 +1,9 @@
 {
   "feeds": [
+    "nearby/feed-2026-06-16.json",
     "nearby/feed-2026-06-15.json",
     "nearby/feed-2026-06-12.json",
     "nearby/feed-2026-06-11.json"
   ],
-  "latest": "nearby/feed-2026-06-15.json"
+  "latest": "nearby/feed-2026-06-16.json"
 }

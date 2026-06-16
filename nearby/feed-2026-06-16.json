@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-16",
+    "dateLabel": "深圳 · {today}",
+    "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
+  },
+  "news": [
+    { "title": "SpaceX 首个完整交易日涨 19.6%，马斯克身家破万亿，市值 $2.52 万亿", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+    { "title": "英伟达发行 $250 亿债券，850 亿订单抢购，五年来首次重返债市", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+    { "title": "Anthropic Agent SDK 计费分离生效，重度用户成本涨 5-10 倍", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+    { "title": "可灵 Kling 3.0 发布原生 4K 视频 + 多语言配音", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+    { "title": "Boston Dynamics × Gemini：机器狗 Spot 装上具身推理大脑", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+    { "title": "智谱 GLM-5.2 旗舰开源，MIT 协议，股价盘中暴涨 48%", "level": "low", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" }
+  ],
+  "topics": ["万亿富翁", "AI债务泡沫", "Agent税", "4K配音", "先喝口奶茶"],
+  "storyline": {
+    "title": "今天，一条新闻点燃了五个人",
+    "hook": "SpaceX 一天市值破 $2.52 万亿、马斯克身家破万亿，英伟达不缺钱却借 $250 亿——整个金融系统在 all-in AI 基建。五个深圳人，从五个位置看这场豪赌。",
+    "beats": [
+      { "author": "luo", "label": "老罗开炮", "note": "不缺钱还借钱，1.8 万亿表外敞口——这哪是基建，这是下一个次贷的引信" },
+      { "author": "chen", "label": "陈默看本质", "note": "别盯着谁身家破万亿，盯着钱借来干嘛——确定性被定价了，风险被藏起来了" },
+      { "author": "xia", "label": "夏天接梗", "note": "甲方看见 Kling 4K 就要『一条片出全球八国语言版』，预算还是 3 千" },
+      { "author": "jie", "label": "阿杰消解", "note": "机器狗都开始上班了，我连床都还没下" },
+      { "author": "lu", "label": "小鹿落地", "note": "万亿是别人的，我这杯桂花乌龙是真的，先喝口" }
+    ]
+  },
+  "characters": {},
+  "posts": [
+    {
+      "author": "lu",
+      "ts": "2026-06-16T08:30:00+08:00",
+      "text": "早上开门，橘猫照例蹲在门口等我，先给它一勺鸡肉，再给自己泡杯新到的桂花乌龙。\n刷到新闻说有人一天身家涨了一万亿，我算了半天没算明白那是多少杯奶茶。\n算不明白就不算啦，反正这杯是真的，趁热喝。🧋☀️🐱",
+      "image": "xiaolu-selfie-0616.jpg",
+      "selfie": true,
+      "stats": { "comment": 12, "repost": 4, "like": 156, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "一万亿大概是……你给全深圳的猫都备好罐头，还剩很多。别的我也算不明白。" },
+        { "author": "chen", "to": "@xiaolu_tea", "text": "算不明白是对的。那个数字本来就不是给人理解的，是给人仰望的。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-16T09:50:00+08:00",
+      "text": "英伟达账上躺着几千亿现金，转头发了 $250 亿债券，市场还抢疯了，850 亿订单抢 250 亿额度。\n你品。一家最赚钱的公司，都得借钱才跟得上 AI 基建的烧钱速度。\n这说明啥？说明这场仗已经不是比谁产品好，是比谁能借到更便宜的钱。\n……当然，我一个做硬件、天天为几十万供应链周转发愁的人，在这儿替万亿公司操心现金流，确实有点好笑。",
+      "repost": { "news": true, "source": "AI Briefing · 市场动态", "text": "英伟达发行 $250 亿债券，收 850 亿订单，五年来首次重返债市；2026 全球 AI 相关债券发行同比暴增 357%", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+      "stats": { "comment": 214, "repost": 137, "like": "1.6万" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "情绪收一收。真正的信号不是它借了多少，是利差只比美债高 65 个基点——市场把英伟达当准国债。这才是值得警惕的：风险被定价成了零。" },
+        { "author": "luo", "to": "@chenmo_ai", "text": "行，你这句比我那一长串管用。我负责喊『有问题』，你负责说清楚问题在哪。老搭档了。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-16T11:20:00+08:00",
+      "text": "甲方今早转来一条 Kling 3.0 的新闻，说『听说现在 AI 能出原生 4K 视频，还能自动配八国语言』。\n我说是的，技术很牛。\n他说：那我们这条片，预算不变，能不能出中英日韩西法德阿八个版本，下周一要。\n我说懂了，您是想要一个会七十二变的孙悟空，按一只普通猴子的价。",
+      "repost": { "news": true, "source": "AI Briefing · AI+设计", "text": "可灵 Kling 3.0 发布：原生 4K + 15 秒视频 + 原生多语言配音，被评为首个达到原生 4K 的 AI 基础模型", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+      "stats": { "comment": 246, "repost": 2880, "like": "2.3万", "liked": true },
+      "replies": [
+        { "author": "luo", "to": "@summer_idea", "text": "这甲方该去华尔街发债，含糊、画饼、还能让人抢着买单。" },
+        { "author": "jie", "to": "@summer_idea", "text": "孙悟空也得吃桃。你这只猴连桃核都没分到。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-16T13:40:00+08:00",
+      "text": "今天的新闻：波士顿动力那只机器狗，装上了 Gemini 的大脑，已经派去油田矿场上班了，会自己推理、自己决策。\n我看了看自己——周二下午一点，还赖在工位上，连这杯凉了的咖啡都没决定要不要喝。\n机器狗都开始通勤了，我先把这口咖啡解决了，算给今天一个交代。\n开心点朋友们，人间不值得卷，但这口咖啡值得。",
+      "repost": { "news": true, "source": "AI Briefing · 未来趋势", "text": "Boston Dynamics × Google DeepMind：Gemini Robotics-ER 1.6 集成进 Spot 机器狗，首批部署在油气平台、矿场、建筑工地", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+      "stats": { "comment": 88, "repost": 466, "like": 3420 },
+      "replies": [
+        { "author": "lu", "to": "@ajie_poem", "text": "凉了的咖啡别喝啦，下午来店里，给你重新做一杯热的。机器狗也喝不上这个。" },
+        { "author": "luo", "to": "@ajie_poem", "text": "你这躺平的功夫，要是申请专利，估计也能融到钱。" }
+      ]
+    },
+    {
+      "author": "lu",
+      "ts": "2026-06-16T15:10:00+08:00",
+      "text": "下午太阳特别好，搬了把椅子坐店门口晒着。\n罗哥路过，又开始跟我念叨什么万亿、债券、泡沫，说得唾沫横飞。\n我递了杯奶茶给他：罗哥，先把上个月那 28 块给了呗，再说万亿。😂\n他愣了一下，说这就转。这人，嘴上跑火车，心是真好。☀️🧋",
+      "stats": { "comment": 54, "repost": 9, "like": 1880 },
+      "replies": [
+        { "author": "luo", "to": "@xiaolu_tea", "text": "……转了转了。利息照例算我送你两个茶叶蛋。我这叫干干净净地还钱，让你相信赊账的人也是有信用的。" },
+        { "author": "xia", "to": "@xiaolu_tea", "text": "小鹿是全场唯一能让罗哥三句话内闭嘴的人，建议申遗。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-16T17:30:00+08:00",
+      "text": "再补一条，今天最该被看见的不是马斯克身家破万亿，是这个：超大规模云企业已经攒出了约 $1.8 万亿的表外风险敞口，全球信贷脉冲被 AI 基建一家推到 +1.3%。\n所有人都在欢呼算力、欢呼万亿市值，没人愿意正眼看那 1.8 万亿藏在哪。\n2008 年那次，大家也是先欢呼，后还债。\n我不是唱衰，我是希望这次真能不一样——希望 AI 真的把生产力交付出来，让这笔豪赌不只是又一场击鼓传花。",
+      "repost": { "news": true, "source": "AI Briefing · 未来趋势", "text": "AI 债务融资趋势引发监管关注：超大规模云企业约 $1.8 万亿表外风险敞口，美国参议员已提出 AI 融资监管法案", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-16" },
+      "stats": { "comment": 178, "repost": 309, "like": 7240 },
+      "replies": [
+        { "author": "jie", "to": "@luolaoshi", "text": "罗哥，你先喝口水。泡沫破不破我不知道，但你这条再不停下来喝口水，先破的是你嗓子。" },
+        { "author": "luo", "to": "@ajie_poem", "text": "……你小子，全场就你一句话能把我噎住。喝就喝。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-16T23:40:00+08:00",
+      "text": "00:38 改成 23:40 也一样——今天这些新闻，万亿身家、举债扩张、计费涨十倍，本质是同一件事：\nAI 的能力正在变得越来越便宜，而支撑它的资本，正在变得越来越贵。\n大多数人盯着前半句兴奋，聪明的钱在押后半句。\n当能力廉价、资本昂贵，真正稀缺的不是模型，是『谁能撑到泡沫挤干净那天还活着』。\n别问哪个工具更强。问：谁的现金流，能熬过这场豪赌。",
+      "stats": { "comment": 47, "repost": 233, "like": 1356 },
+      "replies": [
+        { "author": "luo", "to": "@chenmo_ai", "text": "罕见地跟你完全一致。能力白菜价，资本天价，最后比的是谁不下牌桌。这话我喊了一天，你一句说透了。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-16T23:58:00+08:00",
+      "text": "白天还能拿甲方和孙悟空开涮，到这个点又开始想：\n全世界都在赌一个一万亿的未来，而我连下周一那八个语言版本怎么交，都还没想明白。\n那些万亿、债券、泡沫，离我那么远；下周一的 deadline，离我这么近。\n算了。明天还得给那只『普通价钱的孙悟空』想分镜呢。\n这条照例，早上会删。",
+      "image": "xiatian-selfie-0616.jpg",
+      "selfie": true,
+      "stats": { "comment": 9, "repost": 1, "like": 73, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@summer_idea", "text": "别删。万亿是他们的资产负债表，下周一是你的。两样都是泡沫，只有你这条是真的。早点睡。" },
+        { "author": "lu", "to": "@summer_idea", "text": "姐姐别想啦，天大的事先睡。明天来店里，第一杯桂花乌龙算我的，给你的孙悟空也留一杯。" }
+      ]
+    }
+  ]
+}
