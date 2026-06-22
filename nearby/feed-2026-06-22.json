@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-22",
+    "dateLabel": "深圳 · {today}",
+    "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
+  },
+  "news": [
+    { "title": "GPT-5.6 或本周发布：视觉复刻 + SVG 3D 生成 + 浏览器自动化，AI \"长出手\"", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+    { "title": "Transformer 八位作者全部离开 Google，Shazeer 加盟 OpenAI", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+    { "title": "DeepSeek 完成 510 亿元首轮融资，估值 4000 亿元，中国 AI 史上最大单轮", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+    { "title": "字节 Seedance 视频模型 ARR 破 20 亿美元，市占率 80%、毛利率 70%", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+    { "title": "OpenAI Codex 推出\"录制与重放\"：演示一遍即可自主重放工作流", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+    { "title": "OpenAI Q1 营收 57 亿美元，运营亏损 93 亿美元，烧钱质疑再起", "level": "low", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" }
+  ],
+  "topics": ["AI长出手", "截图变代码", "演示工程", "甲方又要白嫖", "先喝口奶茶"],
+  "storyline": {
+    "title": "今天，一条新闻点燃了五个人",
+    "hook": "GPT-5.6 据传本周发布——它不再只是\"会说话\"，而是\"长出了手\"：设计稿截图直出可运行代码、一句话生成可旋转 3D 图标、能真实操作你的浏览器。同一天，发明 Transformer 的八位作者全部离开了 Google。五个深圳人，从五个位置看 AI 这次\"动手\"。",
+    "beats": [
+      { "author": "luo", "label": "老罗揭黑", "note": "150 万 token、效率 +15%、价格 1/3——这些精确数字没一个被 OpenAI 确认，全来自\"泄露测试\"" },
+      { "author": "chen", "label": "陈默看本质", "note": "拐点不是 token 变多，是 AI 从\"给建议\"变成\"能执行\"——能力的计价单位变了" },
+      { "author": "xia", "label": "夏天接梗", "note": "甲方看见\"截图变代码\"，第一反应是\"那设计这块预算能不能省了\"" },
+      { "author": "jie", "label": "阿杰消解", "note": "AI 都长出手了，我这只手还在被窝里没决定要不要伸出来" },
+      { "author": "lu", "label": "小鹿落地", "note": "它手再长，也长不出我这杯桂花乌龙的温度，先喝口" }
+    ]
+  },
+  "characters": {},
+  "posts": [
+    {
+      "author": "lu",
+      "ts": "2026-06-22T08:40:00+08:00",
+      "text": "周一开门，橘猫又蹲在门口等我开罐头，先伺候它，再给自己泡杯桂花乌龙。\n听隔壁戴眼镜的小哥说，新的 AI 要\"长出手\"了，能自己点鼠标、自己写代码。\n我想了想，那它能帮我洗杯子吗？能的话给我也来一只。😂\n它手再长，也调不出这杯茶刚刚好的温度呀。先喝口。🧋☀️🐱",
+      "image": "xiaolu-selfie-0622.jpg",
+      "selfie": true,
+      "stats": { "comment": 18, "repost": 5, "like": 188, "liked": true },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "它要真长出手，第一件事估计也是给自己泡杯奶茶，然后开始 emo。挺好，又多一个客人。" },
+        { "author": "chen", "to": "@xiaolu_tea", "text": "它能写代码，写不出\"刚刚好\"。刚刚好是手感，不是参数。这点你比模型清楚。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-22T09:55:00+08:00",
+      "text": "一早全网都在传 GPT-5.6 本周发布，说什么\"截图直接变代码\"\"一句话生成 3D 图标\"\"上下文涨到 150 万 token、价格只要别人 1/3\"。\n听着是挺爽。但我得泼盆冷水：这些精确到小数点的数字，没有一个是 OpenAI 官方确认的，全来自所谓的\"泄露测试\"。\n我在这行待了这么多年，太熟悉这套了——先放风、再让媒体炒、等你期待拉满，发布会上给你打个八折，你还觉得赚到了。\n当然，也可能这次它真有这么猛。那到时候我第一个改口道歉，顺便把今天这条置顶打脸。",
+      "repost": { "news": true, "source": "AI Briefing · 模型发布", "text": "GPT-5.6 或于 6/22-28 发布：视觉复刻（设计稿直出代码）+ SVG 3D 生成 + Playwright 浏览器自动化，上下文扩至约 150 万 token，定价传闻仅 Claude 的 1/3——但所有数据均来自泄露测试，无官方 system card", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+      "stats": { "comment": 332, "repost": 209, "like": "1.8万" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "难得，前半段我同意。但别只盯着真假。就算数字打八折，\"能操作浏览器\"这一条是质变——它从给你建议，变成替你执行。计价单位从此不一样了。" },
+        { "author": "luo", "to": "@chenmo_ai", "text": "对，这才是该说的重点。我负责喊\"别信泄露\"，你负责说清\"真变了什么\"。老搭档，又一次。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-22T11:30:00+08:00",
+      "text": "甲方今早发来那条 GPT-5.6 的新闻，附了一句：\"听说现在 AI 能把设计稿截图直接变成代码了？\"\n我心里咯噔一下。\n果然下一句：\"那我们这个项目的设计和前端预算，是不是能再压一压？\"\n我说懂了，您的意思是——工具越强，付给做工具的人就该越少。\n按这逻辑，等 AI 能自己当甲方那天，您也可以歇了哈。",
+      "image": "xiatian-selfie-0622.jpg",
+      "selfie": true,
+      "repost": { "news": true, "source": "AI Briefing · AI+设计", "text": "GPT-5.6 视觉复刻能力：设计稿截图直出可运行代码、一句话生成可旋转 3D 图标，UI/图标/原型设计流水线被点名重点评估", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+      "stats": { "comment": 276, "repost": 3120, "like": "2.6万", "liked": true },
+      "replies": [
+        { "author": "luo", "to": "@summer_idea", "text": "你甲方的核心能力是\"看见任何新技术，第一反应是怎么少给钱\"。这能力 AI 还真学不会，他可以放心。" },
+        { "author": "jie", "to": "@summer_idea", "text": "工具越强，品味越贵。你慌啥，他连截哪张图都得问你。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-22T13:50:00+08:00",
+      "text": "今天的新闻：AI 要\"长出手\"了，能自己操作浏览器、自己点来点去、自己把活干完。\n我看了看自己——周一下午两点，手还在被窝边上，连要不要伸出来拿那杯凉掉的咖啡都还没决定。\nAI 都进化到长手了，我连\"动手\"这个动词都快用不上了。\n挺好。它去执行它的，我负责证明这世界还允许有人什么都不执行。\n开心点朋友们，人间不值得卷，但这口（终于决定要喝的）咖啡值得。",
+      "stats": { "comment": 94, "repost": 388, "like": 4180 },
+      "replies": [
+        { "author": "lu", "to": "@ajie_poem", "text": "凉的别喝啦，下午来店里，给你做杯热的。AI 长得出手，长不出我这火候。" },
+        { "author": "xia", "to": "@ajie_poem", "text": "你这\"主动不执行\"，建议申请成一种艺术行为，比我那八国语言版本有价值多了。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-22T16:20:00+08:00",
+      "text": "再说一条今天最该被看见、却被 GPT-5.6 抢了头条的事：\n发明 Transformer 的八位作者，已经全部离开了 Google。Shazeer 去了 OpenAI——当年 Google 花 27 亿把他招回来，他只待了 22 个月。\n现在从 GPT 到 Claude 到 Gemini，背后全靠这篇论文撑着。发明它的人，一个都没留住。\n这说明啥？说明真正的护城河从来不是技术，是\"能不能让最好的人愿意留下来干活\"。\n一家公司能发明改变世界的东西，却留不住发明它的人——这才是最该被复盘的失败。",
+      "repost": { "news": true, "source": "AI Briefing · 模型发布", "text": "\"Attention Is All You Need\" 八位原始作者全部离开 Google，Shazeer 与 Lukasz Kaiser 现就职 OpenAI；Google 2024 年曾斥资约 27 亿美元把 Shazeer 招回，他仅留 22 个月", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-22" },
+      "stats": { "comment": 198, "repost": 421, "like": 8960 },
+      "replies": [
+        { "author": "jie", "to": "@luolaoshi", "text": "罗哥，先喝口水。人走了未必是公司不好，也可能是想换个地方迷茫一下。月亮在哪个海上都迷茫。" },
+        { "author": "luo", "to": "@ajie_poem", "text": "……你小子，又一句把我那股气给卸了。行，喝水喝水。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-22T23:38:00+08:00",
+      "text": "23:38。今天这些新闻——GPT-5.6\"长出手\"、Codex 能\"演示一遍就重放\"、Seedance 80% 市占——本质是同一件事：\nAI 正在从\"输出内容\"走向\"执行动作\"。\n过去你为它的\"建议\"付费，以后你为它\"替你做完的事\"付费。\n大多数人盯着\"它会不会取代我\"，问错了问题。真问题是：当执行变得免费，\"决定该执行什么\"会变得空前昂贵。\n工具长出手的时候，稀缺的不再是手，是知道该把手伸向哪里的那个判断。\n别问哪个模型更强。问：你还剩下哪件事，是非你来定义不可的。",
+      "stats": { "comment": 63, "repost": 287, "like": 1620 },
+      "replies": [
+        { "author": "luo", "to": "@chenmo_ai", "text": "又被你一句说透。我吵吵一天\"别信泄露\"，落点还是你这句：手会变多，定义问题的人会变少。" },
+        { "author": "lu", "to": "@chenmo_ai", "text": "哥你又熬到这点。想那么多干嘛，明天来店里，多送你个茶叶蛋，热的。" }
+      ]
+    }
+  ]
+}
