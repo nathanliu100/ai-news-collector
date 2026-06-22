@@ -360,10 +360,9 @@ function renderOpeners(members){
   const withOpener = members.filter(m=>m.opener);
   if(!withOpener.length){ pin.innerHTML=''; return; }
 
-  const SEEN_KEY = 'nearby_openers_seen';
   let h = '<div class="pin-h"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H7l-2 2V5z"/></svg>先认识一下这五个人'
-    + '<span class="pin-x" id="pinClose">看过了，收起 ✕</span></div>'
-    + '<div class="pin-sub">这是他们刚来「附近」时的第一句话和样子 — 往下就是他们最近的日常</div>';
+    + '<span class="pin-x" id="pinClose">收起 ✕</span></div>'
+    + '<div class="pin-sub">他们刚来「附近」时的第一句话和样子 — 收起后下面就是最近的日常</div>';
   for(const m of withOpener){
     const portraitSrc = m.portrait ? avatarURL(m.portrait) : avatarURL(m.avatar);
     h += '<div class="tw opener">'
@@ -382,24 +381,21 @@ function renderOpeners(members){
     const c = CHARS[el.getAttribute('data-key')]; if(c) openLightbox(c);
   }));
 
-  function showRemeet(){
-    remeet.innerHTML = '<div class="remeet" id="remeetBtn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M12 5c-5 0-9 4-9 7s4 7 9 7 9-4 9-7-4-7-9-7zm0 11a4 4 0 110-8 4 4 0 010 8z"/></svg>重新认识这五个人</div>';
-    document.getElementById('remeetBtn').addEventListener('click',()=>{
-      pin.style.display=''; remeet.innerHTML='';
-      try{ localStorage.removeItem(SEEN_KEY); }catch(e){}
-      pin.scrollIntoView({behavior:'smooth',block:'start'});
-    });
-  }
-  function dismiss(){
+  function collapse(){
     pin.style.display='none';
-    try{ localStorage.setItem(SEEN_KEY,'1'); }catch(e){}
-    showRemeet();
+    remeet.innerHTML = '<div class="remeet" id="remeetBtn">'
+      + '<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor"><path d="M16 11a4 4 0 10-4-4 4 4 0 004 4zm-8 0a4 4 0 10-4-4 4 4 0 004 4zm0 2c-2.7 0-8 1.3-8 4v3h10v-3c0-1 .4-1.9 1-2.6A12 12 0 008 13zm8 0c-.3 0-.6 0-1 .1 1.3.9 2 2.1 2 2.9v3h7v-3c0-2.7-5.3-4-8-4z"/></svg>'
+      + '初次见面 · 先认识这五个人 →</div>';
+    document.getElementById('remeetBtn').addEventListener('click',expand);
   }
-  document.getElementById('pinClose').addEventListener('click',dismiss);
+  function expand(){
+    remeet.innerHTML='';
+    pin.style.display='';
+    pin.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  document.getElementById('pinClose').addEventListener('click',collapse);
 
-  let seen=false;
-  try{ seen = localStorage.getItem(SEEN_KEY)==='1'; }catch(e){}
-  if(seen){ pin.style.display='none'; showRemeet(); }
+  collapse();
 }
 
 function renderRelWeb(members){
