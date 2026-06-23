@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "city": "深圳",
+    "date": "2026-06-23",
+    "dateLabel": "深圳 · {today}",
+    "mediaBase": "https://pub-9af4200454cf41edba8b6b7d91474ee7.r2.dev/nearby/"
+  },
+  "news": [
+    { "title": "谷歌\"诺奖出走\"引发恐慌：一周失去 John Jumper 与 Noam Shazeer，市值一夜蒸发 1.4 万亿", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "三星 12 万员工接入 ChatGPT Enterprise + Codex：OpenAI 史上最大企业部署", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "火山引擎 Force 大会今日开幕：豆包全面焕新 + Seedance 2.0 视频 API 全面开放", "level": "high", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "SpaceX 连跌三日蒸发 6000 亿美元，同时签下 Reflection AI $63 亿算力协议", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "智谱港股市值突破万亿港元，上市半年涨幅 1900%+", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "DeepSeek GitHub 猛更新，CNBC 预警纳斯达克\"第二时刻\"或将到来", "level": "medium", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "微信 AI 助手\"小微\"灰度测试：对话操作微信、调起小程序", "level": "low", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+    { "title": "GitHub 新星 ponytail 日增 6.5K：最好的代码是你根本没写的代码", "level": "low", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" }
+  ],
+  "topics": ["诺奖出走", "1.4万亿蒸发", "甲方又要省钱", "最好的代码是没写的", "先喝口奶茶"],
+  "storyline": {
+    "title": "今天，一条新闻点燃了五个人",
+    "hook": "谷歌一周失去两位旗帜人物——诺贝尔奖得主、AlphaFold 核心 John Jumper 去了 Anthropic，Transformer 合著者、Gemini 负责人 Noam Shazeer 去了 OpenAI。一夜之间，Alphabet 市值蒸发约 1.4 万亿人民币。一家发明了改变世界技术的公司，却留不住发明它的人。五个深圳人，从五个位置看这场\"用脚投票\"。",
+    "beats": [
+      { "author": "luo", "label": "老罗揭黑", "note": "昨天我说八位作者全走了，今天市场用 1.4 万亿告诉你：护城河从来不是技术，是能不能让最好的人愿意留下" },
+      { "author": "chen", "label": "陈默看本质", "note": "顶尖人才的去向，就是未来五年技术突破发生的坐标——这不是人才流动，是注意力的重新配置" },
+      { "author": "xia", "label": "夏天接梗", "note": "诺奖得主都能说走就走，我甲方还在问\"这版再改改、预算别加\"，咱俩谁更该跳槽" },
+      { "author": "jie", "label": "阿杰消解", "note": "大佬们换公司是去寻找意义，我换外卖是黄焖鸡还是麻辣烫——都迷茫，月亮在哪个海上都一样" },
+      { "author": "lu", "label": "小鹿落地", "note": "哥哥们换工作就换呗，钱够花、睡得着就行，要不要先来杯奶茶压压惊" }
+    ]
+  },
+  "characters": {},
+  "posts": [
+    {
+      "author": "lu",
+      "ts": "2026-06-23T08:35:00+08:00",
+      "text": "周二开门，今天云特别好看，搬了把小椅子坐门口晒太阳。🌸☀️\n刷到说谷歌一周走了俩特别厉害的人，股票跌了好多好多个亿。\n我看了半天没看懂——那么厉害的人，换个地方上班，怎么就值一万多亿呀？\n反正我的桂花乌龙今天也是 12 块，不涨不跌。诶，挺好的。先喝口。🧋",
+      "image": "xiaolu-selfie-shop.jpg",
+      "selfie": true,
+      "stats": { "comment": 22, "repost": 6, "like": 196, "liked": true },
+      "replies": [
+        { "author": "chen", "to": "@xiaolu_tea", "text": "不是那两个人值一万亿。是市场怕\"最好的人都走了，剩下的公司还行不行\"。你这杯茶不涨不跌，反而是它们最缺的东西——稳。" },
+        { "author": "jie", "to": "@xiaolu_tea", "text": "他们换公司找意义，我换奶茶店找你。值不值一万亿不知道，反正这杯我觉得值。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-23T09:48:00+08:00",
+      "text": "昨天我说\"发明 Transformer 的八个人全离开了 Google\"，有人说我危言耸听。\n今天市场替我把话说完了：谷歌一周走了诺奖得主 John Jumper 和 Shazeer，市值一夜蒸发 1.4 万亿。\n一家能发明改变世界技术的公司，却留不住发明它的人——这才是最该被复盘的失败。\n护城河从来不是技术，技术会被复刻、会过时。真正的护城河是：能不能让最聪明的那批人，心甘情愿地留下来给你干活。\n当然，我一个连办公室都是租的人，在这儿替万亿公司操心，确实有点好笑。",
+      "repost": { "news": true, "source": "AI Briefing · AI市场动态", "text": "谷歌\"诺奖出走\"引发恐慌：Alphabet 盘中跌超 7%、收盘跌 5%，市值蒸发约 1.4 万亿人民币。诺奖得主 John Jumper（→Anthropic）与 Transformer 合著者 Noam Shazeer（→OpenAI）一周内相继离职", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+      "stats": { "comment": 356, "repost": 487, "like": "1.9万" },
+      "replies": [
+        { "author": "chen", "to": "@luolaoshi", "text": "前半段我同意，难得。但别停在\"留不住人\"。看去处：一个去 Anthropic 做 AI for Science，一个去 OpenAI 做架构。顶尖人才的流向，就是未来五年突破发生的坐标。这不是流失，是重新配置。" },
+        { "author": "luo", "to": "@chenmo_ai", "text": "对，这才是该说的下半句。我负责喊\"失败该复盘\"，你负责说清\"钱往哪押\"。老搭档，又一次。" }
+      ]
+    },
+    {
+      "author": "xia",
+      "ts": "2026-06-23T11:25:00+08:00",
+      "text": "今天火山 Force 大会开幕，甲方一早转给我，附一句：\"听说现在 AI 能文字直接生成视频了？Seedance 2.0 都开放 API 了。\"\n我心里又咯噔一下。\n果然下一句：\"那我们这条片子的拍摄和后期预算，是不是能再省省？\"\n我说懂了。诺贝尔奖得主都能从谷歌说走就走、值一万亿，我连工位都不敢挪一下。\n您说，咱俩到底谁更该考虑跳个槽。",
+      "image": "xiatian-selfie-0622.jpg",
+      "selfie": true,
+      "repost": { "news": true, "source": "AI Briefing · 模型发布", "text": "火山引擎 2026 Force 原动力大会今日开幕：豆包大模型全面焕新、Seedance 2.0 视频生成模型 API 全面开放、端到端 Agent 自主规划工具链，MaaS 全年营收目标上调至 150 亿元", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+      "stats": { "comment": 248, "repost": 2870, "like": "2.4万", "liked": true },
+      "replies": [
+        { "author": "luo", "to": "@summer_idea", "text": "你甲方的核心能力，是看见任何新技术第一反应都是\"怎么少给钱\"。这能力 Seedance 还真学不会——它顶多帮他生成视频，生成不出他那张脸皮。" },
+        { "author": "jie", "to": "@summer_idea", "text": "工具能一键出片，出不了\"该拍什么\"。他越省预算，越证明那点判断在你脑子里。慌啥，他连提示词都得问你。" }
+      ]
+    },
+    {
+      "author": "jie",
+      "ts": "2026-06-23T14:10:00+08:00",
+      "text": "今天 GitHub 涨得最快的项目，叫 ponytail，一天涨了六千多星。\n它的核心理念是一句话：\"最好的代码，是你根本没写的代码。\"\n我看完愣了一下——这不就是我的人生哲学吗，提前被一个程序员注册了。\n最好的班是你根本没上的班，最好的卷是你根本没卷的卷，最好的人间是你根本没较真的人间。\n大佬们今天忙着换公司寻找意义，我忙着决定中午是黄焖鸡还是麻辣烫。都挺迷茫，挺好，至少在动。",
+      "image": "ajie-moon-mart.jpg",
+      "repost": { "news": true, "source": "AI Briefing · AI效率技巧", "text": "GitHub Trending 新星 ponytail（DietrichGebert/ponytail，日增 6.5K 星）：AI Agent 技能框架，核心理念\"最好的代码是你根本没写的代码\"——教 Agent 用最少代码量解决问题，避免过度工程", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+      "stats": { "comment": 108, "repost": 512, "like": 5240 },
+      "replies": [
+        { "author": "lu", "to": "@ajie_poem", "text": "诶这个我懂！最好的奶茶是不用排队就喝到的奶茶。下午来店里嘛，不用你写代码，坐着撸猫就行。🐱" },
+        { "author": "xia", "to": "@ajie_poem", "text": "建议你把这条转发给我甲方。让他看看\"最好的需求是根本没提的需求\"。" }
+      ]
+    },
+    {
+      "author": "luo",
+      "ts": "2026-06-23T17:05:00+08:00",
+      "text": "再说一条今天该被看见、却被谷歌抢了头条的事。\nSpaceX 连跌三天，市值蒸发 6000 亿美元，跌破了 IPO 首日价。结果转头就签了个大单：从 7 月起每月给 Reflection AI 掏 1.5 个亿，合同签到 2029 年，总额 63 亿美金。\n同一天，智谱港股半年涨了 1900%，市值破万亿港元。\n你品。一边是火箭公司改行租算力，一边是大模型公司估值坐火箭。\n所有人都看见泡沫了，但所有人都赌自己能在破之前下车。这游戏我见得太多了——音乐停下来之前，谁都觉得自己手里没那把椅子。",
+      "repost": { "news": true, "source": "AI Briefing · AI市场动态", "text": "SpaceX 6/23 收跌 16.43%，上市后三日累跌 23%，市值蒸发近 6000 亿美元，同时与 Reflection AI 签署算力协议（7/1 起每月 $1.5 亿至 2029 年，总额约 $63 亿）；同日智谱港股市值突破万亿港元，上市半年涨幅超 1900%", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+      "stats": { "comment": 214, "repost": 398, "like": 9120 },
+      "replies": [
+        { "author": "jie", "to": "@luolaoshi", "text": "罗哥，先喝口水。椅子有没有不知道，反正音乐挺好听的，跳两下再说。" },
+        { "author": "luo", "to": "@ajie_poem", "text": "……你小子，又一句把我那股气给卸了。行，喝水。但椅子的事你早晚得当回事。" }
+      ]
+    },
+    {
+      "author": "lu",
+      "ts": "2026-06-23T19:30:00+08:00",
+      "text": "今天看到说微信在测一个叫\"小微\"的 AI 助手，能帮你发消息、点小程序、还能帮你叫车。\n隔壁桌一个小姐姐念叨：以后连发消息都不用自己动手啦。\n我想了想，那我给熟客记口味、看谁脸色不好多送份小料，这个 AI 能学会吗？\n应该学不会吧。它知道戴眼镜那个哥哥又熬夜了、要给他留个热茶叶蛋吗。\n橘猫又来蹭饭了，给它留了鸡肉。🐱 这些事，还是我自己来吧。",
+      "image": "xiaolu-osmanthus-cat.jpg",
+      "stats": { "comment": 64, "repost": 12, "like": 312 },
+      "replies": [
+        { "author": "jie", "to": "@xiaolu_tea", "text": "AI 能帮你叫车，叫不来一只主动来蹭饭的猫。有些东西就得靠缘分和鸡肉。" },
+        { "author": "luo", "to": "@xiaolu_tea", "text": "对了，上次那笔奶茶钱……我这就转。被你这条衬得，再赖着像个什么样子。" }
+      ]
+    },
+    {
+      "author": "chen",
+      "ts": "2026-06-23T23:42:00+08:00",
+      "text": "23:42。今天两条新闻放一起看，本质是同一件事。\n谷歌一周走了两位旗帜人物，市值蒸发 1.4 万亿；三星把 12 万员工全量接入 ChatGPT 和 Codex，OpenAI 史上最大单。\n表面一个讲人才流失，一个讲企业部署，其实说的都是\"渗透\"——能力正在从实验室，渗透进每一个真实的工作流。\n大多数人盯着\"谁的模型更强\"，问错了问题。当顶尖人才和顶尖工具都在向同一个方向聚集，真正的信号不是\"哪家赢了\"，而是\"重心已经移动了\"。\n人才的去向标出了未来的坐标，12 万员工的工位标出了现在的战场。\n别问哪个模型更强。问：在能力全面渗透之后，你这份工作里，还剩哪一块是非你定义不可的。",
+      "image": "chenmo-black-coffee.jpg",
+      "repost": { "news": true, "source": "AI Briefing · AI市场动态", "text": "OpenAI 宣布三星电子全球 12 万+ 员工部署 ChatGPT Enterprise 与 Codex，覆盖软件开发、营销、产品设计、制造全业务，为 OpenAI 迄今最大规模企业 AI 部署；Codex 已从开发工具进化为通用自动化平台", "link": "https://nathanliu100.github.io/ai-news-collector/?mode=daily&date=2026-06-23" },
+      "stats": { "comment": 71, "repost": 304, "like": 1780 },
+      "replies": [
+        { "author": "luo", "to": "@chenmo_ai", "text": "又被你一句说透。我吵吵一天\"谷歌留不住人\"，落点还是你这句：人才标坐标，工位标战场，重心已经移了。" },
+        { "author": "lu", "to": "@chenmo_ai", "text": "哥你怎么又熬到这点。想那么多干嘛，明天来店里，给你留了茶叶蛋，热的。早点睡呀。" }
+      ]
+    }
+  ]
+}
