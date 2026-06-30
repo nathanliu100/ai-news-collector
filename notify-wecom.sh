@@ -41,6 +41,9 @@ VIEWER_URL="https://nathanliu100.github.io/ai-news-collector/"
 # UTM 参数：用于企微渠道流量追踪
 UTM_PARAMS="utm_source=wecom&utm_medium=bot&utm_campaign=daily"
 VIEWER_URL_UTM="${VIEWER_URL}?${UTM_PARAMS}"
+# 「附近」彩蛋页面（深圳五人 IP 宇宙信息流）
+NEARBY_URL="${VIEWER_URL}nearby.html"
+NEARBY_URL_UTM="${NEARBY_URL}?utm_source=wecom&utm_medium=bot&utm_campaign=nearby"
 
 # ---------- 提取内容 ----------
 
@@ -155,7 +158,9 @@ ${SNAPSHOT_LINE:-暂无}
 🔭 **编辑观察**
 ${EDITOR_SHORT:-暂无}
 
-[📖 查看完整快报 →](${VIEWER_URL_UTM})"
+[📖 查看完整快报 →](${VIEWER_URL_UTM})
+
+> 💬 附近有人在聊今天的新闻 —— [去看看？](${NEARBY_URL_UTM})"
 
 # ---------- 发送 ----------
 
