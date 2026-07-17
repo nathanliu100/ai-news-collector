@@ -76,7 +76,7 @@ DATA_SNAPSHOT=$(awk '
     found && /^---$/ { exit }
     found && /^## / { exit }
     found && /^\|.*\|$/ { print }
-' "$NEWS_FILE" | grep -v '^|[-—]' | grep -v '指标.*数值\|Metric.*Value' | sed 's/|//g; s/^[[:space:]]*//; s/[[:space:]]*$//' | sed '/^$/d')
+' "$NEWS_FILE" | grep -v '^|[-—]' | grep -v '指标.*数值\|Metric.*Value' | sed 's/|//g; s/^[[:space:]]*//; s/[[:space:]]*$//' | sed '/^$/d') || true
 
 # 提取「编辑观察」
 EDITOR_NOTE=$(awk '
@@ -84,7 +84,7 @@ EDITOR_NOTE=$(awk '
     found && /^---$/ { exit }
     found && /^## / { exit }
     found && /^>/ { gsub(/^>[[:space:]]*/, ""); print }
-' "$NEWS_FILE")
+' "$NEWS_FILE") || true
 
 # ---------- 构建消息 (v2: 带锚点链接) ----------
 
