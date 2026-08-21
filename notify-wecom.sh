@@ -117,12 +117,14 @@ if [[ -n "$DATA_SNAPSHOT" ]]; then
     done)
 fi
 
-# 截取编辑观察前200字
+# 截取编辑观察前200字（按字符截断，避免 head -c 按字节截断把多字节 UTF-8 中文切成半个，
+# 产生非法 Unicode → 企微 errcode 0 但消息静默丢失）
 if [[ -n "$EDITOR_NOTE" ]]; then
-    EDITOR_SHORT=$(echo "$EDITOR_NOTE" | head -c 200)
-    if [[ ${#EDITOR_NOTE} -gt 200 ]]; then
-        EDITOR_SHORT="${EDITOR_SHORT}..."
-    fi
+    EDITOR_SHORT=$(echo "$EDITOR_NOTE" | python3 -c "
+import sys
+s = sys.stdin.buffer.read().decode('utf-8', errors='ignore')
+sys.stdout.write(s[:200] + ('...' if len(s) > 200 else ''))
+")
 fi
 
 # 格式化 💎 部门特别关注板块（去掉 Markdown 加粗，保留列表格式）
