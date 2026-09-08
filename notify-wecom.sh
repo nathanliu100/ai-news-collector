@@ -111,7 +111,7 @@ done <<< "$MUST_READ"
 # 格式化数据快照为紧凑行
 SNAPSHOT_LINE=""
 if [[ -n "$DATA_SNAPSHOT" ]]; then
-    SNAPSHOT_LINE=$(echo "$DATA_SNAPSHOT" | head -5 | while IFS= read -r line; do
+    SNAPSHOT_LINE=$(echo "$DATA_SNAPSHOT" | head -3 | while IFS= read -r line; do
         cleaned=$(echo "$line" | sed 's/[[:space:]]\{2,\}/ /g; s/^[[:space:]]*//; s/[[:space:]]*$//')
         echo "  ${cleaned}"
     done)
@@ -123,14 +123,22 @@ if [[ -n "$EDITOR_NOTE" ]]; then
     EDITOR_SHORT=$(echo "$EDITOR_NOTE" | python3 -c "
 import sys
 s = sys.stdin.buffer.read().decode('utf-8', errors='ignore')
-sys.stdout.write(s[:200] + ('...' if len(s) > 200 else ''))
+sys.stdout.write(s[:150] + ('...' if len(s) > 150 else ''))
 ")
 fi
 
 # 格式化 💎 部门特别关注板块（去掉 Markdown 加粗，保留列表格式）
+# 企微 markdown 上限 4096 字节，中文按 3 字节算，这里最多保留 3 条、每条 60 字
 DEPT_FOCUS_CLEAN=""
 if [[ -n "$DEPT_FOCUS" ]]; then
-    DEPT_FOCUS_CLEAN=$(echo "$DEPT_FOCUS" | sed 's/\*\*//g')
+    DEPT_FOCUS_CLEAN=$(echo "$DEPT_FOCUS" | sed 's/\*\*//g' | grep '^- ' | python3 -c "
+import sys
+lines = [l.rstrip('\n') for l in sys.stdin.buffer.read().decode('utf-8', errors='ignore').split('\n') if l.strip()]
+out = []
+for l in lines[:3]:
+    out.append(l[:60] + ('...' if len(l) > 60 else ''))
+sys.stdout.write('\n'.join(out))
+")
 fi
 
 # 构建最终消息
@@ -150,14 +158,48 @@ ${DEPT_FOCUS_CLEAN}
 "
 fi
 
-MESSAGE="${MESSAGE}
+MESSAGE_BODY="${MESSAGE}
 📊 **数据快照**
 ${SNAPSHOT_LINE:-暂无}
 
 🔭 **编辑观察**
-${EDITOR_SHORT:-暂无}
+${EDITOR_SHORT:-暂无}"
 
-[📖 查看完整快报 →](${VIEWER_URL_UTM})"
+# ---------- 长度保护 ----------
+# 企微 markdown 上限 4096 字节。按字符裁剪（不是按字节！head -c 会把多字节 UTF-8 切成半个字，
+# 产生非法 Unicode → 企微 errcode 0 但消息静默丢失）。超限则从「编辑观察」开始逐级回退。
+MESSAGE=$(python3 - "$VIEWER_URL_UTM" <<'PYEOF'
+import sys
+
+body = sys.stdin.read()
+link = "\n\n[📖 查看完整快报 →](%s)" % sys.argv[1]
+budget = 3900 - len(link.encode('utf-8'))
+
+def blen(s):
+    return len(s.encode('utf-8'))
+
+# 逐级回退：整条 → 砍编辑观察 → 砍数据快照 → 砍部门关注 → 硬截断必看
+if blen(body) <= budget:
+    sys.stdout.write(body + link)
+    sys.exit(0)
+
+for marker in ("🔭 **编辑观察**", "📊 **数据快照**", "## 💎 部门特别关注", "🔭 **Editor", "## 💎 Department"):
+    idx = body.find("\n" + marker)
+    if idx != -1:
+        body = body[:idx].rstrip()
+    if blen(body) <= budget:
+        break
+
+if blen(body) > budget:
+    # 最后兜底：按字符硬截断（保证 UTF-8 合法）
+    chars = list(body)
+    while chars and blen("".join(chars)) > budget - 3:
+        chars.pop()
+    body = "".join(chars).rstrip() + "..."
+
+sys.stdout.write(body + link)
+PYEOF
+)
 
 # ---------- 发送 ----------
 
