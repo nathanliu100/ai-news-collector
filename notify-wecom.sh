@@ -10,7 +10,15 @@ set -euo pipefail
 # ---------- 配置 ----------
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 NEWS_DIR="${SCRIPT_DIR}/news"
-DATE="${1:-$(date +%Y-%m-%d)}"
+# 用法：./notify-wecom.sh [YYYY-MM-DD] [--dry-run]
+DATE="$(date +%Y-%m-%d)"
+DRY_RUN=0
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run) DRY_RUN=1 ;;
+        *) DATE="$arg" ;;
+    esac
+done
 NEWS_FILE="${NEWS_DIR}/${DATE}.md"
 
 # Webhook URL（从环境变量读取，或使用配置文件）
@@ -83,7 +91,8 @@ EDITOR_NOTE=$(awk '
     /^## 🔭/ { found=1; next }
     found && /^---$/ { exit }
     found && /^## / { exit }
-    found && /^>/ { gsub(/^>[[:space:]]*/, ""); print }
+    # 兼容两种写法：blockquote（> 开头）和纯段落。旧版只抓 ^> 导致纯段落写法提取为空 → 显示"暂无"
+    found { gsub(/^[[:space:]]*>[[:space:]]*/, ""); if (NF) print }
 ' "$NEWS_FILE") || true
 
 # ---------- 构建消息 (v2: 带锚点链接) ----------
@@ -168,15 +177,17 @@ ${EDITOR_SHORT:-暂无}"
 # ---------- 长度保护 ----------
 # 企微 markdown 上限 4096 字节。按字符裁剪（不是按字节！head -c 会把多字节 UTF-8 切成半个字，
 # 产生非法 Unicode → 企微 errcode 0 但消息静默丢失）。超限则从「编辑观察」开始逐级回退。
-MESSAGE=$(python3 - "$VIEWER_URL_UTM" <<'PYEOF'
+# 注意：消息体必须通过 stdin 传入，不能用 `python3 - <<'PYEOF'`（heredoc 会占用 stdin，
+# 导致 sys.stdin.read() 读到空串，消息正文被清空 —— 2026-09-08 引入的静默丢消息 bug）
+MESSAGE=$(printf '%s' "$MESSAGE_BODY" | python3 -c '
 import sys
 
-body = sys.stdin.read()
+body = sys.stdin.buffer.read().decode("utf-8", errors="ignore")
 link = "\n\n[📖 查看完整快报 →](%s)" % sys.argv[1]
-budget = 3900 - len(link.encode('utf-8'))
+budget = 3900 - len(link.encode("utf-8"))
 
 def blen(s):
-    return len(s.encode('utf-8'))
+    return len(s.encode("utf-8"))
 
 # 逐级回退：整条 → 砍编辑观察 → 砍数据快照 → 砍部门关注 → 硬截断必看
 if blen(body) <= budget:
@@ -198,10 +209,33 @@ if blen(body) > budget:
     body = "".join(chars).rstrip() + "..."
 
 sys.stdout.write(body + link)
-PYEOF
-)
+' "$VIEWER_URL_UTM")
+
+# ---------- 空消息保护 ----------
+# 若正文被意外清空（历史 bug：长度保护模块读到空 stdin，只发出一行链接），
+# 企微仍会返回 errcode 0，属于静默失败。这里显式拦截。
+BODY_CHARS=$(printf '%s' "$MESSAGE" | python3 -c "
+import sys
+s = sys.stdin.buffer.read().decode('utf-8', errors='ignore')
+s = s.split('[📖 查看完整快报')[0].strip()
+print(len(s))
+")
+if [[ "${BODY_CHARS:-0}" -lt 100 ]]; then
+    echo "❌ 中止发送：消息正文仅 ${BODY_CHARS} 字符，疑似被清空（企微会返回 errcode 0 但内容为空）"
+    echo "   请检查长度保护模块与 MESSAGE_BODY 组装逻辑"
+    exit 1
+fi
 
 # ---------- 发送 ----------
+
+# ---------- dry-run（只打印不发送，用于核对实际内容）----------
+if [[ "$DRY_RUN" == "1" ]]; then
+    echo "===== DRY RUN · 实际将发送的内容 ====="
+    printf '%s' "$MESSAGE"
+    echo ""
+    echo "===== 字节数: $(printf '%s' "$MESSAGE" | wc -c | tr -d ' ') / 4096 ====="
+    exit 0
+fi
 
 PAYLOAD=$(cat <<EOF
 {
